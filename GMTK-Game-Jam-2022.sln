@@ -1,19 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31402.337
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityEngine.TestRunner", "UnityEngine.TestRunner.csproj", "{91B3ED75-3D90-194A-AF7E-F01BE2BC1F39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{de98ed77-f788-7138-919c-ad822ec2032f}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Services.Core.Telemetry", "Unity.Services.Core.Telemetry.csproj", "{E718EC02-194C-2425-BFDF-AC15CA667A1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnityResonance", "FMODUnityResonance.csproj", "{032b9154-d3cb-3f6b-9ca7-9eaa082dccaa}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.InputSystem", "Unity.InputSystem.csproj", "{91632A56-4F62-48BD-782C-A139C6EFE533}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{2d215b39-1386-8fdc-94fc-509395120591}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VisualScripting.State", "Unity.VisualScripting.State.csproj", "{004A7422-0CA5-6797-FFF1-E4AB4A42517C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnityEditor", "FMODUnityEditor.csproj", "{61aaca78-c388-05b6-e77e-1ea3903e9905}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Postprocessing.Runtime", "Unity.Postprocessing.Runtime.csproj", "{D1CE4BAC-2DFD-43B1-42F0-E1ED8F112DE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnityResonanceEditor", "FMODUnityResonanceEditor.csproj", "{18db619f-42e1-3a5a-c0cc-ae24e9eda080}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VisualScripting.Flow", "Unity.VisualScripting.Flow.csproj", "{B4E94241-8226-6623-CCB1-1E2D2074015E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VisualScripting.Core", "Unity.VisualScripting.Core.csproj", "{29D635E7-89D9-7FD8-5534-5798042938A6}"
 EndProject
@@ -55,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Services.Core.Registr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnityResonance", "FMODUnityResonance.csproj", "{54912B03-CBD3-6B3F-9CA7-9EAA082DCCAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{6B9BF6D2-D253-8F12-B511-A5A8E31DD7E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{395B212D-8613-DC8F-94FC-509395120591}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.PlasticSCM.Editor", "Unity.PlasticSCM.Editor.csproj", "{C8C7595E-050D-6595-7F55-3673441B4571}"
 EndProject
@@ -118,6 +116,7 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{91B3ED75-3D90-194A-AF7E-F01BE2BC1F39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -224,10 +223,10 @@ Global
 		{54912B03-CBD3-6B3F-9CA7-9EAA082DCCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54912B03-CBD3-6B3F-9CA7-9EAA082DCCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54912B03-CBD3-6B3F-9CA7-9EAA082DCCAA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B9BF6D2-D253-8F12-B511-A5A8E31DD7E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B9BF6D2-D253-8F12-B511-A5A8E31DD7E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B9BF6D2-D253-8F12-B511-A5A8E31DD7E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B9BF6D2-D253-8F12-B511-A5A8E31DD7E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{395B212D-8613-DC8F-94FC-509395120591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{395B212D-8613-DC8F-94FC-509395120591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{395B212D-8613-DC8F-94FC-509395120591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{395B212D-8613-DC8F-94FC-509395120591}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8C7595E-050D-6595-7F55-3673441B4571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8C7595E-050D-6595-7F55-3673441B4571}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8C7595E-050D-6595-7F55-3673441B4571}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -347,8 +346,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E690EB81-3CDC-4953-BDC0-426D443979DC}
 	EndGlobalSection
 EndGlobal

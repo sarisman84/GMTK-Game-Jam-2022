@@ -250,13 +250,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputAsset: {fileID: -944628639613478452, guid: 3df37c02ce551c444bfe295a9937cc6e, type: 3}
-  baseGravity: 10
+  baseGravity: 15
   groundedYOffset: -0.5
   groundedSize: {x: 1, y: 0.02}
   moveSpeed: 10
-  jumpForce: 6
+  jumpForce: 8
   jumpSave: 0.3
-  jumpGravDampner: 3
+  jumpGravDampner: 8
 --- !u!50 &767586768
 Rigidbody2D:
   serializedVersion: 4
