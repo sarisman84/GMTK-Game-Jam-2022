@@ -70,7 +70,17 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+<<<<<<< Updated upstream
 *.log
 
 Assets/Plugins/FMOD/Cache/**/*
 
+<<<<<<< Updated upstream
+=======
+obj/Debug/
+
+Assets/Plugins/FMOD/Resources/FMODStudioSettings.asset
+=======
+fmod_editor.log
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
