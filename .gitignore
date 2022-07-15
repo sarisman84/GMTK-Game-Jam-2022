@@ -73,4 +73,6 @@ crashlytics-build.properties
 *.log
 
 Assets/Plugins/FMOD/Cache/**/*
-obj/Debug/**/*
+obj/Debug/*
+
+obj/Debug/
