@@ -46,7 +46,7 @@
     <UnityProjectGenerator>Package</UnityProjectGenerator>
     <UnityProjectGeneratorVersion>2.0.16</UnityProjectGeneratorVersion>
     <UnityProjectType>Game:1</UnityProjectType>
-    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
+    <UnityBuildTarget>WebGL:20</UnityBuildTarget>
     <UnityVersion>2021.3.6f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
