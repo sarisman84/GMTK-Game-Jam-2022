@@ -26,6 +26,16 @@ public class AbilityManager : MonoBehaviour
 
     private MeshRenderer meshRenderer;
 
+
+    enum Stage
+    {
+        Selecting, Useable
+    }
+
+
+    private Stage currentStage;
+
+
     private void OnEnable()
     {
         pauseInput.action.Enable();
@@ -45,26 +55,38 @@ public class AbilityManager : MonoBehaviour
         currentDuration = selectionDuration;
 
         meshRenderer = GetComponent<MeshRenderer>();
+
+        currentStage = Stage.Useable;
     }
 
     private void Update()
     {
-        bool isCurrentyInTheAir = RaycastToGround();
-
-
-        bool isCurrentlyPausing = pauseInput.action.ReadValue<float>() > 0;
-        if (isCurrentlyPausing && isCurrentyInTheAir)
+        float input = pauseInput.action.ReadValue<float>();
+        if (input <= 0 && currentDuration <= 0.1f)
         {
-            if (Time.timeScale != 0.1f)
-                Time.timeScale = 0.1f;
+            Debug.Log("Selection Resetted!");
+            currentDuration = selectionDuration;
+        }
+
+        bool canSelect = input > 0 && currentDuration > 0;
 
 
+
+
+
+        if (canSelect)
+        {
+            Time.timeScale = Time.timeScale != slowMowScale ? slowMowScale : Time.timeScale;
+            currentDuration -= Time.unscaledDeltaTime;
+            currentDuration = currentDuration <= 0 ? 0 : currentDuration;
+
+            Debug.Log("Selecting Ability!");
         }
         else
         {
-            if (Time.timeScale != 1.0f)
-                Time.timeScale = 1.0f;
+            Time.timeScale = Time.timeScale != 1.0f ? 1.0f : Time.timeScale;
         }
+
 
 
 
@@ -78,7 +100,7 @@ public class AbilityManager : MonoBehaviour
             return false;
         }
 
-        float skinWidth = 0.1f;
+        float skinWidth = 0.05f;
         Ray ray = new Ray();
         ray.direction = Vector3.down;
         ray.origin = transform.position - new Vector3(0, (meshRenderer.bounds.size.y / 2.0f) + skinWidth, 0);
@@ -94,7 +116,7 @@ public class AbilityManager : MonoBehaviour
         }
 
         int currentSize = listOfAbilities.Count;
-        int currentInput = Mathf.CeilToInt(selectAbilityInput.action.ReadValue<float>());
+
 
 
 
