@@ -9,7 +9,16 @@
                     "name": "Movement",
                     "type": "PassThrough",
                     "id": "28490164-e3cd-43ed-b62b-65ad03dde17d",
-                    "expectedControlType": "Dpad",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "63d543c7-190d-4950-992d-84ed50cfac90",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -17,9 +26,9 @@
             ],
             "bindings": [
                 {
-                    "name": "2D Vector",
-                    "id": "be4de103-1338-4f5c-966b-239242ab3c61",
-                    "path": "2DVector",
+                    "name": "AD",
+                    "id": "8e6b99a5-8936-44bb-ab55-867587b07e09",
+                    "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -28,48 +37,48 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "499b4716-eebc-4e8f-ab71-23a9ec2fd545",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "38f2cd54-b36d-4ff0-859e-baa2af6ef2be",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "2ee98188-28ff-4bef-a051-d8b745564ddb",
+                    "name": "negative",
+                    "id": "3881050d-a60c-4190-87dd-89909e84af29",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "right",
-                    "id": "9d0cdf5f-82f4-46c1-aa39-84156c78e65f",
+                    "name": "positive",
+                    "id": "756f8daf-ac1b-4d11-b0f5-84a6005eee19",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "0be62cde-eec9-493b-b2ec-6467c14d5d7a",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd03ffe9-23ad-4f9f-b08d-341475350eff",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
