@@ -76,3 +76,5 @@ Assets/Plugins/FMOD/Cache/**/*
 obj/Debug/*
 
 obj/Debug/
+
+Assets/Plugins/FMOD/Resources/FMODStudioSettings.asset
