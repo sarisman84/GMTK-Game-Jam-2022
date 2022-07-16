@@ -12,14 +12,15 @@ public class DoubleJump : ScriptableAbility
         var movementController = player.GetComponent<MovementController>();
 
         // Already double jumping
-        if (movementController.jumpCount > 2 || movementController.vel.y > allowJumpVerticalVelocityThreshold)
+        if (movementController.jumpCount > 1)
         {
             return;
         }
 
         // Jump again
-        movementController.vel.y = movementController.jumpForce * jumpForceMultiplier;
+        //movementController.vel.y = movementController.jumpForce * jumpForceMultiplier;
 
+        movementController.Jump(movementController.jumpForce * jumpForceMultiplier);
         // TODO: Play sound once the FMod event is implemented
         // var emitter = player.GetComponent<FMODUnity.StudioEventEmitter>();
         // emitter.Play();

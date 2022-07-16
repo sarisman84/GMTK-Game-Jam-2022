@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98e2730a73eab47ab8bac478f72e8d01, type: 3}
-  m_Name: New Double Jump
+  m_Name: s_Double Jump
   m_EditorClassIdentifier: 
-  jumpForceMultiplier: 1
-  allowJumpVerticalVelocityThreshold: 0.5
+  jumpForceMultiplier: 5
+  allowJumpVerticalVelocityThreshold: 0.1
