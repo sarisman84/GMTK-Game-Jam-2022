@@ -23,13 +23,14 @@ public class MovementController : MonoBehaviour
     public float jumpGravDampner = 3.0f;
 
     private Rigidbody2D rig;
-    private Vector2 vel;
+    public Vector2 vel;
     private float jumpPress = 0;
     private bool jumpPressing = false;
     private float move;
 
-    private bool grounded = false;
+    public bool grounded { get; private set; } = false;
     private int groundedLayer;
+    public int jumpCount { get; private set; } = 0;
 
     void Start() {
         groundedLayer = ~LayerMask.GetMask("Player");//use everything except the player as ground
@@ -59,6 +60,11 @@ public class MovementController : MonoBehaviour
         if(grounded) vel.y = 0;//reset velocity if collided
         else         vel.y -= baseGravity * Time.fixedDeltaTime;//add gravity if falling
 
+        if (grounded) { 
+            // reset jump count if grounded
+            jumpCount = 0;
+        }
+
         if (jumpPress > 0 && grounded) {//if jump action is cued and we are on the ground
             Jump();//jump
             jumpPress = 0;//dequeue jump
@@ -72,6 +78,9 @@ public class MovementController : MonoBehaviour
 
     private void Jump() {
         vel.y =+ jumpForce;
+
+        // Keep track of the jump count
+        jumpCount++;
 
         // Play sound
         var emitter = GetComponent<FMODUnity.StudioEventEmitter>();
