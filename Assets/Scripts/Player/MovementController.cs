@@ -11,6 +11,7 @@ public class MovementController : MonoBehaviour
 
     [Space]
     [Header("Grounded Detection")]
+    public LayerMask groundedLayer;
     public float groundedYOffset = -0.5f;
     public Vector2 groundedSize = new Vector2(0.97f, 0.02f);
 
@@ -31,10 +32,8 @@ public class MovementController : MonoBehaviour
     public int jumpCount { get; private set; } = 0;
     public bool grounded { get; private set; } = false;
     private float groundedTimer = 0;
-    private int groundedLayer;
 
     void Start() {
-        groundedLayer = ~LayerMask.GetMask("Player");//use everything except the player as ground
         rig = GetComponent<Rigidbody2D>();
 
         inputAsset.Enable();
