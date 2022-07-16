@@ -452,6 +452,11 @@ MonoBehaviour:
   selectionDuration: 2
   uiIndicator: {fileID: 1667452353}
   listOfAbilities: []
+  viewAngles:
+  - {fileID: 19084279}
+  - {fileID: 599245656}
+  - {fileID: 698003972}
+  - {fileID: 1730754731}
   pauseInput: {fileID: -8776153059030709762, guid: 3df37c02ce551c444bfe295a9937cc6e, type: 3}
   selectAbilityInput: {fileID: 1625654339706045617, guid: 3df37c02ce551c444bfe295a9937cc6e, type: 3}
 --- !u!1 &877205006
