@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
-
+using UnityEngine.UI;
+using DG.Tweening;
 public class AbilityManager : MonoBehaviour
 {
     //First pause the game
@@ -11,21 +12,27 @@ public class AbilityManager : MonoBehaviour
     // -If an ability was selected, excecute it.
     // -If an ability wasnt selected, after x duration, leave the method.
 
+    [Header("Global Settings")]
     public float slowMowScale;
     public float delayUntilNextSelection;
     public float selectionDuration;
 
+
+    public RawImage uiIndicator;
     public List<ScriptableAbility> listOfAbilities;
 
-
-    public InputActionReference pauseInput, selectAbilityInput;
+    [Header("Input")]
+    public InputActionReference pauseInput;
+    public InputActionReference selectAbilityInput;
 
     private int selectedAbility;
+    private int amountOfActionsLeft;
     private float currentDuration;
     private float currentDelay;
 
+    //Private Components
     private MeshRenderer meshRenderer;
-
+    
 
     enum Stage
     {
@@ -59,10 +66,24 @@ public class AbilityManager : MonoBehaviour
         currentStage = Stage.Useable;
     }
 
+    private void SlowdownTime()
+    {
+        Time.timeScale = Time.timeScale != slowMowScale ? slowMowScale : Time.timeScale;
+        currentDuration -= Time.unscaledDeltaTime;
+        currentDuration = currentDuration <= 0 ? 0 : currentDuration;
+
+        Debug.Log("Selecting Ability!");
+    }
+
+    private void ResetTime()
+    {
+        Time.timeScale = Time.timeScale != 1.0f ? 1.0f : Time.timeScale;
+    }
+
     private void Update()
     {
         float input = pauseInput.action.ReadValue<float>();
-        if (input <= 0 && currentDuration <= 0.1f)
+        if (input <= 0)
         {
             Debug.Log("Selection Resetted!");
             currentDuration = selectionDuration;
@@ -76,15 +97,16 @@ public class AbilityManager : MonoBehaviour
 
         if (canSelect)
         {
-            Time.timeScale = Time.timeScale != slowMowScale ? slowMowScale : Time.timeScale;
-            currentDuration -= Time.unscaledDeltaTime;
-            currentDuration = currentDuration <= 0 ? 0 : currentDuration;
-
-            Debug.Log("Selecting Ability!");
+            if (uiIndicator)
+                uiIndicator.DOFade(1, 0.1f);
+            SlowdownTime();
+            ChooseAbility();
         }
         else
         {
-            Time.timeScale = Time.timeScale != 1.0f ? 1.0f : Time.timeScale;
+            if (uiIndicator)
+                uiIndicator.DOFade(0, 0.1f);
+            ResetTime();
         }
 
 
@@ -119,7 +141,10 @@ public class AbilityManager : MonoBehaviour
 
 
 
+        //You selected an ability
 
+
+        listOfAbilities[selectedAbility].ApplyEffect(gameObject);
 
     }
 
