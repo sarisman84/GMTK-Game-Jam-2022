@@ -28,6 +28,8 @@ public class MovementController : MonoBehaviour
     private float jumpPress = 0;
     private bool jumpPressing = false;
     private float move;
+    [HideInInspector] public bool takeInput = true;
+    [HideInInspector] public float GravityScale = 1;
 
     public int facingDir { get; private set; } = 1;
     public int jumpCount { get; private set; } = 0;
@@ -42,6 +44,8 @@ public class MovementController : MonoBehaviour
 
     void Update() {
         move = inputAsset.FindAction("Movement").ReadValue<float>();
+        if (!takeInput) move = 0;
+
         if (move * move > 0.01f) facingDir = (int)Mathf.Sign(move);//saves the facing sign
 
         jumpPressing = inputAsset.FindAction("Jump").IsPressed();
@@ -57,7 +61,8 @@ public class MovementController : MonoBehaviour
 
 
     private void FixedUpdate() {
-        vel.x = move * moveSpeed;
+        if(takeInput)
+            vel.x = move * moveSpeed;
 
         grounded = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize, 0, groundedLayer);        
         if (grounded) {
@@ -68,7 +73,7 @@ public class MovementController : MonoBehaviour
         } else {
             groundedTimer = Mathf.Max(0, groundedTimer - Time.fixedDeltaTime);//count down timer
 
-            vel.y -= baseGravity * Time.fixedDeltaTime;//add gravity if falling
+            vel.y -= baseGravity * Time.fixedDeltaTime * GravityScale;//add gravity if falling
         }
 
 
@@ -78,7 +83,7 @@ public class MovementController : MonoBehaviour
             groundedTimer = 0;//set to be in air
         }
         if (jumpPressing)//if jump key is pressed
-            vel.y += jumpGravDampner * Time.fixedDeltaTime;//reduce fall speed
+            vel.y += jumpGravDampner * Time.fixedDeltaTime * GravityScale;//reduce fall speed
 
 
         rig.velocity = vel;
@@ -91,8 +96,8 @@ public class MovementController : MonoBehaviour
         jumpCount++;
 
         // Play sound
-        //var emitter = GetComponent<FMODUnity.StudioEventEmitter>();
-        //emitter.Play();
+        var emitter = GetComponent<FMODUnity.StudioEventEmitter>();
+        emitter.Play();
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {

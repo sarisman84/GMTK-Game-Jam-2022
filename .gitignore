@@ -84,3 +84,5 @@ Assets/Plugins/FMOD/Resources/
 
 Fmod/.cache/
 Fmod/.unsaved/
+
+Library/PackageCache
