@@ -8,9 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
-    <ProjectGuid>{925CF15C-5E26-23A5-B4CE-A0A3BBC88B1F}</ProjectGuid>
+    <RootNamespace></RootNamespace>
+    <ProjectGuid>{D6951729-E059-2FBA-2F4C-1CA1A0439A83}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>FMODUnity</AssemblyName>

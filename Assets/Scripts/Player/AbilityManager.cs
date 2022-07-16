@@ -20,6 +20,7 @@ public class AbilityManager : MonoBehaviour
 
     public RawImage uiIndicator;
     public List<ScriptableAbility> listOfAbilities;
+    public List<Transform> viewAngles;
 
     [Header("Input")]
     public InputActionReference pauseInput;
@@ -32,7 +33,9 @@ public class AbilityManager : MonoBehaviour
 
     //Private Components
     private MeshRenderer meshRenderer;
-    
+
+    private Quaternion defaultRotation;
+    private List<Vector3> anglePos;
 
     enum Stage
     {
@@ -64,6 +67,14 @@ public class AbilityManager : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
 
         currentStage = Stage.Useable;
+
+        defaultRotation = transform.rotation;
+
+        anglePos = new List<Vector3>();
+        foreach (var item in viewAngles)
+        {
+            anglePos.Add(item.position);
+        }
     }
 
     private void SlowdownTime()
@@ -89,7 +100,7 @@ public class AbilityManager : MonoBehaviour
             currentDuration = selectionDuration;
         }
 
-        bool canSelect = input > 0 && currentDuration > 0;
+        bool canSelect = input > 0 /*&& currentDuration > 0*/;
 
 
 
@@ -107,6 +118,7 @@ public class AbilityManager : MonoBehaviour
             if (uiIndicator)
                 uiIndicator.DOFade(0, 0.1f);
             ResetTime();
+            transform.DORotateQuaternion(defaultRotation, 0.15f);
         }
 
 
@@ -140,12 +152,33 @@ public class AbilityManager : MonoBehaviour
         int currentSize = listOfAbilities.Count;
 
 
+        int input = Mathf.CeilToInt(selectAbilityInput.action.ReadValue<float>());
+
+        if (input != 0 && selectAbilityInput.action.triggered)
+        {
+            selectedAbility += input;
+            selectedAbility = selectedAbility >= anglePos.Count ? 0 : selectedAbility < 0 ? anglePos.Count - 1 : selectedAbility;
+            transform.DORotateQuaternion(Quaternion.LookRotation((transform.position - Vector3.down) - (anglePos[selectedAbility] + transform.position)), 0.15f);
+        }
+
 
         //You selected an ability
 
 
-        listOfAbilities[selectedAbility].ApplyEffect(gameObject);
+        //listOfAbilities[selectedAbility].ApplyEffect(gameObject);
 
+    }
+
+    private void OnDrawGizmos()
+    {
+        foreach (var viewAngle in anglePos)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(viewAngle + transform.position, transform.position);
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(viewAngle, 0.25f);
+        }
     }
 
 
