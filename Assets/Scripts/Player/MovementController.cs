@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -7,7 +7,11 @@ public class MovementController : MonoBehaviour
 {
     public InputActionAsset inputAsset;
     [Space]
-    public float baseGravity = 15f;
+    [Header("Gravity")]
+    public float upGravity = 5;
+    public float lowJumpGravity = 10;
+    public float fallGravity = 15;
+    
 
     [Space]
     [Header("Grounded Detection")]
@@ -21,12 +25,12 @@ public class MovementController : MonoBehaviour
     public float jumpForce = 8;
     public float jumpSave = 0.1f;
     public float kyoteTime = 0.3f;
-    public float jumpGravDampner = 8;
 
     private Rigidbody2D rig;
     [HideInInspector] public Vector2 vel;
     private float jumpPress = 0;
     private bool jumpPressing = false;
+    [HideInInspector] public Stack<System.Action<MovementController>> jumpOverride;
     private float move;
     [HideInInspector] public bool takeInput = true;
     [HideInInspector] public float GravityScale = 1;
@@ -39,6 +43,7 @@ public class MovementController : MonoBehaviour
 
     void Start() {
         rig = GetComponent<Rigidbody2D>();
+        jumpOverride = new Stack<System.Action<MovementController>>();
 
         inputAsset.Enable();
 
@@ -76,7 +81,12 @@ public class MovementController : MonoBehaviour
         } else {
             groundedTimer = Mathf.Max(0, groundedTimer - Time.fixedDeltaTime);//count down timer
 
-            vel.y -= baseGravity * Time.fixedDeltaTime * GravityScale;//add gravity if falling
+            if(vel.y <= 0)
+                vel.y -= fallGravity * Time.fixedDeltaTime * GravityScale;//add gravity if falling
+            else if(vel.y > 0 && !jumpPressing)
+                vel.y -= lowJumpGravity * Time.fixedDeltaTime * GravityScale;//add gravity moving up but releasing jump -> jump lower
+            else if(vel.y > 0)
+                vel.y -= upGravity * Time.fixedDeltaTime * GravityScale;//add gravity if moving up
         }
 
 
@@ -85,21 +95,21 @@ public class MovementController : MonoBehaviour
             jumpPress = 0;//dequeue jump
             groundedTimer = 0;//set to be in air
         }
-        if (jumpPressing)//if jump key is pressed
-            vel.y += jumpGravDampner * Time.fixedDeltaTime * GravityScale;//reduce fall speed
-
 
         rig.velocity = vel;
     }
 
     public void Jump(float jumpForce) {
-        vel.y =+ jumpForce;
-
         // Keep track of the jump count
         jumpCount++;
 
         // Play sound
         playerSoundManager.Play(SoundType.Jump);
+
+        if (jumpOverride.Count > 0)
+            jumpOverride.Pop().Invoke(this);
+        else
+            vel.y = jumpForce;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
