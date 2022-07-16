@@ -29,7 +29,8 @@ public class MovementController : MonoBehaviour
     private float move;
 
     public int jumpCount { get; private set; } = 0;
-    private float grounded = 0;
+    public bool grounded { get; private set; } = false;
+    private float groundedTimer = 0;
     private int groundedLayer;
 
     void Start() {
@@ -51,30 +52,29 @@ public class MovementController : MonoBehaviour
         
     }
 
-    public bool IsGrounded() { return grounded > 0; }
+    public bool IsGroundedTimer() { return groundedTimer > 0; }
 
 
     private void FixedUpdate() {
         vel.x = move * moveSpeed;
 
-        if(Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize, 0, groundedLayer)) {
-            grounded = kyoteTime;//start grounded timer
-        }else
-            grounded = Mathf.Max(0, grounded - Time.fixedDeltaTime);//count down timer
+        grounded = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize, 0, groundedLayer);        
+        if (grounded) {
+            groundedTimer = kyoteTime;//start grounded timer
 
+            vel.y = 0;//reset velocity if collided
+            jumpCount = 0;// reset jump count if grounded
+        } else {
+            groundedTimer = Mathf.Max(0, groundedTimer - Time.fixedDeltaTime);//count down timer
 
-        if (IsGrounded()) vel.y = 0;//reset velocity if collided
-        else             vel.y -= baseGravity * Time.fixedDeltaTime;//add gravity if falling
-
-        if (IsGrounded()) { 
-            // reset jump count if grounded
-            jumpCount = 0;
+            vel.y -= baseGravity * Time.fixedDeltaTime;//add gravity if falling
         }
 
 
-        if (jumpPress > 0 && IsGrounded()) {//if jump action is cued and we are on the ground
+        if (jumpPress > 0 && IsGroundedTimer()) {//if jump action is cued and we are on the ground
             Jump();//jump
             jumpPress = 0;//dequeue jump
+            groundedTimer = 0;//set to be in air
         }
         if (jumpPressing)//if jump key is pressed
             vel.y += jumpGravDampner * Time.fixedDeltaTime;//reduce fall speed
