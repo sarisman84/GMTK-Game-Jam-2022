@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 2082042531145583891}
   m_Layer: 6
   m_Name: Avatar
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,7 +167,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082042531145583882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.38479137, y: 1.8018527, z: -2.4043522}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -204,7 +204,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 1.6}
   m_EdgeRadius: 0
 --- !u!114 &2082042531145583890
 MonoBehaviour:
@@ -225,8 +225,8 @@ MonoBehaviour:
   listOfAbilities:
   - {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
   - {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
-  - {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
-  - {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
+  - {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
+  - {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
   viewAngles:
   - {fileID: 2082042530686521143}
   - {fileID: 2082042531247800216}
@@ -256,12 +256,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: 9f64f89f8bf27554ea65391f72682be9, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!114 &2082042531145583891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,17 +275,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputAsset: {fileID: -944628639613478452, guid: 3df37c02ce551c444bfe295a9937cc6e, type: 3}
-  baseGravity: 10
+  baseGravity: 15
   groundedLayer:
     serializedVersion: 2
     m_Bits: 55
-  groundedYOffset: -0.62
-  groundedSize: {x: 2.5, y: 0.01}
+  groundedYOffset: -0.81
+  groundedSize: {x: 1.95, y: 0.01}
   moveSpeed: 10
-  jumpForce: 5
+  jumpForce: 8
   jumpSave: 0.1
   kyoteTime: 0.3
-  jumpGravDampner: 3
+  jumpGravDampner: 8
   vel: {x: 0, y: 0}
 --- !u!1 &2082042531247800215
 GameObject:
@@ -514,7 +514,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082042531983751444}
   m_LocalRotation: {x: -1e-45, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.38479137, y: 1.8018527, z: -22.404352}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -732,7 +732,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082042532359501742}
   m_LocalRotation: {x: -1e-45, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.38479137, y: 1.8018527, z: -22.404352}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -769,7 +769,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.0109891, y: 1}
+    m_SensorSize: {x: 3.1751413, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
