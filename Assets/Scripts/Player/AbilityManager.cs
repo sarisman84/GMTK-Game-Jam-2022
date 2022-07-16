@@ -210,6 +210,11 @@ public class AbilityManager : MonoBehaviour
         Gizmos.DrawSphere(renderTargetPos.position, 0.3f);
 
         Gizmos.DrawLine(renderTargetPos.position, renderTargetPos.position + renderTargetPos.forward);
+
+
+        foreach(var ability in listOfAbilities) {
+            ability.OnGizmosDraw(movementController);
+        }
     }
 
 

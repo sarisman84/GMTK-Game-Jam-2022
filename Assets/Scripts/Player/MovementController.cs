@@ -29,6 +29,7 @@ public class MovementController : MonoBehaviour
     private bool jumpPressing = false;
     private float move;
 
+    public int facingDir { get; private set; } = 1;
     public int jumpCount { get; private set; } = 0;
     public bool grounded { get; private set; } = false;
     private float groundedTimer = 0;
@@ -41,6 +42,7 @@ public class MovementController : MonoBehaviour
 
     void Update() {
         move = inputAsset.FindAction("Movement").ReadValue<float>();
+        if (move * move > 0.01f) facingDir = (int)Mathf.Sign(move);//saves the facing sign
 
         jumpPressing = inputAsset.FindAction("Jump").IsPressed();
         jumpPress = Mathf.Max(0, jumpPress - Time.deltaTime);//count down timer
