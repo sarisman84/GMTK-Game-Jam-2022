@@ -81,7 +81,12 @@ public class AbilityManager : MonoBehaviour
         defaultTrackingOffset = renderTargetPos;
         currentTrackingOffset = defaultTrackingOffset;
 
-
+        Color color = new Color();
+        color.r = uiIndicator.color.r;
+        color.g = uiIndicator.color.g;
+        color.b = uiIndicator.color.b;
+        color.a = 0;
+        uiIndicator.color = color;
 
 
     }
