@@ -7,30 +7,30 @@ public class MovementController : MonoBehaviour
 {
     public InputActionAsset inputAsset;
     [Space]
-    public float baseGravity = 10.0f;
+    public float baseGravity = 15f;
 
     [Space]
     [Header("Grounded Detection")]
-    public float groundedYOffset = -1;
+    public float groundedYOffset = -0.5f;
     public Vector2 groundedSize = Vector2.one;
 
     [Space]
     [Header("Parameters")]
-    public float moveSpeed = 1;
-    public float jumpForce = 3;
+    public float moveSpeed = 10;
+    public float jumpForce = 8;
     public float jumpSave = 0.3f;
     //TODO: maybe add also kyote time
-    public float jumpGravDampner = 3.0f;
+    public float jumpGravDampner = 8;
 
     private Rigidbody2D rig;
-    public Vector2 vel;
+    [HideInInspector] public Vector2 vel;
     private float jumpPress = 0;
     private bool jumpPressing = false;
     private float move;
 
+    public int jumpCount { get; private set; } = 0;
     public bool grounded { get; private set; } = false;
     private int groundedLayer;
-    public int jumpCount { get; private set; } = 0;
 
     void Start() {
         groundedLayer = ~LayerMask.GetMask("Player");//use everything except the player as ground
