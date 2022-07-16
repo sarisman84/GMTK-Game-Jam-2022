@@ -12,7 +12,7 @@ public class MovementController : MonoBehaviour
     [Space]
     [Header("Grounded Detection")]
     public float groundedYOffset = -0.5f;
-    public Vector2 groundedSize = Vector2.one;
+    public Vector2 groundedSize = new Vector2(0.97f, 0.02f);
 
     [Space]
     [Header("Parameters")]
@@ -71,7 +71,8 @@ public class MovementController : MonoBehaviour
         }
         if (jumpPressing)//if jump key is pressed
             vel.y += jumpGravDampner * Time.fixedDeltaTime;//reduce fall speed
-            
+
+        
 
         rig.velocity = vel;
     }
@@ -85,6 +86,10 @@ public class MovementController : MonoBehaviour
         // Play sound
         //var emitter = GetComponent<FMODUnity.StudioEventEmitter>();
         //emitter.Play();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (vel.y > 0 && rig.velocity.y < 0.01f) vel.y = 0;//stop moving up, when you hit a ceiling
     }
 
     private void OnDrawGizmosSelected() {
