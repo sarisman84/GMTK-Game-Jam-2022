@@ -71,7 +71,7 @@ public class MovementController : MonoBehaviour
 
 
         if (jumpPress > 0 && IsGroundedTimer()) {//if jump action is cued and we are on the ground
-            Jump();//jump
+            Jump(jumpForce);//jump
             jumpPress = 0;//dequeue jump
             groundedTimer = 0;//set to be in air
         }
@@ -82,7 +82,7 @@ public class MovementController : MonoBehaviour
         rig.velocity = vel;
     }
 
-    private void Jump() {
+    public void Jump(float jumpForce) {
         vel.y =+ jumpForce;
 
         // Keep track of the jump count
