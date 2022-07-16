@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e2730a73eab47ab8bac478f72e8d01, type: 3}
   m_Name: s_Double Jump
   m_EditorClassIdentifier: 
-  jumpForceMultiplier: 1
-  allowJumpVerticalVelocityThreshold: 0.1
+  jumpForceMultiplier: 2
