@@ -27,6 +27,7 @@ public class AbilityManager : MonoBehaviour
     public InputActionReference pauseInput;
     public InputActionReference selectAbilityInput;
 
+
     private int selectedAbility;
     private int amountOfActionsLeft;
     private float currentDuration;
@@ -34,6 +35,7 @@ public class AbilityManager : MonoBehaviour
 
     //Private Components
     private MeshRenderer meshRenderer;
+    private MovementController movementController;
 
     private Quaternion defaultRotation;
     private Vector3 defaultTrackingOffset;
@@ -67,12 +69,16 @@ public class AbilityManager : MonoBehaviour
         currentDuration = selectionDuration;
 
         meshRenderer = GetComponent<MeshRenderer>();
+        movementController = GetComponent<MovementController>();
 
         currentStage = Stage.Useable;
 
         defaultRotation = transform.rotation;
         defaultTrackingOffset = renderTargetPos.localPosition;
         currentTrackingOffset = defaultTrackingOffset;
+
+
+
 
     }
 
@@ -114,7 +120,7 @@ public class AbilityManager : MonoBehaviour
 
 
 
-        if (canSelect)
+        if (canSelect && !movementController.grounded)
         {
             if (uiIndicator)
                 uiIndicator.DOFade(1, 0.1f);
@@ -135,20 +141,7 @@ public class AbilityManager : MonoBehaviour
 
     }
 
-    private bool RaycastToGround()
-    {
-        if (!meshRenderer)
-        {
-            Debug.LogWarning($"Missing MeshRenderer in {gameObject.name}. Ground check wont work.", gameObject);
-            return false;
-        }
 
-        float skinWidth = 0.05f;
-        Ray ray = new Ray();
-        ray.direction = Vector3.down;
-        ray.origin = transform.position - new Vector3(0, (meshRenderer.bounds.size.y / 2.0f) + skinWidth, 0);
-        return Physics.Raycast(ray, skinWidth);
-    }
 
     public void ChooseAbility()
     {

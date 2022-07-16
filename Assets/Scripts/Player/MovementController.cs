@@ -83,8 +83,8 @@ public class MovementController : MonoBehaviour
         jumpCount++;
 
         // Play sound
-        var emitter = GetComponent<FMODUnity.StudioEventEmitter>();
-        emitter.Play();
+        //var emitter = GetComponent<FMODUnity.StudioEventEmitter>();
+        //emitter.Play();
     }
 
     private void OnDrawGizmosSelected() {
