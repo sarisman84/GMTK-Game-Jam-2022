@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c285cab2f7581c4ab03788a1a2d0a35, type: 3}
   m_Name: s_LongJump
   m_EditorClassIdentifier: 
-  Force: 30
+  Force: 15
