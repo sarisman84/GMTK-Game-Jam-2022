@@ -224,9 +224,9 @@ MonoBehaviour:
   uiIndicator: {fileID: 2082042532326486273}
   listOfAbilities:
   - {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
+  - {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
+  - {fileID: 11400000, guid: 5f42b22401f48274185c15d08a75dbac, type: 2}
   - {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
-  - {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
-  - {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
   viewAngles:
   - {fileID: 2082042530686521143}
   - {fileID: 2082042531247800216}
@@ -287,6 +287,8 @@ MonoBehaviour:
   kyoteTime: 0.3
   jumpGravDampner: 8
   vel: {x: 0, y: 0}
+  takeInput: 1
+  GravityScale: 1
 --- !u!1 &2082042531247800215
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +771,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 3.1751413, y: 1}
+    m_SensorSize: {x: 2.6524823, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

@@ -1101,6 +1101,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+      propertyPath: listOfAbilities.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
+    - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+      propertyPath: listOfAbilities.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f42b22401f48274185c15d08a75dbac, type: 2}
+    - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+      propertyPath: listOfAbilities.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
     - target: {fileID: 2082042532258748998, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: m_Name
       value: p_Player
