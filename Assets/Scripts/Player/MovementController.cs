@@ -32,7 +32,7 @@ public class MovementController : MonoBehaviour
     public float kyoteTime = 0.3f;
 
 
-    private Rigidbody2D rig;
+    public Rigidbody2D rig { get; private set; }
     [HideInInspector] public Vector2 vel;
     private float jumpPress = 0;
     private bool jumpPressing = false;
@@ -78,13 +78,20 @@ public class MovementController : MonoBehaviour
         if(takeInput)
             vel.x = move * moveSpeed;
 
-        grounded = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y),                groundedSize, 0, groundedLayer);   
+        Collider2D groundOverlap = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y),                groundedSize, 0, groundedLayer);
+        grounded = groundOverlap;
         onWall = Physics2D.OverlapBox(rig.position + Vector2.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * facingDir, wallCheckSize, 0, groundedLayer);//use the facing direction to check the right direction for a wall jump 
         if (grounded) {
             groundedTimer = kyoteTime;//start grounded timer
 
             vel.y = 0;//reset velocity if collided
             jumpCount = 0;// reset jump count if grounded
+
+            IPlayerGround ground = groundOverlap.GetComponent<IPlayerGround>();
+            if (ground != null)
+                ground.OnPlayerStand(this);
+                
+
         } else {
             groundedTimer = Mathf.Max(0, groundedTimer - Time.fixedDeltaTime);//count down timer
 

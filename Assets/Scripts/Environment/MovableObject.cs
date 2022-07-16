@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MovableObject : MonoBehaviour
+public class MovableObject : MonoBehaviour, IPlayerGround
 {
     public Vector3[] path;
 
@@ -8,7 +8,6 @@ public class MovableObject : MonoBehaviour
     public float speed = 1;
 
     [HideInInspector] public bool looping = false;
-
 
     private float[] tValues;
     private float distSum;
@@ -61,11 +60,18 @@ public class MovableObject : MonoBehaviour
         const float maxT = 0.99f;
         float loopT = maxT - Mathf.Abs((currentT % 2)*maxT - maxT);
 
-        Vector2 pos = GetPathPos(loopT);
-        MoveToPos(pos, deltatime);
+        nextPos = GetPathPos(loopT);
     }
 
-    private void Update() {
-        MoveAlongPath(speed, Time.deltaTime);
+    Vector2 nextPos;
+    private void FixedUpdate() {
+        MoveToPos(nextPos, Time.fixedDeltaTime);
+        MoveAlongPath(speed, Time.fixedDeltaTime);
+    }
+
+
+    void IPlayerGround.OnPlayerStand(MovementController player) {
+        Vector2 move = nextPos - rig.position;
+        player.rig.position += move;
     }
 }
