@@ -4,7 +4,7 @@ using UnityEngine;
 public class DoubleJump : ScriptableAbility
 {
     [SerializeField] float jumpForceMultiplier = 1.0f;
-    [SerializeField] float allowJumpVerticalVelocityThreshold = 0.5f;
+    // [SerializeField] float allowJumpVerticalVelocityThreshold = 0.5f;
 
     public override void ApplyEffect(MovementController player)
     {
@@ -17,12 +17,11 @@ public class DoubleJump : ScriptableAbility
         }
 
         // Jump again
-        //player.vel.y = player.jumpForce * jumpForceMultiplier;
-
         player.Jump(player.jumpForce * jumpForceMultiplier);
-        // TODO: Play sound once the FMod event is implemented
-        // var emitter = player.GetComponent<FMODUnity.StudioEventEmitter>();
-        // emitter.Play();
+
+        // Play sound
+        var soundManager = player.GetComponent<PlayerSoundManager>();
+        soundManager.Play(SoundType.DoubleJump);
     }
 
     public override void OnEndEffect(MovementController player)

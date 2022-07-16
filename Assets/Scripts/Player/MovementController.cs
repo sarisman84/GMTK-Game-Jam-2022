@@ -35,11 +35,14 @@ public class MovementController : MonoBehaviour
     public int jumpCount { get; private set; } = 0;
     public bool grounded { get; private set; } = false;
     private float groundedTimer = 0;
+    public PlayerSoundManager playerSoundManager { get; private set; }
 
     void Start() {
         rig = GetComponent<Rigidbody2D>();
 
         inputAsset.Enable();
+
+        playerSoundManager = GetComponent<PlayerSoundManager>();
     }
 
     void Update() {
@@ -96,8 +99,7 @@ public class MovementController : MonoBehaviour
         jumpCount++;
 
         // Play sound
-        var emitter = GetComponent<FMODUnity.StudioEventEmitter>();
-        emitter.Play();
+        playerSoundManager.Play(SoundType.Jump);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
