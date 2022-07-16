@@ -133,7 +133,7 @@ public class AbilityManager : MonoBehaviour
         float input = pauseInput.action.ReadValue<float>();
         if (input <= 0)
         {
-            // Debug.Log("Selection Resetted!");
+            //Debug.Log("Selection Resetted!");
             currentDuration = selectionDuration;
             
         }
@@ -238,8 +238,8 @@ public class AbilityManager : MonoBehaviour
         Gizmos.DrawLine(renderTargetPos.position, renderTargetPos.position + renderTargetPos.forward);
 
 
-        foreach (var ability in listOfAbilities)
-        {
+        if (!movementController) return;
+        foreach(var ability in listOfAbilities) {
             ability.OnGizmosDraw(movementController);
         }
     }
