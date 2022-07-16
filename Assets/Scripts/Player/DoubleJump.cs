@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Double Jump Ability", menuName = "Custom/Ability", order = 0)]
+[CreateAssetMenu(fileName = "New Double Jump", menuName = "Player Abilities/Double Jump", order = 0)]
 public class DoubleJump : ScriptableAbility
 {
     [SerializeField] float jumpForceMultiplier = 1.0f;
@@ -8,6 +8,7 @@ public class DoubleJump : ScriptableAbility
 
     public override void ApplyEffect(MovementController player)
     {
+        Debug.Log("Double Jump Triggered!");
         var movementController = player.GetComponent<MovementController>();
 
         // Already double jumping
@@ -26,11 +27,11 @@ public class DoubleJump : ScriptableAbility
 
     public override void OnEndEffect(MovementController movementController)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void UpdateEffect(MovementController movementController)
     {
-        throw new System.NotImplementedException();
+
     }
 }
