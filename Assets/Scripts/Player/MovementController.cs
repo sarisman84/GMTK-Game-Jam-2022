@@ -12,7 +12,6 @@ public class MovementController : MonoBehaviour
     public float lowJumpGravity = 10;
     public float fallGravity = 15;
     
-
     [Space]
     [Header("Grounded Detection")]
     public LayerMask groundedLayer;
@@ -20,11 +19,18 @@ public class MovementController : MonoBehaviour
     public Vector2 groundedSize = new Vector2(0.97f, 0.02f);
 
     [Space]
+    [Header("Wall Slide")]
+    public float wallCheckXOffset = 1;
+    public Vector2 wallCheckSize = new Vector2(0.1f, 1);
+    public float wallSlideSpeed = 3;
+
+    [Space]
     [Header("Parameters")]
     public float moveSpeed = 10;
     public float jumpForce = 8;
     public float jumpSave = 0.1f;
     public float kyoteTime = 0.3f;
+
 
     private Rigidbody2D rig;
     [HideInInspector] public Vector2 vel;
@@ -38,6 +44,7 @@ public class MovementController : MonoBehaviour
     public int facingDir { get; private set; } = 1;
     public int jumpCount { get; private set; } = 0;
     public bool grounded { get; private set; } = false;
+    public bool onWall { get; private set; } = false;
     private float groundedTimer = 0;
     public PlayerSoundManager playerSoundManager { get; private set; }
 
@@ -67,12 +74,12 @@ public class MovementController : MonoBehaviour
 
     public bool IsGroundedTimer() { return groundedTimer > 0; }
 
-
     private void FixedUpdate() {
         if(takeInput)
             vel.x = move * moveSpeed;
 
-        grounded = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize, 0, groundedLayer);        
+        grounded = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y),                groundedSize, 0, groundedLayer);   
+        onWall = Physics2D.OverlapBox(rig.position + Vector2.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * facingDir, wallCheckSize, 0, groundedLayer);//use the facing direction to check the right direction for a wall jump 
         if (grounded) {
             groundedTimer = kyoteTime;//start grounded timer
 
@@ -81,11 +88,16 @@ public class MovementController : MonoBehaviour
         } else {
             groundedTimer = Mathf.Max(0, groundedTimer - Time.fixedDeltaTime);//count down timer
 
-            if(vel.y <= 0)
-                vel.y -= fallGravity * Time.fixedDeltaTime * GravityScale;//add gravity if falling
-            else if(vel.y > 0 && !jumpPressing)
+
+            if (vel.y <= 0) {
+                if (onWall && !grounded)//check for wall slide
+                    vel.y = -wallSlideSpeed;//dont do gravity acceleration -> only slide speed
+                else
+                    vel.y -= fallGravity * Time.fixedDeltaTime * GravityScale;//add gravity if falling
+            }
+            else if (vel.y > 0 && !jumpPressing)
                 vel.y -= lowJumpGravity * Time.fixedDeltaTime * GravityScale;//add gravity moving up but releasing jump -> jump lower
-            else if(vel.y > 0)
+            else if (vel.y > 0)
                 vel.y -= upGravity * Time.fixedDeltaTime * GravityScale;//add gravity if moving up
         }
 
@@ -119,5 +131,6 @@ public class MovementController : MonoBehaviour
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position + Vector3.up * (groundedYOffset - 0.5f*groundedSize.y), groundedSize);
+        Gizmos.DrawWireCube(transform.position + Vector3.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * facingDir, wallCheckSize);
     }
 }

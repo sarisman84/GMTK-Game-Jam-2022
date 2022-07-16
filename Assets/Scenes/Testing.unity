@@ -1728,6 +1728,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2082042531145583884, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+      propertyPath: m_Size.x
+      value: 1.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082042531145583884, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+      propertyPath: m_Size.y
+      value: 1.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082042531145583884, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+      propertyPath: m_EdgeRadius
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: listOfAbilities.Array.data[1]
       value: 

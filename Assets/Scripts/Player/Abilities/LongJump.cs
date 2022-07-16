@@ -2,7 +2,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Long Jump", menuName = "Player Abilities/Long Jump", order = 3)]
 public class LongJump : ScriptableAbility {
-    public float Force = 30;
+    public float Force = 15;
 
     private void DoLongJump(MovementController player) {
         Debug.Log("Long Jump");
