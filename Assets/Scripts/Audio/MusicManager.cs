@@ -73,6 +73,7 @@ public class MusicManager : MonoBehaviour
     public void EditParameter(string musicClip, string name, float value)
     {
         var music = GetMusic(musicClip);
+        if (!music) return;
         music.EditParamateter(name, value);
     }
 

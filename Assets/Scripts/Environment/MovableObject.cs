@@ -4,7 +4,7 @@ public class MovableObject : MonoBehaviour
 {
     public Vector3[] path;
 
-    [Range(0, 1)] public float currentT;
+    [Range(0, 0.9999f)] public float currentT;
     public float speed = 1;
 
     public bool looping = false;
@@ -15,12 +15,10 @@ public class MovableObject : MonoBehaviour
 
     private Rigidbody2D rig;
 
-    private int pathI = 0;
-    private float pathSum = 0;
-
     [HideInInspector] public Vector3 positionOnStart;
 
     private void Start() {
+        positionOnStart = transform.position;
         rig = GetComponent<Rigidbody2D>();
 
         tValues = new float[path.Length - 1];
@@ -36,17 +34,19 @@ public class MovableObject : MonoBehaviour
     }
 
     private void MoveToPos(Vector2 pos, float time) {
-        rig.velocity = (pos - rig.position) / time;//v = s / t
+        //rig.velocity = (pos - rig.position) / time;//v = s / t
+        rig.position = pos;
     }
 
-    private Vector2 GetPathPos(float t) {
-        for(; pathI < tValues.Length; pathI++) {
-            if (t < pathSum + tValues[pathI])//t value is between these points
-                return Vector2.Lerp(path[pathI], path[pathI + 1], (t- pathSum) /tValues[pathI]);//calculate scaled t Value
-            pathSum += tValues[pathI];
+    private Vector2 GetPathPos(float t) {//TODO: FIX THE ERROR HERE -> ITS NOT LINEAR
+        float sum = 0;
+        for(int i = 0; i < tValues.Length; i++) {
+            if (t < sum + tValues[i])//t value is between these points
+                return Vector2.Lerp(path[i], path[i+1], (t-sum)/tValues[i]);//calculate scaled t Value
+            sum += tValues[i];
         }
         Debug.LogError("Path Position Calculation failed");
-        return path[pathI];//return something -> calculation failed
+        return Vector2.zero;//return something -> calculation failed
     }
 
     private float DistToPercent(float dist) { return dist / distSum; }
@@ -55,5 +55,9 @@ public class MovableObject : MonoBehaviour
         currentT += dt;
         Vector2 pos = GetPathPos(currentT);
         MoveToPos(pos, deltatime);
+    }
+
+    private void Update() {
+        MoveAlongPath(speed, Time.deltaTime);
     }
 }
