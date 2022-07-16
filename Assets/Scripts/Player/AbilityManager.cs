@@ -22,6 +22,7 @@ public class AbilityManager : MonoBehaviour
     public RawImage uiIndicator;
     public List<ScriptableAbility> listOfAbilities;
     public List<Transform> viewAngles;
+    public List<GameObject> usedAbilityIndicators;
     public Transform renderTargetPos;
 
     [Header("Input")]
@@ -36,7 +37,7 @@ public class AbilityManager : MonoBehaviour
     private float currentDuration;
     private float currentDelay;
     private bool triggerAbility;
-
+    private bool resetFlag;
     //Private Components
     private MeshRenderer meshRenderer;
     private MovementController movementController;
@@ -88,7 +89,7 @@ public class AbilityManager : MonoBehaviour
         color.a = 0;
         uiIndicator.color = color;
 
-
+        ResetAbilityIndicators();
     }
 
 
@@ -96,6 +97,7 @@ public class AbilityManager : MonoBehaviour
     private void SlowdownTime()
     {
         Time.timeScale = Time.timeScale != slowMowScale ? slowMowScale : Time.timeScale;
+        Time.fixedDeltaTime = Time.timeScale * 0.02f;
         currentDuration -= Time.unscaledDeltaTime;
         currentDuration = currentDuration <= 0 ? 0 : currentDuration;
 
@@ -113,6 +115,14 @@ public class AbilityManager : MonoBehaviour
         renderTargetPos.localRotation = currentTrackingOffset.localRotation;
     }
 
+    private void ResetAbilityIndicators()
+    {
+        foreach (var item in usedAbilityIndicators)
+        {
+            item.SetActive(false);
+        }
+    }
+
     private void Update()
     {
 
@@ -123,18 +133,24 @@ public class AbilityManager : MonoBehaviour
         float input = pauseInput.action.ReadValue<float>();
         if (input <= 0)
         {
-            Debug.Log("Selection Resetted!");
+            // Debug.Log("Selection Resetted!");
             currentDuration = selectionDuration;
+            
         }
 
         bool canSelect = input > 0 /*&& currentDuration > 0*/;
 
 
-
+        if (movementController.grounded && resetFlag)
+        {
+            ResetAbilityIndicators();
+            resetFlag = false;
+        }
 
 
         if (canSelect && !movementController.grounded)
         {
+            resetFlag = true;
             triggerAbility = true;
             if (uiIndicator)
                 uiIndicator.DOFade(1, 0.1f);
@@ -152,7 +168,12 @@ public class AbilityManager : MonoBehaviour
             currentTrackingOffset = defaultTrackingOffset;
 
             if (selectedAbility < listOfAbilities.Count)
+            {
                 listOfAbilities[selectedAbility].ApplyEffect(movementController);
+                usedAbilityIndicators[selectedAbility].SetActive(true);
+            }
+
+
 
             Debug.Log("Ability Triggered!");
         }
@@ -217,7 +238,8 @@ public class AbilityManager : MonoBehaviour
         Gizmos.DrawLine(renderTargetPos.position, renderTargetPos.position + renderTargetPos.forward);
 
 
-        foreach(var ability in listOfAbilities) {
+        foreach (var ability in listOfAbilities)
+        {
             ability.OnGizmosDraw(movementController);
         }
     }
