@@ -9,20 +9,19 @@ public class WallJump : ScriptableAbility {
 
     [Space]
     [Header("Jump")]
-    public Vector2 jumpForce = Vector2.one;
+    public float jumpForce = 10;
 
     private bool IsOnWall(MovementController player) {
         return Physics2D.OverlapBox(
-            (Vector2)player.transform.position + Vector2.right * (checkXOffset - 0.5f * checkSize.x) * player.facingDir,//use the facing direction to check the right direction for a wall jump 
+            (Vector2)player.transform.position + Vector2.right * (checkXOffset + 0.5f * checkSize.x) * player.facingDir,//use the facing direction to check the right direction for a wall jump 
             checkSize, 0, player.groundedLayer);
     }
 
     public override void ApplyEffect(MovementController player) {
-        Debug.Log("Wall Jump Requested");
-
         if (IsOnWall(player)) {
             //Execute Wall Jump
-            player.vel += new Vector2(jumpForce.x * -player.facingDir, jumpForce.y);//use the wall side to jump in the opposite direction
+            Debug.Log("Wall Jump Executed");
+            player.vel += new Vector2(0, jumpForce);
         }
     }
 
@@ -36,7 +35,7 @@ public class WallJump : ScriptableAbility {
 
 
     public override void OnGizmosDraw(MovementController player) {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube((Vector2)player.transform.position + Vector2.right * (checkXOffset - 0.5f * checkSize.x) * player.facingDir, checkSize);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube((Vector2)player.transform.position + Vector2.right * (checkXOffset + 0.5f * checkSize.x) * player.facingDir, checkSize);
     }
 }
