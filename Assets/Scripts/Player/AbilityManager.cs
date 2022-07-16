@@ -43,7 +43,7 @@ public class AbilityManager : MonoBehaviour
     private bool triggerAudioOnce;
 
 
-    private List<bool> abilityStatus;
+
     //Private Components
     private MeshRenderer meshRenderer;
     private MovementController movementController;
@@ -77,11 +77,7 @@ public class AbilityManager : MonoBehaviour
 
     private void Awake()
     {
-        abilityStatus = new List<bool>();
-        foreach (var item in listOfAbilities)
-        {
-            abilityStatus.Add(true);
-        }
+
 
 
         currentDelay = delayUntilNextSelection;
@@ -138,10 +134,6 @@ public class AbilityManager : MonoBehaviour
         }
 
 
-        for (int i = 0; i < abilityStatus.Count; i++)
-        {
-            abilityStatus[i] = true;
-        }
     }
 
     private void Update()
@@ -178,11 +170,13 @@ public class AbilityManager : MonoBehaviour
             }
 
 
-            if (!abilityStatus[selectedAbility])
+            if (usedAbilityIndicators[selectedAbility].activeSelf)
             {
                 selectedAbility++;
-                selectedAbility = selectedAbility >= abilityStatus.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
+                selectedAbility = selectedAbility >= listOfAbilities.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
             }
+
+            ParticleManager.Get.SpawnParticle("DiceRolling", transform.position);
 
             resetFlag = true;
             triggerAbility = true;
@@ -207,11 +201,11 @@ public class AbilityManager : MonoBehaviour
             transform.DORotateQuaternion(defaultRotation, 0.15f);
             currentTrackingOffset = defaultTrackingOffset;
 
-            if (selectedAbility < listOfAbilities.Count && abilityStatus[selectedAbility])
+            if (selectedAbility < listOfAbilities.Count && !usedAbilityIndicators[selectedAbility].activeSelf)
             {
                 listOfAbilities[selectedAbility].ApplyEffect(movementController);
                 usedAbilityIndicators[selectedAbility].SetActive(true);
-                abilityStatus[selectedAbility] = false;
+
                 Debug.Log("Ability Triggered!");
             }
             else
@@ -255,7 +249,13 @@ public class AbilityManager : MonoBehaviour
             selectedAbility = selectedAbility >= viewAngles.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
 
 
+            int attempts = 100;
 
+            while (attempts > 100 && !usedAbilityIndicators[selectedAbility].activeSelf)
+            {
+                selectedAbility += input;
+                selectedAbility = selectedAbility >= viewAngles.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
+            }
 
             transform.DORotateQuaternion(Quaternion.LookRotation(UnityEngine.Random.insideUnitSphere), 0.15f);
 
