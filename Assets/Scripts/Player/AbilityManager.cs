@@ -20,6 +20,7 @@ public class AbilityManager : MonoBehaviour
 
 
     public RawImage uiIndicator;
+    [Header("Contents")]
     public List<ScriptableAbility> listOfAbilities;
     public List<Transform> viewAngles;
     public List<GameObject> usedAbilityIndicators;
@@ -135,7 +136,7 @@ public class AbilityManager : MonoBehaviour
         {
             //Debug.Log("Selection Resetted!");
             currentDuration = selectionDuration;
-            
+
         }
 
         bool canSelect = input > 0 /*&& currentDuration > 0*/;
@@ -239,7 +240,8 @@ public class AbilityManager : MonoBehaviour
 
 
         if (!movementController) return;
-        foreach(var ability in listOfAbilities) {
+        foreach (var ability in listOfAbilities)
+        {
             ability.OnGizmosDraw(movementController);
         }
     }
