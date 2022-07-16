@@ -32,5 +32,7 @@ public class MovableObject : MonoBehaviour
             if (t < sum + tValues[i])//t value is between these points
                 return Vector2.Lerp(path[i], path[i+1], (t-sum)/tValues[i]);//calculate scaled t Value
         }
+
+        throw new System.Exception("The code should never have gotten here");
     }
 }

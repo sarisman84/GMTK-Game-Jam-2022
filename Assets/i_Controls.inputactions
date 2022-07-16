@@ -132,6 +132,39 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "Selection (Q/E)",
+                    "id": "b4dc6868-4e62-4959-9b4c-14d460c13984",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dice Roll - Select",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "95d32c86-d8bc-4701-aa0c-bb104daed62d",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Dice Roll - Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d4fa63e9-8975-4def-a1cb-783585588ca4",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Dice Roll - Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "Selection (<-/->)",
                     "id": "72896b50-4e44-42ff-bb10-5d079a87ca68",
                     "path": "1DAxis",
