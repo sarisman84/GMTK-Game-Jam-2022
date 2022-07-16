@@ -7,7 +7,7 @@ public class MovableObject : MonoBehaviour
     [Range(0, 0.9999f)] public float currentT;
     public float speed = 1;
 
-    public bool looping = false;
+    [HideInInspector] public bool looping = false;
 
 
     private float[] tValues;
@@ -23,14 +23,17 @@ public class MovableObject : MonoBehaviour
 
         tValues = new float[path.Length - 1];
         distSum = 0;
-        for (int p = 0; p < path.Length - 1; p++) {
+        for (int p = 0; p < path.Length - 1; p++)
+        {
             tValues[p] = Vector3.Distance(path[p], path[p + 1]);//save distances in the tValues
             distSum += tValues[p];
         }
 
-        for(int t = 0; t < tValues.Length; t++) {
+        for (int t = 0; t < tValues.Length; t++)
+        {
             tValues[t] /= distSum;//divide every distance by the sum of distances to normalize them
         }
+        positionOnStart = transform.position;
     }
 
     private void MoveToPos(Vector2 pos, float time) {
@@ -50,7 +53,8 @@ public class MovableObject : MonoBehaviour
     }
 
     private float DistToPercent(float dist) { return dist / distSum; }
-    private void MoveAlongPath(float speed, float deltatime) {
+    private void MoveAlongPath(float speed, float deltatime)
+    {
         float dt = DistToPercent(speed * deltatime);//get the change in t
         currentT += dt;
         Vector2 pos = GetPathPos(currentT);
