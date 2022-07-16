@@ -5,6 +5,7 @@ using System;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using DG.Tweening;
+using FMODUnity;
 
 public class AbilityManager : MonoBehaviour
 {
@@ -39,9 +40,14 @@ public class AbilityManager : MonoBehaviour
     private float currentDelay;
     private bool triggerAbility;
     private bool resetFlag;
+    private bool triggerAudioOnce;
+
+
+    private List<bool> abilityStatus;
     //Private Components
     private MeshRenderer meshRenderer;
     private MovementController movementController;
+    private StudioEventEmitter diceRollEmitter;
 
     private Quaternion defaultRotation;
     private Transform defaultTrackingOffset;
@@ -71,11 +77,19 @@ public class AbilityManager : MonoBehaviour
 
     private void Awake()
     {
+        abilityStatus = new List<bool>();
+        foreach (var item in listOfAbilities)
+        {
+            abilityStatus.Add(true);
+        }
+
+
         currentDelay = delayUntilNextSelection;
         currentDuration = selectionDuration;
 
         meshRenderer = GetComponent<MeshRenderer>();
         movementController = GetComponent<MovementController>();
+        diceRollEmitter = GetComponent<StudioEventEmitter>();
 
         currentStage = Stage.Useable;
 
@@ -90,7 +104,7 @@ public class AbilityManager : MonoBehaviour
         color.a = 0;
         uiIndicator.color = color;
 
-        ResetAbilityIndicators();
+        ResetAbilities();
     }
 
 
@@ -102,7 +116,7 @@ public class AbilityManager : MonoBehaviour
         currentDuration -= Time.unscaledDeltaTime;
         currentDuration = currentDuration <= 0 ? 0 : currentDuration;
 
-        Debug.Log("Selecting Ability!");
+
     }
 
     private void ResetTime()
@@ -116,11 +130,17 @@ public class AbilityManager : MonoBehaviour
         renderTargetPos.localRotation = currentTrackingOffset.localRotation;
     }
 
-    private void ResetAbilityIndicators()
+    private void ResetAbilities()
     {
         foreach (var item in usedAbilityIndicators)
         {
             item.SetActive(false);
+        }
+
+
+        for (int i = 0; i < abilityStatus.Count; i++)
+        {
+            abilityStatus[i] = true;
         }
     }
 
@@ -144,13 +164,26 @@ public class AbilityManager : MonoBehaviour
 
         if (movementController.grounded && resetFlag)
         {
-            ResetAbilityIndicators();
+            ResetAbilities();
             resetFlag = false;
         }
 
 
         if (canSelect && !movementController.grounded)
         {
+            if (!triggerAudioOnce)
+            {
+                diceRollEmitter.Play();
+                triggerAudioOnce = true;
+            }
+
+
+            if (!abilityStatus[selectedAbility])
+            {
+                selectedAbility++;
+                selectedAbility = selectedAbility >= abilityStatus.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
+            }
+
             resetFlag = true;
             triggerAbility = true;
             if (uiIndicator)
@@ -160,6 +193,12 @@ public class AbilityManager : MonoBehaviour
         }
         else if (triggerAbility)
         {
+            if (triggerAudioOnce)
+            {
+                diceRollEmitter.Stop();
+                triggerAudioOnce = false;
+            }
+
             triggerAbility = false;
 
             if (uiIndicator)
@@ -168,15 +207,21 @@ public class AbilityManager : MonoBehaviour
             transform.DORotateQuaternion(defaultRotation, 0.15f);
             currentTrackingOffset = defaultTrackingOffset;
 
-            if (selectedAbility < listOfAbilities.Count)
+            if (selectedAbility < listOfAbilities.Count && abilityStatus[selectedAbility])
             {
                 listOfAbilities[selectedAbility].ApplyEffect(movementController);
                 usedAbilityIndicators[selectedAbility].SetActive(true);
+                abilityStatus[selectedAbility] = false;
+                Debug.Log("Ability Triggered!");
+            }
+            else
+            {
+                Debug.Log("Ability Disabled!");
             }
 
 
 
-            Debug.Log("Ability Triggered!");
+
         }
         if (selectedAbility < listOfAbilities.Count)
             listOfAbilities[selectedAbility].UpdateEffect(movementController);
@@ -202,8 +247,13 @@ public class AbilityManager : MonoBehaviour
 
         if (input != 0 && selectAbilityInput.action.triggered)
         {
+
             selectedAbility += input;
             selectedAbility = selectedAbility >= viewAngles.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
+
+
+
+
             transform.DORotateQuaternion(Quaternion.LookRotation(UnityEngine.Random.insideUnitSphere), 0.15f);
 
             currentTrackingOffset = viewAngles[selectedAbility];

@@ -345,6 +345,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 9048536056808113243}
   spawnPoint: {x: 0, y: 2}
+--- !u!1 &459269092 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2082042531145583882, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+  m_PrefabInstance: {fileID: 9048536056808113242}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &494469964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,9 +1094,39 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
   m_PrefabInstance: {fileID: 9048536056808113242}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 459269092}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10684857b7d933148a2a1eff46b7413b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9048536056808113248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459269092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 19396717
+      Data2: 1129158285
+      Data3: -1636189304
+      Data4: 1034417780
+    Path: event:/Player/Roll Dice
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

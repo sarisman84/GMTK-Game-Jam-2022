@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 2082042531145583890}
   - component: {fileID: 2082042531145583892}
   - component: {fileID: 2082042531145583891}
+  - component: {fileID: 9048536056808113248}
   m_Layer: 6
   m_Name: Avatar
   m_TagString: Player
@@ -287,6 +288,36 @@ MonoBehaviour:
   kyoteTime: 0.3
   jumpGravDampner: 8
   vel: {x: 0, y: 0}
+--- !u!114 &9048536056808113248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082042531145583882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 19396717
+      Data2: 1129158285
+      Data3: -1636189304
+      Data4: 1034417780
+    Path: event:/Player/Roll Dice
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &2082042531247800215
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +800,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 3.1751413, y: 1}
+    m_SensorSize: {x: 2.2806053, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
