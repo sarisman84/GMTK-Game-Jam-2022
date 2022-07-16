@@ -38,8 +38,8 @@ public class AbilityManager : MonoBehaviour
     private MovementController movementController;
 
     private Quaternion defaultRotation;
-    private Vector3 defaultTrackingOffset;
-    private Vector3 currentTrackingOffset;
+    private Transform defaultTrackingOffset;
+    private Transform currentTrackingOffset;
 
     enum Stage
     {
@@ -74,7 +74,7 @@ public class AbilityManager : MonoBehaviour
         currentStage = Stage.Useable;
 
         defaultRotation = transform.rotation;
-        defaultTrackingOffset = renderTargetPos.localPosition;
+        defaultTrackingOffset = renderTargetPos;
         currentTrackingOffset = defaultTrackingOffset;
 
 
@@ -98,11 +98,13 @@ public class AbilityManager : MonoBehaviour
 
     private void RenderTrackSelf()
     {
-        renderTargetPos.localPosition = currentTrackingOffset;
+        renderTargetPos.localPosition = currentTrackingOffset.localPosition;
+        renderTargetPos.localRotation = currentTrackingOffset.localRotation;
     }
 
     private void Update()
     {
+
         RenderTrackSelf();
 
 
@@ -138,7 +140,7 @@ public class AbilityManager : MonoBehaviour
 
 
 
-
+        renderTargetPos.LookAt(transform);
     }
 
 
@@ -162,8 +164,8 @@ public class AbilityManager : MonoBehaviour
             selectedAbility = selectedAbility >= viewAngles.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
             transform.DORotateQuaternion(Quaternion.LookRotation(UnityEngine.Random.insideUnitSphere), 0.15f);
 
-            currentTrackingOffset = viewAngles[selectedAbility].localPosition;
-            renderTargetPos.DODynamicLookAt(transform.position, 0.001f);
+            currentTrackingOffset = viewAngles[selectedAbility];
+
 
         }
 
