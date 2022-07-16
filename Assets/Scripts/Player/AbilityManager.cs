@@ -5,6 +5,7 @@ using System;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using DG.Tweening;
+
 public class AbilityManager : MonoBehaviour
 {
     //First pause the game
@@ -27,11 +28,14 @@ public class AbilityManager : MonoBehaviour
     public InputActionReference pauseInput;
     public InputActionReference selectAbilityInput;
 
+    [Header("Debug")]
+    public bool showDebug;
 
     private int selectedAbility;
     private int amountOfActionsLeft;
     private float currentDuration;
     private float currentDelay;
+    private bool triggerAbility;
 
     //Private Components
     private MeshRenderer meshRenderer;
@@ -82,6 +86,8 @@ public class AbilityManager : MonoBehaviour
 
     }
 
+
+
     private void SlowdownTime()
     {
         Time.timeScale = Time.timeScale != slowMowScale ? slowMowScale : Time.timeScale;
@@ -124,20 +130,29 @@ public class AbilityManager : MonoBehaviour
 
         if (canSelect && !movementController.grounded)
         {
+            triggerAbility = true;
             if (uiIndicator)
                 uiIndicator.DOFade(1, 0.1f);
             SlowdownTime();
             ChooseAbility();
         }
-        else
+        else if (triggerAbility)
         {
+            triggerAbility = false;
+
             if (uiIndicator)
                 uiIndicator.DOFade(0, 0.1f);
             ResetTime();
             transform.DORotateQuaternion(defaultRotation, 0.15f);
             currentTrackingOffset = defaultTrackingOffset;
-        }
 
+            if (selectedAbility < listOfAbilities.Count)
+                listOfAbilities[selectedAbility].ApplyEffect(movementController);
+
+            Debug.Log("Ability Triggered!");
+        }
+        if (selectedAbility < listOfAbilities.Count)
+            listOfAbilities[selectedAbility].UpdateEffect(movementController);
 
 
         renderTargetPos.LookAt(transform);
@@ -170,15 +185,16 @@ public class AbilityManager : MonoBehaviour
         }
 
 
-        
 
 
-        
+
+
 
     }
 
     private void OnDrawGizmos()
     {
+        if (!showDebug) return;
         foreach (var item in viewAngles)
         {
             Gizmos.color = Color.cyan;
