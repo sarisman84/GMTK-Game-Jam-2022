@@ -2,23 +2,36 @@ using UnityEngine;
 
 public class MovableObject : MonoBehaviour
 {
-    public Vector3[] path;//TODO: program a custom editor script to move positions of path (use Handles.PositionHandle)
+    public Vector3[] path;
+
+    [Range(0, 1)] public float currentT;
+    public float speed = 1;
+
+    public bool looping = false;
+
+
     private float[] tValues;
+    private float distSum;
 
     private Rigidbody2D rig;
+
+    private int pathI = 0;
+    private float pathSum = 0;
+
+    [HideInInspector] public Vector3 positionOnStart;
 
     private void Start() {
         rig = GetComponent<Rigidbody2D>();
 
         tValues = new float[path.Length - 1];
-        float sum = 0;
+        distSum = 0;
         for (int p = 0; p < path.Length - 1; p++) {
             tValues[p] = Vector3.Distance(path[p], path[p + 1]);//save distances in the tValues
-            sum += tValues[p];
+            distSum += tValues[p];
         }
 
         for(int t = 0; t < tValues.Length; t++) {
-            tValues[t] /= sum;//divide every distance by the sum of distances to normalize them
+            tValues[t] /= distSum;//divide every distance by the sum of distances to normalize them
         }
     }
 
@@ -26,13 +39,21 @@ public class MovableObject : MonoBehaviour
         rig.velocity = (pos - rig.position) / time;//v = s / t
     }
 
-    private Vector2 GetPathPos(float t) { return GetPathPos(t, 0, 0); }
-    private Vector2 GetPathPos(float t, int i, float sum) {
-        for(; i < tValues.Length; i++) {
-            if (t < sum + tValues[i])//t value is between these points
-                return Vector2.Lerp(path[i], path[i+1], (t-sum)/tValues[i]);//calculate scaled t Value
+    private Vector2 GetPathPos(float t) {
+        for(; pathI < tValues.Length; pathI++) {
+            if (t < pathSum + tValues[pathI])//t value is between these points
+                return Vector2.Lerp(path[pathI], path[pathI + 1], (t- pathSum) /tValues[pathI]);//calculate scaled t Value
+            pathSum += tValues[pathI];
         }
+        Debug.LogError("Path Position Calculation failed");
+        return path[pathI];//return something -> calculation failed
+    }
 
-        throw new System.Exception("The code should never have gotten here");
+    private float DistToPercent(float dist) { return dist / distSum; }
+    private void MoveAlongPath(float speed, float deltatime) {
+        float dt = DistToPercent(speed * deltatime);//get the change in t
+        currentT += dt;
+        Vector2 pos = GetPathPos(currentT);
+        MoveToPos(pos, deltatime);
     }
 }
