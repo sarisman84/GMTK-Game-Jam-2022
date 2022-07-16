@@ -223,14 +223,17 @@ public class AbilityManager : MonoBehaviour
 
 
         }
-        if (selectedAbility < listOfAbilities.Count)
-            listOfAbilities[selectedAbility].UpdateEffect(movementController);
+
 
 
         renderTargetPos.LookAt(transform);
     }
 
-
+    private void FixedUpdate()
+    {
+        if (selectedAbility < listOfAbilities.Count)
+            listOfAbilities[selectedAbility].UpdateEffect(movementController);
+    }
 
     public void ChooseAbility()
     {
