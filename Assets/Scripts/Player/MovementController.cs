@@ -72,6 +72,10 @@ public class MovementController : MonoBehaviour
 
     private void Jump() {
         vel.y =+ jumpForce;
+
+        // Play sound
+        var emitter = GetComponent<FMODUnity.StudioEventEmitter>();
+        emitter.Play();
     }
 
     private void OnDrawGizmosSelected() {
