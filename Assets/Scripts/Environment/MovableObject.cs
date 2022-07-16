@@ -4,7 +4,7 @@ public class MovableObject : MonoBehaviour
 {
     public Vector3[] path;
 
-    [Range(0, 0.9999f)] public float currentT;
+    public float currentT;
     public float speed = 1;
 
     [HideInInspector] public bool looping = false;
@@ -54,10 +54,14 @@ public class MovableObject : MonoBehaviour
 
     private float DistToPercent(float dist) { return dist / distSum; }
     private void MoveAlongPath(float speed, float deltatime)
-    {
+    {   
         float dt = DistToPercent(speed * deltatime);//get the change in t
         currentT += dt;
-        Vector2 pos = GetPathPos(currentT);
+
+        const float maxT = 0.99f;
+        float loopT = maxT - Mathf.Abs((currentT % 2)*maxT - maxT);
+
+        Vector2 pos = GetPathPos(loopT);
         MoveToPos(pos, deltatime);
     }
 
