@@ -170,10 +170,10 @@ public class AbilityManager : MonoBehaviour
         }
 
 
-        //You selected an ability
+        
 
 
-        //listOfAbilities[selectedAbility].ApplyEffect(gameObject);
+        
 
     }
 
