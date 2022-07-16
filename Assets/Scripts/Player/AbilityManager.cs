@@ -47,11 +47,10 @@ public class AbilityManager : MonoBehaviour
     //Private Components
     private MeshRenderer meshRenderer;
     private MovementController movementController;
-    private StudioEventEmitter diceRollEmitter;
-
     private Quaternion defaultRotation;
     private Transform defaultTrackingOffset;
     private Transform currentTrackingOffset;
+    private PlayerSoundManager playerSoundManager;
 
     enum Stage
     {
@@ -85,7 +84,7 @@ public class AbilityManager : MonoBehaviour
 
         meshRenderer = GetComponent<MeshRenderer>();
         movementController = GetComponent<MovementController>();
-        diceRollEmitter = GetComponent<StudioEventEmitter>();
+        playerSoundManager = GetComponent<PlayerSoundManager>();
 
         currentStage = Stage.Useable;
 
@@ -165,7 +164,7 @@ public class AbilityManager : MonoBehaviour
         {
             if (!triggerAudioOnce)
             {
-                diceRollEmitter.Play();
+                playerSoundManager.Play(SoundType.DieRoll);
                 triggerAudioOnce = true;
             }
 
@@ -189,7 +188,7 @@ public class AbilityManager : MonoBehaviour
         {
             if (triggerAudioOnce)
             {
-                diceRollEmitter.Stop();
+                playerSoundManager.Stop(SoundType.DieRoll);
                 triggerAudioOnce = false;
             }
 
