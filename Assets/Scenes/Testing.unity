@@ -1428,7 +1428,7 @@ MonoBehaviour:
       Data2: 1115120039
       Data3: 298300315
       Data4: 1449916846
-    Path: event:/Music/Music
+    Path: event:/Music/Track 1
   Event: 
   PlayEvent: 1
   StopEvent: 2
@@ -1613,10 +1613,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 19396717
-      Data2: 1129158285
-      Data3: -1636189304
-      Data4: 1034417780
+      Data1: 1482569763
+      Data2: 1103843910
+      Data3: 1340602289
+      Data4: -649783515
     Path: event:/Player/Roll Dice
   Event: 
   PlayEvent: 0

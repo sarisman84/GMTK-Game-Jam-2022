@@ -107,6 +107,8 @@ public class AbilityManager : MonoBehaviour
 
     private void SlowdownTime()
     {
+
+        MusicManager.Get.EditCurrentMusicParams("Freeze Time", 1);
         Time.timeScale = Time.timeScale != slowMowScale ? slowMowScale : Time.timeScale;
         Time.fixedDeltaTime = Time.timeScale * 0.02f;
         currentDuration -= Time.unscaledDeltaTime;
@@ -118,6 +120,7 @@ public class AbilityManager : MonoBehaviour
     private void ResetTime()
     {
         Time.timeScale = Time.timeScale != 1.0f ? 1.0f : Time.timeScale;
+        MusicManager.Get.EditCurrentMusicParams("Freeze Time", 0);
     }
 
     private void RenderTrackSelf()
@@ -167,15 +170,17 @@ public class AbilityManager : MonoBehaviour
             {
                 //diceRollEmitter.Play();
                 player.Play(SoundType.DieRoll);
+                player.EditParamater(SoundType.DieRoll, "Dice Activate", 0.0f);
+
                 triggerAudioOnce = true;
             }
 
 
-            if (usedAbilityIndicators[selectedAbility].activeSelf)
-            {
-                selectedAbility++;
-                selectedAbility = selectedAbility >= listOfAbilities.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
-            }
+            //if (usedAbilityIndicators[selectedAbility].activeSelf)
+            //{
+            //    selectedAbility++;
+            //    selectedAbility = selectedAbility >= listOfAbilities.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
+            //}
 
             // ParticleManager.Get.SpawnParticle("Test1", transform.position);
 
@@ -190,7 +195,7 @@ public class AbilityManager : MonoBehaviour
         {
             if (triggerAudioOnce)
             {
-                player.Stop(SoundType.DieRoll);
+                player.EditParamater(SoundType.DieRoll, "Dice Activate", selectedAbility + 1);
                 triggerAudioOnce = false;
             }
 
