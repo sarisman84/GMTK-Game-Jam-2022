@@ -559,7 +559,7 @@ MonoBehaviour:
   groundedSize: {x: 0.95, y: 0.02}
   moveSpeed: 10
   jumpForce: 8
-  jumpSave: 0.3
+  jumpSave: 0.1
   jumpGravDampner: 8
   vel: {x: 0, y: 0}
 --- !u!50 &1498605584
