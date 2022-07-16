@@ -99,7 +99,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Selection",
+                    "name": "Selection (Q/E)",
                     "id": "b31b8ac8-af53-4009-b177-e28b4bb08581",
                     "path": "1DAxis",
                     "interactions": "",
@@ -124,6 +124,72 @@
                     "name": "positive",
                     "id": "d4ce93a5-8cc4-49ff-9623-611482df6d7c",
                     "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Dice Roll - Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Selection (Q/E)",
+                    "id": "b4dc6868-4e62-4959-9b4c-14d460c13984",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dice Roll - Select",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "95d32c86-d8bc-4701-aa0c-bb104daed62d",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Dice Roll - Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d4fa63e9-8975-4def-a1cb-783585588ca4",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Dice Roll - Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Selection (<-/->)",
+                    "id": "72896b50-4e44-42ff-bb10-5d079a87ca68",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dice Roll - Select",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "4128b210-bfca-4a2e-8f84-d5bb1e1bca30",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Dice Roll - Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "5663603d-e421-4a91-a865-ea414f401154",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",

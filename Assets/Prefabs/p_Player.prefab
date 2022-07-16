@@ -276,18 +276,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputAsset: {fileID: -944628639613478452, guid: 3df37c02ce551c444bfe295a9937cc6e, type: 3}
-  baseGravity: 15
+  upGravity: 5
+  lowJumpGravity: 10
+  fallGravity: 15
   groundedLayer:
     serializedVersion: 2
     m_Bits: 55
   groundedYOffset: -0.81
   groundedSize: {x: 1.95, y: 0.01}
+  wallCheckXOffset: 1
+  wallCheckSize: {x: 0.1, y: 1}
+  wallSlideSpeed: 3
   moveSpeed: 10
   jumpForce: 8
   jumpSave: 0.1
   kyoteTime: 0.3
-  jumpGravDampner: 8
   vel: {x: 0, y: 0}
+  takeInput: 1
+  GravityScale: 1
 --- !u!114 &9048536056808113248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,10 +309,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 19396717
-      Data2: 1129158285
-      Data3: -1636189304
-      Data4: 1034417780
+      Data1: 1482569763
+      Data2: 1103843910
+      Data3: 1340602289
+      Data4: -649783515
     Path: event:/Player/Roll Dice
   Event: 
   PlayEvent: 0
