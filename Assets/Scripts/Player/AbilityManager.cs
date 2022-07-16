@@ -21,6 +21,7 @@ public class AbilityManager : MonoBehaviour
     public RawImage uiIndicator;
     public List<ScriptableAbility> listOfAbilities;
     public List<Transform> viewAngles;
+    public Transform renderTargetPos;
 
     [Header("Input")]
     public InputActionReference pauseInput;
@@ -35,7 +36,8 @@ public class AbilityManager : MonoBehaviour
     private MeshRenderer meshRenderer;
 
     private Quaternion defaultRotation;
-    private List<Vector3> anglePos;
+    private Vector3 defaultTrackingOffset;
+    private Vector3 currentTrackingOffset;
 
     enum Stage
     {
@@ -69,12 +71,9 @@ public class AbilityManager : MonoBehaviour
         currentStage = Stage.Useable;
 
         defaultRotation = transform.rotation;
+        defaultTrackingOffset = renderTargetPos.localPosition;
+        currentTrackingOffset = defaultTrackingOffset;
 
-        anglePos = new List<Vector3>();
-        foreach (var item in viewAngles)
-        {
-            anglePos.Add(item.position);
-        }
     }
 
     private void SlowdownTime()
@@ -91,8 +90,17 @@ public class AbilityManager : MonoBehaviour
         Time.timeScale = Time.timeScale != 1.0f ? 1.0f : Time.timeScale;
     }
 
+    private void RenderTrackSelf()
+    {
+        renderTargetPos.localPosition = currentTrackingOffset;
+    }
+
     private void Update()
     {
+        RenderTrackSelf();
+
+
+
         float input = pauseInput.action.ReadValue<float>();
         if (input <= 0)
         {
@@ -119,6 +127,7 @@ public class AbilityManager : MonoBehaviour
                 uiIndicator.DOFade(0, 0.1f);
             ResetTime();
             transform.DORotateQuaternion(defaultRotation, 0.15f);
+            currentTrackingOffset = defaultTrackingOffset;
         }
 
 
@@ -157,8 +166,12 @@ public class AbilityManager : MonoBehaviour
         if (input != 0 && selectAbilityInput.action.triggered)
         {
             selectedAbility += input;
-            selectedAbility = selectedAbility >= anglePos.Count ? 0 : selectedAbility < 0 ? anglePos.Count - 1 : selectedAbility;
-            transform.DORotateQuaternion(Quaternion.LookRotation((transform.position - Vector3.down) - (anglePos[selectedAbility] + transform.position)), 0.15f);
+            selectedAbility = selectedAbility >= viewAngles.Count ? 0 : selectedAbility < 0 ? viewAngles.Count - 1 : selectedAbility;
+            transform.DORotateQuaternion(Quaternion.LookRotation(UnityEngine.Random.insideUnitSphere), 0.15f);
+
+            currentTrackingOffset = viewAngles[selectedAbility].localPosition;
+            renderTargetPos.DODynamicLookAt(transform.position, 0.001f);
+
         }
 
 
@@ -171,14 +184,21 @@ public class AbilityManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        foreach (var viewAngle in anglePos)
+        foreach (var item in viewAngles)
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(viewAngle + transform.position, transform.position);
+            Gizmos.DrawLine(item.position, transform.position);
+
 
             Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(viewAngle, 0.25f);
+            Gizmos.DrawSphere(item.position, 0.25f);
+
         }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(renderTargetPos.position, 0.3f);
+
+        Gizmos.DrawLine(renderTargetPos.position, renderTargetPos.position + renderTargetPos.forward);
     }
 
 
