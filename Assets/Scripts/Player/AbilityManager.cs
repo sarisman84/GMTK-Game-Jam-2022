@@ -120,7 +120,7 @@ public class AbilityManager : MonoBehaviour
 
 
 
-        if (canSelect && !movementController.grounded)
+        if (canSelect && !movementController.IsGrounded())
         {
             if (uiIndicator)
                 uiIndicator.DOFade(1, 0.1f);
