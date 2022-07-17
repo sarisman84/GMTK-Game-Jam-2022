@@ -1,14 +1,13 @@
 using UnityEngine;
 
-public class MovableObject : MonoBehaviour
+public class MovableObject : MonoBehaviour, IPlayerGround
 {
     public Vector3[] path;
 
-    [Range(0, 0.9999f)] public float currentT;
+    public float currentT;
     public float speed = 1;
 
     [HideInInspector] public bool looping = false;
-
 
     private float[] tValues;
     private float distSum;
@@ -54,14 +53,25 @@ public class MovableObject : MonoBehaviour
 
     private float DistToPercent(float dist) { return dist / distSum; }
     private void MoveAlongPath(float speed, float deltatime)
-    {
+    {   
         float dt = DistToPercent(speed * deltatime);//get the change in t
         currentT += dt;
-        Vector2 pos = GetPathPos(currentT);
-        MoveToPos(pos, deltatime);
+
+        const float maxT = 0.99f;
+        float loopT = maxT - Mathf.Abs((currentT % 2)*maxT - maxT);
+
+        nextPos = GetPathPos(loopT);
     }
 
-    private void Update() {
-        MoveAlongPath(speed, Time.deltaTime);
+    Vector2 nextPos;
+    private void FixedUpdate() {
+        MoveToPos(nextPos, Time.fixedDeltaTime);
+        MoveAlongPath(speed, Time.fixedDeltaTime);
+    }
+
+
+    void IPlayerGround.OnPlayerStand(MovementController player) {
+        Vector2 move = nextPos - rig.position;
+        player.rig.position += move;
     }
 }
