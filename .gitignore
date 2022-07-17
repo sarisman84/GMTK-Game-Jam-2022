@@ -74,13 +74,22 @@ crashlytics-build.properties
 *.log
 
 Assets/Plugins/FMOD/Cache/**/*
+obj/Debug/*
 
-<<<<<<< Updated upstream
-=======
 obj/Debug/
 
 Assets/Plugins/FMOD/Resources/FMODStudioSettings.asset
-=======
-fmod_editor.log
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+
+Assets/Plugins/FMOD/Resources/
+
+Fmod/.cache/
+Fmod/.unsaved/
+Assets/Plugins/
+
+ProjectSettings/
+
+Packages/
+
+Assets/StreamingAssets/
+
+Assets/i_Controls.inputactions
