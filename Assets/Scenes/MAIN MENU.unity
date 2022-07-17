@@ -316,7 +316,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Ernest Greene
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38b29dd1422dd60498a9e27f0ba1dffa, type: 2}
   m_sharedMaterial: {fileID: -5825978458606979466, guid: 38b29dd1422dd60498a9e27f0ba1dffa, type: 2}
