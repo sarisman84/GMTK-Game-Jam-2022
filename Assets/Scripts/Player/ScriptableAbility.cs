@@ -9,13 +9,11 @@ public abstract class ScriptableAbility : ScriptableObject
 
     public bool TriggerEffect(MovementController player)
     {
-        if (ApplyEffect(player))
-        {
-            player.StartCoroutine(BackendUpdate(player));
-            return true;
-        }
-        return false;
-       
+        bool result = ApplyEffect(player);
+        player.StartCoroutine(BackendUpdate(player));
+
+        return result;
+
     }
 
 

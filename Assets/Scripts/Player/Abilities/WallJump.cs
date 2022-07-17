@@ -7,7 +7,7 @@ public class WallJump : ScriptableAbility {
     public float pushForceDamp = 0.1f;
     private Vector2 addVel = Vector2.zero;
 
-    public override void ApplyEffect(MovementController player) {
+    public override bool ApplyEffect(MovementController player) {
         if (player.onWall) {
             //Execute Wall Jump
             Debug.Log("Wall Jump Executed");
@@ -21,9 +21,10 @@ public class WallJump : ScriptableAbility {
         player.offsetVel = Vector2.zero;
     }
 
-    public override void UpdateEffect(MovementController player) {
+    public override bool UpdateEffect(MovementController player) {
         player.offsetVel = addVel;
         addVel *= Mathf.Pow(pushForceDamp, Time.deltaTime);
+        return true;
     }
 
 
