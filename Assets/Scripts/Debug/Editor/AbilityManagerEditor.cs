@@ -23,7 +23,7 @@ public class AbilityManagerEditor : Editor
             {
                 Vector3 normal = manager.GetDiceSide(side);
                 Vector3 offset = (manager.transform.position + normal);
-                Handles.Label(offset, new GUIContent(text: $"S[{side}]<{manager.listOfAbilities[side]}"));
+                Handles.Label(offset, new GUIContent(text: $"S[{side}]<{manager.listOfAbilities[side].abilityLabel}>"));
             }
 
         }
