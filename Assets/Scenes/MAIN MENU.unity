@@ -6301,7 +6301,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 294.3839, y: 50}
+  m_SizeDelta: {x: 361.9692, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1364319376
 MonoBehaviour:
@@ -6323,7 +6323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Titus Seagraves
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38b29dd1422dd60498a9e27f0ba1dffa, type: 2}
   m_sharedMaterial: {fileID: -5825978458606979466, guid: 38b29dd1422dd60498a9e27f0ba1dffa, type: 2}
