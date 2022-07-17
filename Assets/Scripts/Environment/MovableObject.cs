@@ -1,11 +1,12 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class MovableObject : MonoBehaviour, IPlayerGround
 {
     public Vector3[] path;
 
     public float currentT;
-    public float speed = 1;
+    public float speed = 5;
 
     [HideInInspector] public bool looping = false;
 
@@ -35,6 +36,9 @@ public class MovableObject : MonoBehaviour, IPlayerGround
         positionOnStart = transform.position;
     }
 
+    private Vector3 GetPathPos(int i) {
+        return path[i] + positionOnStart;
+    }
     private void MoveToPos(Vector2 pos, float time) {
         //rig.velocity = (pos - rig.position) / time;//v = s / t
         rig.position = pos;
@@ -44,7 +48,7 @@ public class MovableObject : MonoBehaviour, IPlayerGround
         float sum = 0;
         for(int i = 0; i < tValues.Length; i++) {
             if (t < sum + tValues[i])//t value is between these points
-                return Vector2.Lerp(path[i], path[i+1], (t-sum)/tValues[i]);//calculate scaled t Value
+                return Vector2.Lerp(GetPathPos(i), GetPathPos(i+1), (t-sum)/tValues[i]);//calculate scaled t Value
             sum += tValues[i];
         }
         Debug.LogError("Path Position Calculation failed");
