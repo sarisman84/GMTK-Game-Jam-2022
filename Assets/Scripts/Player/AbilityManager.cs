@@ -333,19 +333,15 @@ public class AbilityManager : MonoBehaviour
         if (selectedAbility < listOfAbilities.Count)
             listOfAbilities[selectedAbility].OnGizmosDraw(movementController);
         Gizmos.color = Color.red;
+        for (int i = 0; i < diceModelRef.sharedMesh.normals.Length; i++)
+        {
+            Vector3 normal = GetDiceSide(i);
+            Gizmos.DrawRay(diceModelRef.transform.rotation * diceModelRef.sharedMesh.vertices[i] + transform.position, diceModelRef.transform.rotation * normal);
+        }
 
-        Vector3 normal = GetDiceSide(0);
-        Gizmos.DrawRay(transform.position, -normal * 5f);
 
 
-        normal = GetDiceSide(1);
-        Gizmos.DrawRay(transform.position, -normal * 5f);
 
-        normal = GetDiceSide(2);
-        Gizmos.DrawRay(transform.position, -normal * 5f);
-
-        normal = GetDiceSide(3);
-        Gizmos.DrawRay(transform.position, -normal * 5f);
 
     }
 
@@ -359,10 +355,10 @@ public class AbilityManager : MonoBehaviour
         //    var trag2 = diceModelRef.mesh.vertices[diceModelRef.mesh.triangles[i + 1]];
         //    var trag3 = diceModelRef.mesh.vertices[diceModelRef.mesh.triangles[i + 2]];
 
-        //    Vector3 dir1 = (trag2 - trag1).normalized;
-        //    Vector3 dir2 = (trag3 - trag1).normalized;
+        //    Vector3 dir1 = (trag1 - trag2).normalized;
+        //    Vector3 dir2 = (trag1 - trag3).normalized;
 
-        //    normals.Add(Vector3.Cross(dir1, dir2));
+        //    normals.Add(Vector3.Cross(dir1, dir2).normalized);
         //}
 
         normals.AddRange(diceModelRef.sharedMesh.normals);
