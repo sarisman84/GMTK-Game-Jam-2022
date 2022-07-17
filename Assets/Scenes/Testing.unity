@@ -1695,19 +1695,19 @@ PrefabInstance:
     - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: listOfAbilities.Array.data[0].abilityIcon
       value: 
-      objectReference: {fileID: 21300000, guid: 62f2f247d303f8641a6a27b43d5adb46, type: 3}
+      objectReference: {fileID: 21300000, guid: 79ed243ee77154a4a902b523ee10e421, type: 3}
     - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: listOfAbilities.Array.data[1].abilityIcon
       value: 
-      objectReference: {fileID: 21300000, guid: 04993ad2df9f5e747a4af08d1fdb96b8, type: 3}
+      objectReference: {fileID: 21300000, guid: b3e436b8f13e05d4686a78cac0927bc8, type: 3}
     - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: listOfAbilities.Array.data[2].abilityIcon
       value: 
-      objectReference: {fileID: 21300000, guid: a9e10d939ed917b418ba6b2c5c97aa75, type: 3}
+      objectReference: {fileID: 21300000, guid: 7feecf44755e9ca4589a448b282a7f11, type: 3}
     - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: listOfAbilities.Array.data[3].abilityIcon
       value: 
-      objectReference: {fileID: 21300000, guid: 7e1940af31f60a545a4eb3e18b4a726f, type: 3}
+      objectReference: {fileID: 21300000, guid: 33969955edd01ce40a7dbe5553c35dd3, type: 3}
     - target: {fileID: 2082042532258748998, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: m_Name
       value: p_Player
