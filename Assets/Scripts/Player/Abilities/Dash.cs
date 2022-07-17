@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [CreateAssetMenu(fileName = "New Dash", menuName = "Player Abilities/Dash", order = 2)]
 public class Dash : ScriptableAbility
@@ -15,6 +16,7 @@ public class Dash : ScriptableAbility
         dashDir = player.facingDir;
         player.takeInput = false;
         player.GravityScale = 0;
+
 
         return true;
     }

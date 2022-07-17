@@ -36,6 +36,7 @@ public class DoubleJump : ScriptableAbility
     }
 
 
-    public override void OnGizmosDraw(MovementController player) {
+    public override void OnGizmosDraw(MovementController player)
+    {
     }
 }

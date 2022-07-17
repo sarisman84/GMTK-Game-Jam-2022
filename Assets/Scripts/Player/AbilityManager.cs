@@ -111,6 +111,7 @@ public class AbilityManager : MonoBehaviour
     public RawImage uiRenderTargetIndicator;
 
     public MeshFilter diceModelRef;
+    public Transform dicePivot;
     public Transform renderCamRef;
     public Transform mainCamRef;
     [Header("Contents")]
@@ -126,12 +127,11 @@ public class AbilityManager : MonoBehaviour
     public bool showDebug;
 
     private int selectedAbility;
-    private int amountOfActionsLeft;
     private float currentDuration;
     private float currentCooldown;
-    private bool triggerAbility;
+    private bool onExitFlag;
     private bool resetFlag;
-    private bool triggerAudioOnce;
+    private int previousSelectedAbility;
 
 
 
@@ -143,7 +143,12 @@ public class AbilityManager : MonoBehaviour
 
     private Quaternion modelRotOffset;
     private List<bool> activeAbilities;
+    private List<GameObject> abilityIndicators;
     private bool hasRolledTheDice = false;
+
+
+    //Debug
+    private List<Color> faceColors;
     enum Stage
     {
         Selecting, Useable
@@ -187,6 +192,9 @@ public class AbilityManager : MonoBehaviour
             }
             else
                 activeAbilities[i] = true;
+
+
+            abilityIndicators[i].SetActive(false);
         }
     }
 
@@ -200,11 +208,32 @@ public class AbilityManager : MonoBehaviour
     }
 
 
+    private void AssignFaceColor()
+    {
+        faceColors = new List<Color>();
+        for (int i = 0; i < GetNormalCount(); i += 3)
+        {
+            Color c = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 0, 1, 1, 1);
+            faceColors.AddRange(new Color[] { c, c, c });
+        }
+    }
+
     private void Awake()
     {
+        abilityIndicators = new List<GameObject>();
+        for (int i = 0; i < diceModelRef.transform.childCount; i++)
+        {
+            abilityIndicators.Add(diceModelRef.transform.GetChild(i).gameObject);
+        }
+
+        FetchComponents();
+    }
+    private void Start()
+    {
+       
 
         ResetAbilityStates();
-        FetchComponents();
+     
 
         currentCooldown = selectionCooldown;
         currentDuration = selectionDuration;
@@ -216,6 +245,12 @@ public class AbilityManager : MonoBehaviour
 
 
         uiRenderTargetIndicator.DOFade(0, 0);
+
+
+
+        
+
+
 
     }
 
@@ -244,47 +279,49 @@ public class AbilityManager : MonoBehaviour
     private void Update()
     {
 
-        if (!hasRolledTheDice && !movementController.grounded && pauseInput.action.ReadValue<float>() > 0 && currentCooldown <= 0)
+        if (!hasRolledTheDice && !movementController.grounded && pauseInput.action.ReadValue<float>() > 0)
         {
             hasRolledTheDice = OnStartDiceRoll();
+            onExitFlag = true;
+            resetFlag = true;
         }
-
-        if (hasRolledTheDice)
+        else if (hasRolledTheDice && (TryTrackDuration() || pauseInput.action.ReadValue<float>() < 1))
         {
-            currentDuration -= Time.unscaledDeltaTime;
-            currentDuration = currentDuration <= 0 ? 0 : currentDuration;
-        }
+            if (onExitFlag)
+            {
+                OnExitDiceRoll();
+                currentCooldown = selectionCooldown;
+                onExitFlag = false;
+            }
 
-        if (hasRolledTheDice && UpdateInput() != 0)
-        {
 
-            RotateDiceToRandomDirs();
-            MakeRenderCamViewSelectedDiceSide();
-        }
 
-        if (hasRolledTheDice && (TryTrackDuration() || pauseInput.action.ReadValue<float>() < 1))
-        {
-            hasRolledTheDice = OnExitDiceRoll();
-
-            currentCooldown = selectionCooldown;
-        }
-
-        if (!hasRolledTheDice)
-        {
             currentCooldown -= Time.unscaledDeltaTime;
             currentCooldown = Mathf.Clamp(currentCooldown, 0, selectionCooldown);
 
             if (currentCooldown <= 0)
             {
                 currentDuration = selectionDuration;
+                hasRolledTheDice = false;
             }
+
+        }
+        else if (hasRolledTheDice && UpdateInput() != 0 && selectAbilityInput.action.triggered)
+        {
+            if (showDebug)
+                Debug.Log($"Selected ability: {selectedAbility}");
+            // RotateDiceToRandomDirs();
+            MakeRenderCamViewSelectedDiceSide();
         }
 
-        if (!resetFlag && movementController.grounded)
+
+        if (resetFlag && movementController.grounded)
         {
-            resetFlag = true;
+            resetFlag = false;
             ResetAbilityStates();
         }
+
+
 
     }
 
@@ -294,79 +331,112 @@ public class AbilityManager : MonoBehaviour
         int input = Mathf.CeilToInt(selectAbilityInput.action.ReadValue<float>());
         if (input != 0 && selectAbilityInput.action.triggered)
         {
+            previousSelectedAbility = selectedAbility;
             selectedAbility += input;
             selectedAbility = selectedAbility >= listOfAbilities.Count ? 0 : selectedAbility < 0 ? listOfAbilities.Count - 1 : selectedAbility;
+
+            int attempts = 100;
+            while (!activeAbilities[selectedAbility] && attempts > 0)
+            {
+                attempts--;
+                selectedAbility += input;
+                selectedAbility = selectedAbility >= listOfAbilities.Count ? 0 : selectedAbility < 0 ? listOfAbilities.Count - 1 : selectedAbility;
+            }
         }
         return input;
     }
 
     private bool OnStartDiceRoll()
     {
-        resetFlag = false;
+        StopAllCoroutines();
+        player.Play(SoundType.DieRoll);
+        player.EditParamater(SoundType.DieRoll, "Dice Activate", 0);
+        onExitFlag = false;
+
+
+        listOfAbilities[previousSelectedAbility].OnEndEffect(movementController);
+
         SlowdownTime();
 
         uiRenderTargetIndicator.DOFade(1, 0.15f);
-        //diceModelRef.transform.rotation = Quaternion.identity;
-
         return true;
     }
 
     private bool OnExitDiceRoll()
     {
+        player.EditParamater(SoundType.DieRoll, "Dice Activate", 1);
         uiRenderTargetIndicator.DOFade(0, 0.15f);
         ResetTime();
-        RotateSelectedSideTowardsCamera();
+
+        dicePivot.transform.DORotateQuaternion(Quaternion.identity, 0.15f);
+
         if (selectedAbility >= listOfAbilities.Count || !activeAbilities[selectedAbility]) return false;
-        activeAbilities[selectedAbility] = listOfAbilities[selectedAbility].ApplyEffect(movementController);
+        activeAbilities[selectedAbility] = listOfAbilities[selectedAbility].TriggerEffect(movementController);
+
+        abilityIndicators[selectedAbility].SetActive(true);
+
+        if (showDebug)
+            Debug.Log($"Ability Triggered! - {listOfAbilities[selectedAbility].name} at {selectedAbility}");
         return false;
     }
 
-    private void FixedUpdate()
-    {
-        if (selectedAbility < listOfAbilities.Count && activeAbilities[selectedAbility])
-            activeAbilities[selectedAbility] = listOfAbilities[selectedAbility].UpdateEffect(movementController);
-    }
 
+
+    private void OnValidate()
+    {
+        AssignFaceColor();
+    }
 
     private void OnDrawGizmos()
     {
         if (selectedAbility < listOfAbilities.Count)
             listOfAbilities[selectedAbility].OnGizmosDraw(movementController);
-        Gizmos.color = Color.red;
-        for (int i = 0; i < diceModelRef.sharedMesh.normals.Length; i++)
+
+
+
+        if (!showDebug) return;
+        for (int i = 0; i < GetNormalCount(); i++)
         {
-            Vector3 normal = GetDiceSide(i);
-            Gizmos.DrawRay(diceModelRef.transform.rotation * diceModelRef.sharedMesh.vertices[i] + transform.position, diceModelRef.transform.rotation * normal);
+            Vector3 normal = GetNormal(i);
+            Gizmos.color = faceColors[i];
+            Gizmos.DrawRay(diceModelRef.transform.rotation * diceModelRef.sharedMesh.vertices[i] + diceModelRef.transform.position, diceModelRef.transform.rotation * normal);
         }
 
 
+        for (int i = 0; i < 4; i++)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(dicePivot.position, dicePivot.rotation * GetDiceSide(i));
+        }
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(renderCamRef.transform.position, renderCamRef.transform.forward.normalized * 100);
 
 
 
     }
 
-
+    private int GetNormalCount()
+    {
+        if (!diceModelRef)
+            return 0;
+        return diceModelRef.sharedMesh.normals.Length;
+    }
+    private Vector3 GetNormal(int aVertexID)
+    {
+        var normals = diceModelRef.sharedMesh.normals;
+        if (aVertexID >= normals.Length) return Vector3.up;
+        return normals[aVertexID];
+    }
     private Vector3 GetDiceSide(int aSideID)
     {
-        List<Vector3> normals = new List<Vector3>();
-        //for (int i = 0; i < diceModelRef.mesh.triangles.Length; i += 3)
-        //{
-        //    var trag1 = diceModelRef.mesh.vertices[diceModelRef.mesh.triangles[i]];
-        //    var trag2 = diceModelRef.mesh.vertices[diceModelRef.mesh.triangles[i + 1]];
-        //    var trag3 = diceModelRef.mesh.vertices[diceModelRef.mesh.triangles[i + 2]];
+        int finalID = aSideID * 3;
 
-        //    Vector3 dir1 = (trag1 - trag2).normalized;
-        //    Vector3 dir2 = (trag1 - trag3).normalized;
+        var normals = diceModelRef.sharedMesh.normals;
 
-        //    normals.Add(Vector3.Cross(dir1, dir2).normalized);
-        //}
+        if (finalID >= normals.Length) return Vector3.up;
 
-        normals.AddRange(diceModelRef.sharedMesh.normals);
-
-
-        if (aSideID >= normals.Count) return Vector3.up;
-
-        return normals[aSideID];
+        return normals[finalID];
 
     }
 
@@ -379,27 +449,27 @@ public class AbilityManager : MonoBehaviour
 
     private void MakeRenderCamViewSelectedDiceSide()
     {
-        Vector3 normal = diceModelRef.transform.localRotation * GetDiceSide(selectedAbility);
-        Vector3 renderCamOffset = transform.localPosition + normal * 5f;
+        Vector3 normal = dicePivot.rotation * GetDiceSide(selectedAbility);
+        Vector3 renderCamOffset = transform.position + (normal * 2.5f);
 
-        renderCamRef.localPosition = renderCamOffset;
-        renderCamRef.DORotateQuaternion(Quaternion.LookRotation(-normal), 0.15f);
+        renderCamRef.position = renderCamOffset;
+        renderCamRef.rotation = Quaternion.LookRotation(-normal);
     }
 
     private void RotateDiceToRandomDirs()
     {
-        meshRenderer.transform.DORotate(UnityEngine.Random.insideUnitSphere, 0.15f);
+        dicePivot.transform.DOLocalRotate(UnityEngine.Random.insideUnitSphere * 90, 0.15f);
     }
 
     private void RotateSelectedSideTowardsCamera()
     {
 
-        int maxSize = Mathf.Min(GetDiceSideAmm(), listOfAbilities.Count);
+        int maxSize = Mathf.Max(GetDiceSideAmm(), listOfAbilities.Count);
 
         selectedAbility = selectedAbility >= maxSize ? 0 : selectedAbility < 0 ? maxSize - 1 : selectedAbility;
 
         var dir = mainCamRef.position - transform.position;
-        meshRenderer.transform.DORotateQuaternion(Quaternion.FromToRotation(GetDiceSide(selectedAbility), dir.normalized), 0.15f);
+        dicePivot.rotation = (Quaternion.RotateTowards(Quaternion.LookRotation(dicePivot.rotation * GetDiceSide(selectedAbility)), Quaternion.LookRotation(dir.normalized), 1)/*, 0.15f*/);
 
     }
 
