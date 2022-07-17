@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5048606773563603960}
   - component: {fileID: 5048606773563603959}
   - component: {fileID: 5048606773563603962}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: p_LevelLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}

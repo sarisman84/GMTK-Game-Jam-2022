@@ -12,16 +12,20 @@ public class DeathManager : MonoBehaviour
         instance = this;
 
         SceneManager.sceneLoaded += OnSceneLoad;
+
+        if(player.transform.position != null)//if player exists
+            SetRespawnPoint(player.transform.position);//set respawn point to current position
     }
 
     public MovementController player;
-    public Vector2 spawnPoint;
+    public Vector3 spawnPoint;
 
     private void OnSceneLoad(Scene scene, LoadSceneMode mode) {
         player = FindObjectOfType<MovementController>();
+        SetRespawnPoint(player.transform.position);
     }
 
-    public void SetRespawnPoint(Vector2 pos) {
+    public void SetRespawnPoint(Vector3 pos) {
         spawnPoint = pos;
     }
 
