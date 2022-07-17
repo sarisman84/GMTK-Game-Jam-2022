@@ -6,20 +6,21 @@ public class WallJump : ScriptableAbility {
     [Header("Jump")]
     public float jumpForce = 10;
 
-    public override void ApplyEffect(MovementController player) {
+    public override bool ApplyEffect(MovementController player) {
         if (player.onWall) {
             //Execute Wall Jump
             Debug.Log("Wall Jump Executed");
             player.vel += new Vector2(0, jumpForce);
         }
+        return false;
     }
 
     public override void OnEndEffect(MovementController player) {
         
     }
 
-    public override void UpdateEffect(MovementController player) {
-        
+    public override bool UpdateEffect(MovementController player) {
+        return false;
     }
 
 
