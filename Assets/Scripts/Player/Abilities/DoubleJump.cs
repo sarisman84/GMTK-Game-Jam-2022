@@ -6,14 +6,14 @@ public class DoubleJump : ScriptableAbility
     [SerializeField] float jumpForceMultiplier = 1.0f;
     // [SerializeField] float allowJumpVerticalVelocityThreshold = 0.5f;
 
-    public override void ApplyEffect(MovementController player)
+    public override bool ApplyEffect(MovementController player)
     {
         Debug.Log("Double Jump Triggered!");
 
         // Already double jumping
         if (player.jumpCount > 1)
         {
-            return;
+            return false;
         }
 
         // Jump again
@@ -22,6 +22,7 @@ public class DoubleJump : ScriptableAbility
         // Play sound
         var soundManager = player.GetComponent<PlayerSoundManager>();
         soundManager.Play(SoundType.DoubleJump);
+        return false;
     }
 
     public override void OnEndEffect(MovementController player)
@@ -29,12 +30,13 @@ public class DoubleJump : ScriptableAbility
 
     }
 
-    public override void UpdateEffect(MovementController player)
+    public override bool UpdateEffect(MovementController player)
     {
-
+        return false;
     }
 
 
-    public override void OnGizmosDraw(MovementController player) {
+    public override void OnGizmosDraw(MovementController player)
+    {
     }
 }
