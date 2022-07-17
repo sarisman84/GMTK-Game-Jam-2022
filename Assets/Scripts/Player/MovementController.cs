@@ -40,6 +40,7 @@ public class MovementController : MonoBehaviour
     private float move;
     [HideInInspector] public bool takeInput = true;
     [HideInInspector] public float GravityScale = 1;
+    [HideInInspector] public Vector2 offsetVel = Vector2.zero;
 
     public int facingDir { get; private set; } = 1;
     public int jumpCount { get; private set; } = 0;
@@ -78,7 +79,7 @@ public class MovementController : MonoBehaviour
         if(takeInput)
             vel.x = move * moveSpeed;
 
-        Collider2D groundOverlap = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y),                groundedSize, 0, groundedLayer);
+        Collider2D groundOverlap = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize, 0, groundedLayer);
         grounded = groundOverlap;
         onWall = Physics2D.OverlapBox(rig.position + Vector2.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * facingDir, wallCheckSize, 0, groundedLayer);//use the facing direction to check the right direction for a wall jump 
         if (grounded) {
@@ -115,7 +116,7 @@ public class MovementController : MonoBehaviour
             groundedTimer = 0;//set to be in air
         }
 
-        rig.velocity = vel;
+        rig.velocity = vel + offsetVel;
     }
 
     public void Jump(float jumpForce) {

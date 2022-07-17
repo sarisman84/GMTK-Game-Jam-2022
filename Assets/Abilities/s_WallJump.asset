@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1938822967f295c40850532e9c7023a8, type: 3}
   m_Name: s_WallJump
   m_EditorClassIdentifier: 
-  checkXOffset: 1
-  checkSize: {x: 0.1, y: 1}
-  jumpForce: 10
+  jumpForce: {x: 5, y: 20}
+  pushForceDamp: 0.3

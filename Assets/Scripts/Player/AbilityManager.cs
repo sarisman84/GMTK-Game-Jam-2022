@@ -169,8 +169,8 @@ public class AbilityManager : MonoBehaviour
             if (!triggerAudioOnce)
             {
                 //diceRollEmitter.Play();
-                player.Play(SoundType.DieRoll);
-                player.EditParamater(SoundType.DieRoll, "Dice Activate", 0.0f);
+                //player.Play(SoundType.DieRoll);
+                //player.EditParamater(SoundType.DieRoll, "Dice Activate", 0.0f);
 
                 triggerAudioOnce = true;
             }
