@@ -14,6 +14,7 @@ public class WallJump : ScriptableAbility {
             player.vel += new Vector2(0, jumpForce.y);
             addVel = Vector2.right * jumpForce.x * -player.facingDir;
         }
+        return false;
     }
 
     public override void OnEndEffect(MovementController player) {
@@ -26,7 +27,8 @@ public class WallJump : ScriptableAbility {
     }
 
 
-    public override void OnGizmosDraw(MovementController player) {
+    public override void OnGizmosDraw(MovementController player)
+    {
 
     }
 }
