@@ -73,7 +73,10 @@ crashlytics-build.properties
 <<<<<<< Updated upstream
 *.log
 
+# Ignore FMOD cache
+Assets/Plugins/FMOD/Cache/
 Assets/Plugins/FMOD/Cache/**/*
+
 obj/Debug/*
 
 obj/Debug/
@@ -82,8 +85,11 @@ Assets/Plugins/FMOD/Resources/FMODStudioSettings.asset
 
 Assets/Plugins/FMOD/Resources/
 
+
+
 Fmod/.cache/
 Fmod/.unsaved/
+<<<<<<< HEAD
 Assets/Plugins/
 
 ProjectSettings/
@@ -93,3 +99,11 @@ Packages/
 Assets/StreamingAssets/
 
 Assets/i_Controls.inputactions
+=======
+
+Library/PackageCache
+
+Assets/TextMesh Pro/Examples & Extras
+>>>>>>> main
+
+Assets/StreamingAssets.meta
