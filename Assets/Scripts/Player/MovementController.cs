@@ -27,6 +27,12 @@ public class MovementController : MonoBehaviour
     private float jumpPress = 0;
     private bool jumpPressing = false;
     private float move;
+<<<<<<< HEAD
+=======
+    [HideInInspector] public bool takeInput = true;
+    [HideInInspector] public float GravityScale = 1;
+    [HideInInspector] public Vector2 offsetVel = Vector2.zero;
+>>>>>>> main
 
     public bool grounded { get; private set; } = false;
     private int groundedLayer;
@@ -53,7 +59,42 @@ public class MovementController : MonoBehaviour
 
 
     private void FixedUpdate() {
+<<<<<<< HEAD
         vel.x = move * moveSpeed;
+=======
+        if(takeInput)
+            vel.x = move * moveSpeed;
+
+        Collider2D groundOverlap = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize, 0, groundedLayer);
+        grounded = groundOverlap;
+        onWall = Physics2D.OverlapBox(rig.position + Vector2.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * facingDir, wallCheckSize, 0, groundedLayer);//use the facing direction to check the right direction for a wall jump 
+        if (grounded) {
+            groundedTimer = kyoteTime;//start grounded timer
+
+            vel.y = 0;//reset velocity if collided
+            jumpCount = 0;// reset jump count if grounded
+
+            IPlayerGround ground = groundOverlap.GetComponent<IPlayerGround>();
+            if (ground != null)
+                ground.OnPlayerStand(this);
+                
+
+        } else {
+            groundedTimer = Mathf.Max(0, groundedTimer - Time.fixedDeltaTime);//count down timer
+
+
+            if (vel.y <= 0) {
+                if (onWall && !grounded)//check for wall slide
+                    vel.y = -wallSlideSpeed;//dont do gravity acceleration -> only slide speed
+                else
+                    vel.y -= fallGravity * Time.fixedDeltaTime * GravityScale;//add gravity if falling
+            }
+            else if (vel.y > 0 && !jumpPressing)
+                vel.y -= lowJumpGravity * Time.fixedDeltaTime * GravityScale;//add gravity moving up but releasing jump -> jump lower
+            else if (vel.y > 0)
+                vel.y -= upGravity * Time.fixedDeltaTime * GravityScale;//add gravity if moving up
+        }
+>>>>>>> main
 
         grounded = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize, 0, groundedLayer);
             
@@ -73,7 +114,7 @@ public class MovementController : MonoBehaviour
             vel.y += jumpGravDampner * Time.fixedDeltaTime;//reduce fall speed
             
 
-        rig.velocity = vel;
+        rig.velocity = vel + offsetVel;
     }
 
     private void Jump() {
