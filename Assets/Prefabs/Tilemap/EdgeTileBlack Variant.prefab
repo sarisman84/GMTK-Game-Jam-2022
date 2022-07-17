@@ -57,7 +57,38 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 936ce5ad0a9a5e240bc52e0cdb04f514, type: 2}
     - target: {fileID: 919132149155446097, guid: 052eda2179a73644cb3a871510b155cd, type: 3}
       propertyPath: m_Name
-      value: EdgeTileBlack
+      value: EdgeTileBlack Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 052eda2179a73644cb3a871510b155cd, type: 3}
+--- !u!1 &5119469732000171906 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 052eda2179a73644cb3a871510b155cd, type: 3}
+  m_PrefabInstance: {fileID: 5462139885323369171}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &-9145500000080208765
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5119469732000171906}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
