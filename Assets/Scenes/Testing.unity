@@ -793,10 +793,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path:
-  - {x: 0, y: 0, z: 0}
+  - {x: -16.56563, y: 0, z: 0}
   - {x: 5, y: 0, z: 0}
   currentT: 0
-  speed: 0.1
+  speed: 5
   looping: 0
   positionOnStart: {x: 0, y: 0, z: 0}
 --- !u!50 &1097440312
@@ -1911,6 +1911,10 @@ PrefabInstance:
     - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: lowJumpGravity
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082042531145583892, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2082042532258748998, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: m_Name
