@@ -18,7 +18,7 @@ public class Dash : ScriptableAbility
         player.GravityScale = 0;
 
 
-        return true;
+        return false;
     }
 
     public override void OnEndEffect(MovementController player)

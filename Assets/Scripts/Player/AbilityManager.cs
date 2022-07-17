@@ -428,7 +428,7 @@ public class AbilityManager : MonoBehaviour
         if (aVertexID >= normals.Length) return Vector3.up;
         return normals[aVertexID];
     }
-    private Vector3 GetDiceSide(int aSideID)
+    public Vector3 GetDiceSide(int aSideID)
     {
         int finalID = aSideID * 3;
 

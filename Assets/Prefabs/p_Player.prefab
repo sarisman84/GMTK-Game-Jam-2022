@@ -439,7 +439,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2082042530686521143
 Transform:
   m_ObjectHideFlags: 0
@@ -547,7 +547,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2082042531082325700
 Transform:
   m_ObjectHideFlags: 0
@@ -653,10 +653,10 @@ MonoBehaviour:
   renderCamRef: {fileID: 2082042531916736165}
   mainCamRef: {fileID: 2082042532359501744}
   listOfAbilities:
-  - {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
-  - {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
-  - {fileID: 11400000, guid: 5f42b22401f48274185c15d08a75dbac, type: 2}
   - {fileID: 11400000, guid: 0d365870037d05f469e5ed9e3915f660, type: 2}
+  - {fileID: 11400000, guid: 5f42b22401f48274185c15d08a75dbac, type: 2}
+  - {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
+  - {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
   pauseInput: {fileID: -8776153059030709762, guid: 8230308b0aa0646458f95a6c20116209, type: 3}
   selectAbilityInput: {fileID: 1625654339706045617, guid: 8230308b0aa0646458f95a6c20116209, type: 3}
   showDebug: 0
@@ -694,9 +694,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputAsset: {fileID: -944628639613478452, guid: 8230308b0aa0646458f95a6c20116209, type: 3}
-  upGravity: 8
-  lowJumpGravity: 18
-  fallGravity: 25
+  upGravity: 12
+  lowJumpGravity: 25
+  fallGravity: 35
   groundedLayer:
     serializedVersion: 2
     m_Bits: 55
@@ -706,7 +706,7 @@ MonoBehaviour:
   wallCheckSize: {x: 0.1, y: 1}
   wallSlideSpeed: 3
   moveSpeed: 10
-  jumpForce: 8
+  jumpForce: 11
   jumpSave: 0.1
   kyoteTime: 0.3
   vel: {x: 0, y: 0}
@@ -745,7 +745,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2082042531247800216
 Transform:
   m_ObjectHideFlags: 0
@@ -1330,7 +1330,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2082042532398187627
 Transform:
   m_ObjectHideFlags: 0
@@ -1556,7 +1556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 73ab02d9b856c7c4ebc84fe3e6a39469, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73ab02d9b856c7c4ebc84fe3e6a39469, type: 3}
@@ -1637,7 +1637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 73ab02d9b856c7c4ebc84fe3e6a39469, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73ab02d9b856c7c4ebc84fe3e6a39469, type: 3}
@@ -1718,7 +1718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 73ab02d9b856c7c4ebc84fe3e6a39469, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73ab02d9b856c7c4ebc84fe3e6a39469, type: 3}
@@ -1799,7 +1799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 73ab02d9b856c7c4ebc84fe3e6a39469, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73ab02d9b856c7c4ebc84fe3e6a39469, type: 3}
