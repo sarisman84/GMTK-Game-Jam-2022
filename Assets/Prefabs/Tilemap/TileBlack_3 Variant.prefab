@@ -57,7 +57,38 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: bde63e285c8e5b84983f5583e83a972d, type: 2}
     - target: {fileID: 919132149155446097, guid: dc4ae0cf667d7ad489d4c94360b6cf0e, type: 3}
       propertyPath: m_Name
-      value: TileBlack_3
+      value: TileBlack_3 Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc4ae0cf667d7ad489d4c94360b6cf0e, type: 3}
+--- !u!1 &3463883456704536450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dc4ae0cf667d7ad489d4c94360b6cf0e, type: 3}
+  m_PrefabInstance: {fileID: 4382924339817013971}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &1325905085058883872
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463883456704536450}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
