@@ -1216,7 +1216,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.516529, y: 1}
+    m_SensorSize: {x: 1.9972452, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2304,6 +2304,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6561742426805229117, guid: 69a5db68f5580394ab8bf5392bac238a, type: 3}
+      propertyPath: pause_menu_prefab
+      value: 
+      objectReference: {fileID: 8560665114706643341, guid: 77eac7bc5c33d6147a287f1a91213326, type: 3}
+    - target: {fileID: 6561742426805229117, guid: 69a5db68f5580394ab8bf5392bac238a, type: 3}
+      propertyPath: movementController
+      value: 
+      objectReference: {fileID: 2082042531145583891}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69a5db68f5580394ab8bf5392bac238a, type: 3}
 --- !u!4 &7655170755113764644 stripped

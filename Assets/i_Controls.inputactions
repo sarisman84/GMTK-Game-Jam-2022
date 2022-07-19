@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dice Roll - Pause",
+                    "name": "RollDice",
                     "type": "Button",
                     "id": "88c0ba91-6ba0-4fa1-8bbe-47c96b5dcc1b",
                     "expectedControlType": "Button",
@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dice Roll - Select",
+                    "name": "SelectAbility",
                     "type": "Button",
                     "id": "0a1510f3-3c27-4364-ada1-8edfc781da28",
                     "expectedControlType": "Button",
@@ -94,7 +94,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Dice Roll - Pause",
+                    "action": "RollDice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -105,7 +105,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -116,7 +116,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -127,7 +127,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -138,7 +138,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -149,7 +149,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -160,7 +160,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -171,7 +171,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -182,7 +182,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -193,7 +193,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Dice Roll - Select",
+                    "action": "SelectAbility",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

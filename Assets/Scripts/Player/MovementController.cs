@@ -5,13 +5,14 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovementController : MonoBehaviour
 {
+    public AbilityController testVar;
     public InputActionAsset inputAsset;
     [Space]
     [Header("Gravity")]
     public float upGravity = 5;
     public float lowJumpGravity = 10;
     public float fallGravity = 15;
-    
+
     [Space]
     [Header("Grounded Detection")]
     public LayerMask groundedLayer;
@@ -49,7 +50,10 @@ public class MovementController : MonoBehaviour
     private float groundedTimer = 0;
     public PlayerSoundManager playerSoundManager { get; private set; }
 
-    void Start() {
+    public bool pauseRuntime { private get; set; }
+
+    void Start()
+    {
         rig = GetComponent<Rigidbody2D>();
         jumpOverride = new Stack<System.Action<MovementController>>();
 
@@ -58,7 +62,11 @@ public class MovementController : MonoBehaviour
         playerSoundManager = GetComponent<PlayerSoundManager>();
     }
 
-    void Update() {
+    void Update()
+    {
+
+        if (pauseRuntime) return;
+
         move = inputAsset.FindAction("Movement").ReadValue<float>();
         if (!takeInput) move = 0;
 
@@ -67,59 +75,94 @@ public class MovementController : MonoBehaviour
         jumpPressing = inputAsset.FindAction("Jump").IsPressed();
         jumpPress = Mathf.Max(0, jumpPress - Time.deltaTime);//count down timer
 
-        if (jumpPressing) {
-            jumpPress =  jumpSave;//start timer to count down from jumpSave
+        if (jumpPressing)
+        {
+            jumpPress = jumpSave;//start timer to count down from jumpSave
         }
-        
+
+
+
     }
 
     public bool IsGroundedTimer() { return groundedTimer > 0; }
 
-    private void FixedUpdate() {
-        if(takeInput)
+    private void FixedUpdate()
+    {
+
+
+        if (pauseRuntime) return;
+
+
+        if (takeInput)
             vel.x = move * moveSpeed;
 
         Collider2D groundOverlap = Physics2D.OverlapBox(rig.position + Vector2.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize, 0, groundedLayer);
         grounded = groundOverlap;
         onWall = Physics2D.OverlapBox(rig.position + Vector2.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * facingDir, wallCheckSize, 0, groundedLayer);//use the facing direction to check the right direction for a wall jump 
-        if (grounded) {
-            groundedTimer = kyoteTime;//start grounded timer
+        if (grounded)
+        {
+            WhenSelfIsGrounded(groundOverlap);
 
-            vel.y = 0;//reset velocity if collided
-            jumpCount = 0;// reset jump count if grounded
-
-            IPlayerGround ground = groundOverlap.GetComponent<IPlayerGround>();
-            if (ground != null)
-                ground.OnPlayerStand(this);
-                
-
-        } else {
+        }
+        else
+        {
             groundedTimer = Mathf.Max(0, groundedTimer - Time.fixedDeltaTime);//count down timer
-
-
-            if (vel.y <= 0) {
-                if (onWall && !grounded)//check for wall slide
-                    vel.y = -wallSlideSpeed;//dont do gravity acceleration -> only slide speed
-                else
-                    vel.y -= fallGravity * Time.fixedDeltaTime * GravityScale;//add gravity if falling
-            }
-            else if (vel.y > 0 && !jumpPressing)
-                vel.y -= lowJumpGravity * Time.fixedDeltaTime * GravityScale;//add gravity moving up but releasing jump -> jump lower
-            else if (vel.y > 0)
-                vel.y -= upGravity * Time.fixedDeltaTime * GravityScale;//add gravity if moving up
+            UpdateGravity();
         }
 
 
-        if (jumpPress > 0 && IsGroundedTimer()) {//if jump action is cued and we are on the ground
-            Jump(jumpForce);//jump
-            jumpPress = 0;//dequeue jump
-            groundedTimer = 0;//set to be in air
+        if (jumpPress > 0 && IsGroundedTimer())
+        {
+            if (testVar.IsLastAbilityAvailable(ScriptableAbility.AbilityType.Jump))
+            {
+                testVar.ExecuteAbility(ScriptableAbility.AbilityType.Jump);
+            }
+            else
+            {
+                //if jump action is cued and we are on the ground
+                Jump(jumpForce);//jump
+                jumpPress = 0;//dequeue jump
+                groundedTimer = 0;//set to be in air
+            }
+
         }
 
         rig.velocity = vel + offsetVel;
     }
 
-    public void Jump(float jumpForce) {
+    /// <summary>
+    /// Resets the kyote time and calls an event when we land.
+    /// </summary>
+    /// <param name="groundOverlap"></param>
+    void WhenSelfIsGrounded(Collider2D groundOverlap)
+    {
+        groundedTimer = kyoteTime;//start grounded timer
+
+        vel.y = 0;//reset velocity if collided
+        jumpCount = 0;// reset jump count if grounded
+
+        IPlayerGround ground = groundOverlap.GetComponent<IPlayerGround>();
+        if (ground != null)
+            ground.OnPlayerStand(this);
+    }
+    void UpdateGravity()
+    {
+        if (vel.y <= 0)
+        {
+            if (onWall && !grounded)//check for wall slide
+                vel.y = -wallSlideSpeed;//dont do gravity acceleration -> only slide speed
+            else
+                vel.y -= fallGravity * Time.fixedDeltaTime * GravityScale;//add gravity if falling
+        }
+        else if (vel.y > 0 && !jumpPressing)
+            vel.y -= lowJumpGravity * Time.fixedDeltaTime * GravityScale;//add gravity moving up but releasing jump -> jump lower
+        else if (vel.y > 0)
+            vel.y -= upGravity * Time.fixedDeltaTime * GravityScale;//add gravity if moving up
+    }
+
+    public void Jump(float jumpForce)
+    {
+        if (pauseRuntime) return;
         // Keep track of the jump count
         jumpCount++;
 
@@ -132,13 +175,16 @@ public class MovementController : MonoBehaviour
             vel.y = jumpForce;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (pauseRuntime) return;
         if (vel.y > 0 && rig.velocity.y < 0.01f) vel.y = 0;//stop moving up, when you hit a ceiling
     }
 
-    private void OnDrawGizmosSelected() {
+    private void OnDrawGizmosSelected()
+    {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position + Vector3.up * (groundedYOffset - 0.5f*groundedSize.y), groundedSize);
+        Gizmos.DrawWireCube(transform.position + Vector3.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize);
         Gizmos.DrawWireCube(transform.position + Vector3.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * facingDir, wallCheckSize);
     }
 }
