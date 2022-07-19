@@ -14,26 +14,21 @@ public class ChangedJump : ScriptableAbility
         addVel = Vector2.right * jumpForce.x * -player.facingDir;
     }
 
-    public override bool ApplyEffect(MovementController player)
+    protected override void OnActivation(MovementController player, AbilityController abilityController)
     {
         if (player.jumpOverride.Count < 3)//dont exceed 3 override jumps
             player.jumpOverride.Push(DoChangedJump);
-        return false;
     }
 
-    public override void OnEndEffect(MovementController player)
+    public void OnEndEffect(MovementController player)//TODO: find a better solution to use the offset vel and stuff
     {
         player.offsetVel = Vector2.zero;
     }
 
-    public override bool UpdateEffect(MovementController player)
+    protected override bool OnFixedUpdate(MovementController player, AbilityController abilityController)
     {
         player.offsetVel = addVel;
         addVel *= Mathf.Pow(pushForceDamp, Time.deltaTime);
         return true;
-    }
-
-    public override void OnGizmosDraw(MovementController player)
-    {
     }
 }
