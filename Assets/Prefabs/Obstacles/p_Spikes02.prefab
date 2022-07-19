@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7813503107683278966}
   - component: {fileID: 7813503107683278953}
-  - component: {fileID: 7813503107683278967}
   - component: {fileID: -3935514265178290110}
   m_Layer: 7
   m_Name: p_Spikes02
-  m_TagString: Untagged
+  m_TagString: Death
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,18 +59,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.54, y: 0.82}
   m_EdgeRadius: 0
---- !u!114 &7813503107683278967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7813503107683278952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b45b7cfb5c92d8e4ab7d7cf978f9f449, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &-3935514265178290110
 SpriteRenderer:
   m_ObjectHideFlags: 0

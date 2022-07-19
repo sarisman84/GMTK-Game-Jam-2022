@@ -653,6 +653,7 @@ GameObject:
   - component: {fileID: 2082042531145583892}
   - component: {fileID: 2082042531145583891}
   - component: {fileID: 9048536056808113255}
+  - component: {fileID: 1742835371411726285}
   m_Layer: 6
   m_Name: Avatar
   m_TagString: Player
@@ -730,16 +731,16 @@ MonoBehaviour:
   uiCD: {fileID: 8807061275723576761}
   listOfAbilities:
   - ability: {fileID: 11400000, guid: 0d365870037d05f469e5ed9e3915f660, type: 2}
-    abilityIcon: {fileID: 0}
+    abilityIcon: {fileID: 21300000, guid: 79ed243ee77154a4a902b523ee10e421, type: 3}
     abilityLabel: Long Jump
   - ability: {fileID: 11400000, guid: 5f42b22401f48274185c15d08a75dbac, type: 2}
-    abilityIcon: {fileID: 0}
+    abilityIcon: {fileID: 21300000, guid: b3e436b8f13e05d4686a78cac0927bc8, type: 3}
     abilityLabel: Dash
   - ability: {fileID: 11400000, guid: cb012b3a1ee02c248b147857eaf60fea, type: 2}
-    abilityIcon: {fileID: 0}
+    abilityIcon: {fileID: 21300000, guid: 7feecf44755e9ca4589a448b282a7f11, type: 3}
     abilityLabel: Wall Jump
   - ability: {fileID: 11400000, guid: a91d3dfda08acc747805baeaddfc6e76, type: 2}
-    abilityIcon: {fileID: 0}
+    abilityIcon: {fileID: 21300000, guid: 33969955edd01ce40a7dbe5553c35dd3, type: 3}
     abilityLabel: Double Jump
   pauseInput: {fileID: -8776153059030709762, guid: 8230308b0aa0646458f95a6c20116209, type: 3}
   selectAbilityInput: {fileID: 1625654339706045617, guid: 8230308b0aa0646458f95a6c20116209, type: 3}
@@ -814,6 +815,19 @@ MonoBehaviour:
   wallJumpSound: {fileID: 1072004823}
   deathSound: {fileID: 1797720160}
   dieRollSound: {fileID: 2090913918}
+--- !u!114 &1742835371411726285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082042531145583882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7a66957af1a7640afd7e635968d95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &2082042531247800215
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,7 +1230,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.516529, y: 1}
+    m_SensorSize: {x: 3.1323078, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
