@@ -12,25 +12,17 @@ public class AbilityManagerEditor : Editor
     private void OnEnable()
     {
         manager = target as AbilityController;
-        SceneView.duringSceneGui += OnSceneGUI;
+
     }
 
-    private void OnSceneGUI(SceneView obj)
+    public override void OnInspectorGUI()
     {
-        for (int side = 0; side < 4; side++)
-        {
-            if (manager.abilities.Count > side)
-            {
-                //Vector3 normal = manager.GetDiceSide(side);
-                //Vector3 offset = (manager.transform.position + normal);
-                //Handles.Label(offset, new GUIContent(text: $"S[{side}]<{manager.listOfAbilities[side].abilityLabel}>"));
-            }
-
-        }
+        base.OnInspectorGUI();
+        
     }
 
     private void OnDisable()
     {
-        SceneView.duringSceneGui -= OnSceneGUI;
+
     }
 }
