@@ -14,6 +14,7 @@
 //        addVel = Vector2.right * jumpForce.x * -player.facingDir;
 //    }
 
+<<<<<<< HEAD
 //    public override bool ApplyEffect(MovementController player)
 //    {
 //        if (player.jumpOverride.Count < 3)//dont exceed 3 override jumps
@@ -37,3 +38,23 @@
 //    {
 //    }
 //}
+=======
+    protected override void OnActivation(MovementController player, AbilityController abilityController)
+    {
+        if (player.jumpOverride.Count < 3)//dont exceed 3 override jumps
+            player.jumpOverride.Push(DoChangedJump);
+    }
+
+    public void OnEndEffect(MovementController player)//TODO: find a better solution to use the offset vel and stuff
+    {
+        player.offsetVel = Vector2.zero;
+    }
+
+    protected override bool OnFixedUpdate(MovementController player, AbilityController abilityController)
+    {
+        player.offsetVel = addVel;
+        addVel *= Mathf.Pow(pushForceDamp, Time.deltaTime);
+        return true;
+    }
+}
+>>>>>>> NewMain
