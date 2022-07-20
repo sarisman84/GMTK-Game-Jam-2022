@@ -34,12 +34,12 @@
                 },
                 {
                     "name": "SelectAbility",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "0a1510f3-3c27-4364-ada1-8edfc781da28",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -97,39 +97,6 @@
                     "action": "RollDice",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "Selection (Q/E)",
-                    "id": "b31b8ac8-af53-4009-b177-e28b4bb08581",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SelectAbility",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "defc90c6-fb25-4514-a307-1427c6fd9342",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard and Mouse",
-                    "action": "SelectAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "d4ce93a5-8cc4-49ff-9623-611482df6d7c",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard and Mouse",
-                    "action": "SelectAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "Selection (Q/E)",

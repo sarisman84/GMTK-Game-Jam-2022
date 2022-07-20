@@ -22,7 +22,7 @@ public class PauseMenuOpener : MonoBehaviour
         escape_press = inputAsset.FindAction("Pause").IsPressed();
         if (escape_press && !check && !wait)
         {
-            movementController.pauseRuntime = true;
+
             check = true;
             wait = true;
             pause_menu = Instantiate(pause_menu_prefab, this.transform.position, this.transform.rotation) as GameObject; //Instantiate pause menu
@@ -30,7 +30,7 @@ public class PauseMenuOpener : MonoBehaviour
         }
         if (escape_press && check && !wait)
         {
-            
+
             movementController.enabled = false;
             Destroy(pause_menu); //destroys pause menu
             check = false;

@@ -7,26 +7,6 @@ public class ParticleManager : MonoBehaviour
 {
 
 
-    //Singleton
-    static ParticleManager ins;
-
-    public static ParticleManager Get
-    {
-        get
-        {
-            if (!ins)
-            {
-                ins = GameObject.FindObjectOfType<ParticleManager>();
-                ins = !ins ? new GameObject("ParticleManager").AddComponent<ParticleManager>() : ins;
-            }
-            ins.particlePool = new Dictionary<string, List<ParticleSystem>>();
-
-            return ins;
-        }
-
-
-    }
-
 
     [System.Serializable]
     public struct ParticleInfo

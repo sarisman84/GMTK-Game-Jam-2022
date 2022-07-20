@@ -5,8 +5,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovementController : MonoBehaviour
 {
-    public AbilityController testVar;
-    public InputActionAsset inputAsset;
     [Space]
     [Header("Gravity")]
     public float upGravity = 5;
@@ -50,14 +48,24 @@ public class MovementController : MonoBehaviour
     private float groundedTimer = 0;
     public PlayerSoundManager playerSoundManager { get; private set; }
 
-    public bool pauseRuntime { private get; set; }
+
+
+
+    private PollingStation station;
 
     void Start()
     {
+        if (!PollingStation.TryRegisterStationToGameObject(ref station, gameObject.name))
+        {
+            return;
+        }
+
+        station.movementController = this;
+
         rig = GetComponent<Rigidbody2D>();
         jumpOverride = new Stack<System.Action<MovementController>>();
 
-        inputAsset.Enable();
+
 
         playerSoundManager = GetComponent<PlayerSoundManager>();
     }
@@ -65,14 +73,14 @@ public class MovementController : MonoBehaviour
     void Update()
     {
 
-        if (pauseRuntime) return;
 
-        move = inputAsset.FindAction("Movement").ReadValue<float>();
+
+        move = station.inputManager.GetSingleAxis(InputManager.InputPreset.Movement);
         if (!takeInput) move = 0;
 
         if (move * move > 0.01f) facingDir = (int)Mathf.Sign(move);//saves the facing sign
 
-        jumpPressing = inputAsset.FindAction("Jump").IsPressed();
+        jumpPressing = station.inputManager.GetButton(InputManager.InputPreset.Jump);
         jumpPress = Mathf.Max(0, jumpPress - Time.deltaTime);//count down timer
 
         if (jumpPressing)
@@ -90,7 +98,7 @@ public class MovementController : MonoBehaviour
     {
 
 
-        if (pauseRuntime) return;
+
 
 
         if (takeInput)
@@ -113,8 +121,9 @@ public class MovementController : MonoBehaviour
 
         if (jumpPress > 0 && IsGroundedTimer())
         {
-            if (testVar.IsLastAbilityAvailable(ScriptableAbility.AbilityType.Jump))
-                testVar.ExecuteAbility(ScriptableAbility.AbilityType.Jump);
+            var abilityController = station.abilityController ?? FindObjectOfType<AbilityController>();
+            if (abilityController.HasQueuedAbilities())
+                abilityController.ExecuteQueuedAbility();
             else
                 Jump(jumpForce);//jump
 
@@ -158,7 +167,7 @@ public class MovementController : MonoBehaviour
 
     public void Jump(float jumpForce)
     {
-        if (pauseRuntime) return;
+
         // Keep track of the jump count
         jumpCount++;
 
@@ -173,7 +182,7 @@ public class MovementController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (pauseRuntime) return;
+
         if (vel.y > 0 && rig.velocity.y < 0.01f) vel.y = 0;//stop moving up, when you hit a ceiling
     }
 

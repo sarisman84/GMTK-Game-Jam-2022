@@ -10,174 +10,112 @@ using FMODUnity;
 
 public class AbilityController : MonoBehaviour
 {
-
-
-
     const float defaultScale = 1f;
-    const float defaultFixedDelta = 0.01f;
 
-
-    [Header("Time Parameters")]
-    public float slowMotionMultiplier;
-    [Header("Ability Usage Settings")]
-    public int ammOfAbilitesUsedInARow = 3;
-    public InputActionAsset inputAsset;
-
-
+    public float slowMotionModifier = 0.05f;
+    public int maxAbilityUseCount = 3;
     public List<ScriptableAbility> abilities;
-    public int currentSelectedAbility { get; private set; }
-    public int abilityUseCount { get; set; }
-
-    private int lastAbility = -1;
-    private bool isSelectingAbilities;
 
 
-    private MovementController player;
 
-
-    enum TimeState
-    {
-        Slowed, Normal
-    }
+    private PollingStation station;
+    private Queue<int> queuedAbilitiesToUse;
+    private bool diceRollInput;
+    private int currentAbilityUseCount;
 
     private void Awake()
     {
-        player = GetComponent<MovementController>();
+        if (!PollingStation.TryRegisterStationToGameObject(ref station, gameObject.name))
+        {
+            return;
+        }
+
+        station.abilityController = this;
+        queuedAbilitiesToUse = new Queue<int>();
+
+        station.abilityDisplay.SetHotbarActive(false, 0.15f, true);
+        currentAbilityUseCount = maxAbilityUseCount;
 
         StartCoroutine(CustomUpdate());
 
-
     }
+
+
+    void ModifyTimeScale(float scale)
+    {
+        Time.timeScale = scale;
+        Time.fixedDeltaTime = scale / 100f;
+    }
+
+
     private void Update()
     {
-        isSelectingAbilities = CanUseAbilities();
-
-        if (player.grounded)
+        if (station.movementController.grounded)
         {
-            abilityUseCount = ammOfAbilitesUsedInARow;
+            currentAbilityUseCount = maxAbilityUseCount;
         }
 
-
-
-
+        diceRollInput = station.inputManager.GetButton(InputManager.InputPreset.DiceRoll) && currentAbilityUseCount > 0 && !station.movementController.grounded;
     }
-
-    public void ClearLastAbility(ScriptableAbility.AbilityType aType)
-    {
-        if (IsInListBounds(lastAbility))
-            if (abilities[lastAbility].abilityType == aType)
-            {
-                StopCoroutine(abilities[lastAbility].OnAbilityEffect(player, this));
-                lastAbility = -1;
-            }
-
-    }
-
     private IEnumerator CustomUpdate()
     {
         while (true)
         {
-            yield return null;
-            if (isSelectingAbilities && abilityUseCount > 0)
+            if (diceRollInput)
             {
-                if (IsInListBounds(lastAbility))
+                station.abilityDisplay.SetHotbarActive(true, 0.15f);
+                ModifyTimeScale(slowMotionModifier);
+                int selectedAbility = 0;
+                station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f);
+                while (diceRollInput)
                 {
-                    if (abilities[lastAbility].abilityType == ScriptableAbility.AbilityType.Select)
-                        StopCoroutine(abilities[lastAbility].OnAbilityEffect(player, this));
-                }
-                ModifyTime(TimeState.Slowed);
-                while (isSelectingAbilities)
-                {
-                    OnAbilitySelect();
+                    ScrollThroughAbilities(ref selectedAbility);
                     yield return null;
                 }
-                ModifyTime(TimeState.Normal);
-
-                lastAbility = currentSelectedAbility;
-                if (abilities[lastAbility].abilityType == ScriptableAbility.AbilityType.Select)
-                    StartCoroutine(abilities[currentSelectedAbility].OnAbilityEffect(player, this));
-                abilityUseCount--;
+                station.abilityDisplay.SetHotbarActive(false, 0.15f);
+                ModifyTimeScale(defaultScale);
+                if (abilities[selectedAbility].abilityType == ScriptableAbility.AbilityType.Jump)
+                    queuedAbilitiesToUse.Enqueue(selectedAbility);
+                else
+                    abilities[selectedAbility].OnAbilityEffect(station);
+                currentAbilityUseCount--;
 
             }
+
+
             yield return null;
         }
-
-    }
-    public bool IsLastAbilityAvailable(ScriptableAbility.AbilityType aType)
-    {
-        if (IsInListBounds(lastAbility))
-            return abilities[lastAbility] && abilities[lastAbility].abilityType == aType;
-        return false;
     }
 
-    public void ExecuteAbility(ScriptableAbility.AbilityType aTypeToExecute)
+    public bool HasQueuedAbilities()
     {
-        if (abilities[lastAbility].abilityType == aTypeToExecute)
+        return queuedAbilitiesToUse.Count > 0;
+    }
+
+    public void ClearLatestQueuedAbility()
+    {
+        queuedAbilitiesToUse.Dequeue();
+    }
+
+    public void ExecuteQueuedAbility()
+    {
+        if (HasQueuedAbilities())
         {
-            StartCoroutine(abilities[lastAbility].OnAbilityEffect(player, this));
-
-        }
-
-    }
-
-
-
-
-    bool CanUseAbilities()
-    {
-        return !player.grounded && inputAsset.FindAction("RollDice").ReadValue<float>() > 0;
-    }
-
-
-    void ModifyTime(TimeState aNewState)
-    {
-        switch (aNewState)
-        {
-            case TimeState.Slowed:
-                Time.timeScale = slowMotionMultiplier;
-                Time.fixedDeltaTime = Time.fixedDeltaTime * slowMotionMultiplier;
-                break;
-            case TimeState.Normal:
-                Time.timeScale = defaultScale;
-                Time.fixedDeltaTime = defaultFixedDelta;
-                break;
-            default:
-                break;
+            var ability = queuedAbilitiesToUse.Peek();
+            abilities[ability].OnAbilityEffect(station, true);
         }
     }
 
-
-    void OnAbilitySelect()
+    private void ScrollThroughAbilities(ref int selectedAbility)
     {
+        int input = Mathf.CeilToInt(station.inputManager.GetSingleAxis(InputManager.InputPreset.SelectAbility));
 
-        var action = inputAsset.FindAction("SelectAbility");
-
-        bool pressedThisFrame = action.triggered;
-        int selectionInput = (int)action.ReadValue<float>();
-        //Display UI (different class)
-        //Fetch the Input for the player to select stuff
-        //Pause the Input for the movement
-        //Update the currentSelectedAbility with the correct ability
-
-        if (selectionInput != 0 && pressedThisFrame)
+        if (input != 0 && station.inputManager.GetAction(InputManager.InputPreset.SelectAbility).triggered)
         {
-            currentSelectedAbility += selectionInput;
-            currentSelectedAbility = currentSelectedAbility < 0 ? abilities.Count - 1 : currentSelectedAbility >= abilities.Count ? 0 : currentSelectedAbility;
+            selectedAbility += input;
+            selectedAbility = selectedAbility < 0 ? abilities.Count - 1 : selectedAbility >= abilities.Count ? 0 : selectedAbility;
+            station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f);
         }
 
-        Debug.Log($"Selecting {abilities[currentSelectedAbility].name}");
-
     }
-
-
-
-    bool IsInListBounds(int anInput)
-    {
-        return anInput >= 0 && anInput < abilities.Count;
-    }
-
-
-
-
-
 }

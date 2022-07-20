@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "New Ability", menuName = "Custom/Ability", order = 0)]
 public abstract class ScriptableAbility : ScriptableObject
 {
     public enum AbilityType
@@ -15,17 +14,20 @@ public abstract class ScriptableAbility : ScriptableObject
     public string abilityLabel;
 
     //Update Loop
-    protected abstract bool OnFixedUpdate(MovementController player, AbilityController abilityController);
+    protected abstract bool OnFixedUpdate(PollingStation station);
     //On Awake - happens when you jump (OnJump)
     //On Awake - happens when you select (ConstantUpdate)
-    protected abstract void OnActivation(MovementController player, AbilityController abilityController);
+    protected abstract void OnActivation(PollingStation station);
+    protected abstract void OnDeactivation(PollingStation station);
 
-
-    public IEnumerator OnAbilityEffect(MovementController player, AbilityController abilityController)
+    public IEnumerator OnAbilityEffect(PollingStation station, bool markForDequeue = false)
     {
-        OnActivation(player, abilityController);
-        while (OnFixedUpdate(player, abilityController))
+        OnActivation(station);
+        while (OnFixedUpdate(station))
             yield return new WaitForFixedUpdate();
+        OnDeactivation(station);
+        if (markForDequeue)
+            station.abilityController.ClearLatestQueuedAbility();
     }
 
 }

@@ -4,24 +4,6 @@ using System.Collections.Generic;
 
 public class MusicManager : MonoBehaviour
 {
-    //Singleton
-    static MusicManager ins;
-    public static MusicManager Get
-    {
-        get
-        {
-            if (!ins)
-            {
-                var o = GameObject.FindObjectOfType<MusicManager>();
-                ins = o ? o : new GameObject("Music Manager (Empty)").AddComponent<MusicManager>();
-            }
-
-
-
-            return ins;
-        }
-    }
-
     [System.Serializable]
     public struct MusicClip
     {
