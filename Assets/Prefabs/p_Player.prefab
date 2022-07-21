@@ -683,25 +683,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10684857b7d933148a2a1eff46b7413b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upGravity: 12
-  lowJumpGravity: 25
-  fallGravity: 35
-  groundedLayer:
+  movementSpeed: 10
+  acceleration: 10
+  decceleration: 10
+  jumpHeight: 1
+  koyoteTime: 0.1
+  fallGravity: 100
+  lowJumpGravity: 200
+  upGravity: 50
+  groundCheckOffset: 0.87
+  groundCheckSize: {x: 1.6, y: 0.05}
+  groundCheckMask:
     serializedVersion: 2
     m_Bits: 55
-  groundedYOffset: -0.84
-  groundedSize: {x: 1.94, y: 0.01}
-  wallCheckXOffset: 1
-  wallCheckSize: {x: 0.1, y: 1}
-  wallSlideSpeed: 3
-  moveSpeed: 10
-  jumpForce: 11
-  jumpSave: 0.1
-  kyoteTime: 0.3
-  vel: {x: 0, y: 0}
-  takeInput: 1
-  GravityScale: 1
-  offsetVel: {x: 0, y: 0}
 --- !u!114 &9048536056808113255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1134,7 +1128,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9972452, y: 1}
+    m_SensorSize: {x: 1.3305786, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1460,7 +1454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 933.5, y: 468.7}
+  m_AnchoredPosition: {x: 831, y: 363}
   m_SizeDelta: {x: 50, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &367396784955117753
@@ -1518,11 +1512,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 45.73
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 45.73
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 4
