@@ -1,11 +1,7 @@
 using UnityEngine;
-using System.Collections.Generic;
-using System;
 
 
 public delegate void ModifyVelocity(ref Vector3 velocity);
-
-
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovementController : MonoBehaviour
@@ -41,7 +37,6 @@ public class MovementController : MonoBehaviour
             var result = Mathf.Sqrt(jumpHeight * -2f * -gravity);
             return result;
         }
-
     }
 
     public bool grounded
@@ -109,7 +104,6 @@ public class MovementController : MonoBehaviour
         if (grounded)
             vel.y = 0;
         velocity = vel;
-
     }
 
 
@@ -117,15 +111,6 @@ public class MovementController : MonoBehaviour
     {
         horizontalInput = station.inputManager.GetSingleAxis(InputManager.InputPreset.Movement);
         jumpInput = station.inputManager.GetButton(InputManager.InputPreset.Jump) && currentKoyoteTime > 0;
-
-
-        if (grounded)
-            currentKoyoteTime = koyoteTime;
-        else
-            currentKoyoteTime -= Time.deltaTime;
-
-
-
     }
 
 
@@ -136,6 +121,12 @@ public class MovementController : MonoBehaviour
 
         var value = new Vector2(velocity.x, velocity.y);
         rig.velocity = value;
+
+
+        if (grounded)
+            currentKoyoteTime = koyoteTime;
+        else
+            currentKoyoteTime -= Time.fixedDeltaTime;
     }
 
     private void UpdateVelocity()
@@ -158,13 +149,9 @@ public class MovementController : MonoBehaviour
             Debug.Log("Jumping!");
 
             if (station.abilityController.HasQueuedAbilities())
-            {
                 station.abilityController.ExecuteQueuedAbility();
-            }
             else
-            {
                 ApplyForce(Vector3.up, jumpForce);
-            }
         }
     }
 
