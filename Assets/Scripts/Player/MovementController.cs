@@ -43,8 +43,8 @@ public class MovementController : MonoBehaviour
     {
         get
         {
-            Debug.Log($"Movement Controller: World Pos - {transform.position}");
-            Debug.Log($"Movement Controller: Local Pos - {transform.localPosition}");
+            //Debug.Log($"Movement Controller: World Pos - {transform.position}");
+            //Debug.Log($"Movement Controller: Local Pos - {transform.localPosition}");
             return Physics2D.OverlapBox(groundCheckPos, groundCheckSize, transform.eulerAngles.z, groundCheckMask);
         }
     }
@@ -122,7 +122,6 @@ public class MovementController : MonoBehaviour
         var value = new Vector2(velocity.x, velocity.y);
         rig.velocity = value;
 
-
         if (grounded)
             currentKoyoteTime = koyoteTime;
         else
@@ -153,6 +152,11 @@ public class MovementController : MonoBehaviour
             else
                 ApplyForce(Vector3.up, jumpForce);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (velocity.y > 0 && rig.velocity.y < 0.01f) velocity = new Vector3(velocity.x, 0, velocity.z);//stop moving up, when you hit a ceiling
     }
 
     //void UpdateGravity()
