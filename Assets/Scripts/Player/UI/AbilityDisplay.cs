@@ -18,6 +18,32 @@ public class AbilityDisplay : MonoBehaviour
     TMPro.TextMeshProUGUI abilityUseCount;
     int abilityCount;
 
+
+    private void Start()
+    {
+        abilityUseCount = GameObject.FindGameObjectWithTag("Ability Count").GetComponent<TMPro.TextMeshProUGUI>();
+        foundImageSelectionIndicators = new List<Image>();
+        foundImageIcons = new List<Image>();
+        foundLabels = new List<TMPro.TextMeshProUGUI>();
+
+        abilityCount = station.abilityController.abilities.Count;
+        var abilities = station.abilityController.abilities;
+
+        for (int i = 0; i < abilityCount; i++)
+        {
+            GameObject obj = Instantiate(abilityDisplayPrefab, transform);
+            foundImageIcons.Add(obj.GetComponentsInChildren<Image>()[0]);
+            foundImageSelectionIndicators.Add(obj.GetComponentsInChildren<Image>()[1]);
+            foundLabels.Add(obj.GetComponentInChildren<TMPro.TextMeshProUGUI>());
+            foundLabels[i].text = abilities[i].abilityLabel;
+        }
+
+
+
+        SetHotbarActive(false, 0.15f, true);
+    }
+
+
     private void Awake()
     {
         if (!PollingStation.TryRegisterStationToGameObject(ref station, gameObject.name))
@@ -27,22 +53,12 @@ public class AbilityDisplay : MonoBehaviour
 
         station.abilityDisplay = this;
 
-        abilityUseCount = GameObject.FindGameObjectWithTag("Ability Count").GetComponent<TMPro.TextMeshProUGUI>();
-        foundImageSelectionIndicators = new List<Image>();
-        foundImageIcons = new List<Image>();
-        foundLabels = new List<TMPro.TextMeshProUGUI>();
 
-        abilityCount = (station.abilityController ?? FindObjectOfType<AbilityController>()).abilities.Count;
-
-        for (int i = 0; i < abilityCount; i++)
-        {
-            GameObject obj = Instantiate(abilityDisplayPrefab, transform);
-            foundImageIcons.Add(obj.GetComponentsInChildren<Image>()[0]);
-            foundImageSelectionIndicators.Add(obj.GetComponentsInChildren<Image>()[1]);
-            foundLabels.Add(obj.GetComponentInChildren<TMPro.TextMeshProUGUI>());
-        }
     }
-
+    private void Update()
+    {
+        abilityUseCount.text = station.abilityController.currentAbilityUseCount.ToString();
+    }
     public void SetHotbarActive(bool aValue, float stateChangeDuration, bool affectEverything = false)
     {
         for (int i = 0; i < abilityCount; i++)

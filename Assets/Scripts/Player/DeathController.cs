@@ -24,6 +24,6 @@ public class DeathController : MonoBehaviour
     public void OnDeath() {
         Debug.Log("YOU DIED");
         player.transform.position = spawnPoint;
-        player.vel = Vector2.zero;
+        player.velocity = Vector2.zero;
     }
 }

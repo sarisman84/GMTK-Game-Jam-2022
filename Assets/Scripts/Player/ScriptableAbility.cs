@@ -20,14 +20,14 @@ public abstract class ScriptableAbility : ScriptableObject
     protected abstract void OnActivation(PollingStation station);
     protected abstract void OnDeactivation(PollingStation station);
 
-    public IEnumerator OnAbilityEffect(PollingStation station, bool markForDequeue = false)
+    public IEnumerator OnAbilityEffect(PollingStation station)
     {
+        station.abilityController.IsAnAbilityActive = true;
         OnActivation(station);
         while (OnFixedUpdate(station))
             yield return new WaitForFixedUpdate();
         OnDeactivation(station);
-        if (markForDequeue)
-            station.abilityController.ClearLatestQueuedAbility();
+        station.abilityController.IsAnAbilityActive = false;
     }
 
 }

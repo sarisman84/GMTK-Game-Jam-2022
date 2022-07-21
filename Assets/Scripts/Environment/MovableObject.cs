@@ -17,7 +17,8 @@ public class MovableObject : MonoBehaviour, IPlayerGround
 
     [HideInInspector] public Vector3 positionOnStart;
 
-    private void Start() {
+    private void Start()
+    {
         positionOnStart = transform.position;
         rig = GetComponent<Rigidbody2D>();
 
@@ -36,19 +37,23 @@ public class MovableObject : MonoBehaviour, IPlayerGround
         positionOnStart = transform.position;
     }
 
-    private Vector3 GetPathPos(int i) {
+    private Vector3 GetPathPos(int i)
+    {
         return path[i] + positionOnStart;
     }
-    private void MoveToPos(Vector2 pos, float time) {
+    private void MoveToPos(Vector2 pos, float time)
+    {
         //rig.velocity = (pos - rig.position) / time;//v = s / t
         rig.position = pos;
     }
 
-    private Vector2 GetPathPos(float t) {//TODO: FIX THE ERROR HERE -> ITS NOT LINEAR
+    private Vector2 GetPathPos(float t)
+    {//TODO: FIX THE ERROR HERE -> ITS NOT LINEAR
         float sum = 0;
-        for(int i = 0; i < tValues.Length; i++) {
+        for (int i = 0; i < tValues.Length; i++)
+        {
             if (t < sum + tValues[i])//t value is between these points
-                return Vector2.Lerp(GetPathPos(i), GetPathPos(i+1), (t-sum)/tValues[i]);//calculate scaled t Value
+                return Vector2.Lerp(GetPathPos(i), GetPathPos(i + 1), (t - sum) / tValues[i]);//calculate scaled t Value
             sum += tValues[i];
         }
         Debug.LogError("Path Position Calculation failed");
@@ -57,25 +62,29 @@ public class MovableObject : MonoBehaviour, IPlayerGround
 
     private float DistToPercent(float dist) { return dist / distSum; }
     private void MoveAlongPath(float speed, float deltatime)
-    {   
+    {
         float dt = DistToPercent(speed * deltatime);//get the change in t
         currentT += dt;
 
         const float maxT = 0.99f;
-        float loopT = maxT - Mathf.Abs((currentT % 2)*maxT - maxT);
+        float loopT = maxT - Mathf.Abs((currentT % 2) * maxT - maxT);
 
         nextPos = GetPathPos(loopT);
     }
 
     Vector2 nextPos;
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         MoveToPos(nextPos, Time.fixedDeltaTime);
         MoveAlongPath(speed, Time.fixedDeltaTime);
     }
 
 
-    void IPlayerGround.OnPlayerStand(MovementController player) {
+    void IPlayerGround.OnPlayerStand(MovementController player)
+    {
         Vector2 move = nextPos - rig.position;
-        player.rig.position += move;
+        var vel = player.velocity;
+        vel += new Vector3(move.x, move.y, 0);
+        player.velocity = move;
     }
 }

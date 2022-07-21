@@ -21,7 +21,11 @@ public class AbilityController : MonoBehaviour
     private PollingStation station;
     private Queue<int> queuedAbilitiesToUse;
     private bool diceRollInput;
-    private int currentAbilityUseCount;
+
+    public int currentAbilityUseCount { get; private set; }
+
+
+    public bool IsAnAbilityActive { private get; set; }
 
     private void Awake()
     {
@@ -31,15 +35,21 @@ public class AbilityController : MonoBehaviour
         }
 
         station.abilityController = this;
-        queuedAbilitiesToUse = new Queue<int>();
 
-        station.abilityDisplay.SetHotbarActive(false, 0.15f, true);
-        currentAbilityUseCount = maxAbilityUseCount;
-
-        StartCoroutine(CustomUpdate());
 
     }
 
+    private void Start()
+    {
+        queuedAbilitiesToUse = new Queue<int>();
+
+
+        currentAbilityUseCount = maxAbilityUseCount;
+
+
+
+        StartCoroutine(CustomUpdate());
+    }
 
     void ModifyTimeScale(float scale)
     {
@@ -50,12 +60,16 @@ public class AbilityController : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log($"Ability Controller: {transform.position}");
         if (station.movementController.grounded)
         {
             currentAbilityUseCount = maxAbilityUseCount;
+            Debug.Log("Resetting Ability Count");
         }
 
         diceRollInput = station.inputManager.GetButton(InputManager.InputPreset.DiceRoll) && currentAbilityUseCount > 0 && !station.movementController.grounded;
+
+
     }
     private IEnumerator CustomUpdate()
     {
@@ -72,7 +86,7 @@ public class AbilityController : MonoBehaviour
                     ScrollThroughAbilities(ref selectedAbility);
                     yield return null;
                 }
-                station.abilityDisplay.SetHotbarActive(false, 0.15f);
+                station.abilityDisplay.SetHotbarActive(false, 0.15f, true);
                 ModifyTimeScale(defaultScale);
                 if (abilities[selectedAbility].abilityType == ScriptableAbility.AbilityType.Jump)
                     queuedAbilitiesToUse.Enqueue(selectedAbility);
@@ -99,10 +113,10 @@ public class AbilityController : MonoBehaviour
 
     public void ExecuteQueuedAbility()
     {
-        if (HasQueuedAbilities())
+        if (HasQueuedAbilities() && !IsAnAbilityActive)
         {
-            var ability = queuedAbilitiesToUse.Peek();
-            abilities[ability].OnAbilityEffect(station, true);
+            var ability = queuedAbilitiesToUse.Dequeue();
+            StartCoroutine(abilities[ability].OnAbilityEffect(station));
         }
     }
 
