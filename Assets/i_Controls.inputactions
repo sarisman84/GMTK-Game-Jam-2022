@@ -112,7 +112,7 @@
                 {
                     "name": "negative",
                     "id": "95d32c86-d8bc-4701-aa0c-bb104daed62d",
-                    "path": "<Keyboard>/u",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
@@ -123,7 +123,7 @@
                 {
                     "name": "positive",
                     "id": "d4fa63e9-8975-4def-a1cb-783585588ca4",
-                    "path": "<Keyboard>/i",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
@@ -160,6 +160,39 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
+                    "action": "SelectAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Selection (U/I)",
+                    "id": "6383749a-ffc7-4c3e-89d3-8d55e207304d",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectAbility",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "9ebdccbe-5eba-4e46-a12a-90cdff6158ce",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "dcc0870a-5d9f-4790-a3ce-a8f5e7d2e9cf",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "SelectAbility",
                     "isComposite": false,
                     "isPartOfComposite": true

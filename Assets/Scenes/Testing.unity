@@ -1537,58 +1537,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1282106383051269008, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 831
-      objectReference: {fileID: 0}
-    - target: {fileID: 1282106383051269008, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 363
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: upGravity
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: jumpHeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: koyoteTime
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: fallGravity
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: acceleration
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: decceleration
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: lowJumpGravity
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: groundCheckOffset
-      value: 0.87
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: groundCheckSize.x
-      value: 1.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: groundCheckSize.y
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: groundCheckMask.m_Bits
-      value: 55
-      objectReference: {fileID: 0}
     - target: {fileID: 2082042532258748998, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: m_Name
       value: p_Player
@@ -1636,14 +1584,6 @@ PrefabInstance:
     - target: {fileID: 2082042532258748999, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3239746541556483837, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: m_fontSize
-      value: 45.73
-      objectReference: {fileID: 0}
-    - target: {fileID: 3239746541556483837, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: m_fontSizeMin
-      value: 45.73
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}

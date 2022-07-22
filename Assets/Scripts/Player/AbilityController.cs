@@ -77,14 +77,17 @@ public class AbilityController : MonoBehaviour
         {
             if (diceRollInput)
             {
-                station.abilityDisplay.SetHotbarActive(true, 0.15f);
+                station.abilityDisplay.SetHotbarActive(true, 0.15f * Time.unscaledDeltaTime);
                 ModifyTimeScale(slowMotionModifier);
                 int selectedAbility = 0;
-                station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f);
+                station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f * Time.unscaledDeltaTime);
+                const float refreshRate = 1f / 60f;
                 while (diceRollInput)
                 {
+
                     ScrollThroughAbilities(ref selectedAbility);
-                    yield return null;
+                    yield return new WaitForSecondsRealtime(refreshRate);
+
                 }
                 station.abilityDisplay.SetHotbarActive(false, 0.15f, true);
                 ModifyTimeScale(defaultScale);
@@ -128,7 +131,8 @@ public class AbilityController : MonoBehaviour
         {
             selectedAbility += input;
             selectedAbility = selectedAbility < 0 ? abilities.Count - 1 : selectedAbility >= abilities.Count ? 0 : selectedAbility;
-            station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f);
+            station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f * Time.unscaledDeltaTime);
+            Debug.Log($"Selecting Ability: {selectedAbility}");
         }
 
     }

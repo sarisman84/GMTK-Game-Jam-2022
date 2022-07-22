@@ -33,8 +33,11 @@ public class AbilityDisplay : MonoBehaviour
         {
             GameObject obj = Instantiate(abilityDisplayPrefab, transform);
             foundImageIcons.Add(obj.GetComponentsInChildren<Image>()[0]);
+
             foundImageSelectionIndicators.Add(obj.GetComponentsInChildren<Image>()[1]);
             foundLabels.Add(obj.GetComponentInChildren<TMPro.TextMeshProUGUI>());
+
+            foundImageIcons[i].sprite = abilities[i].abilityIcon;
             foundLabels[i].text = abilities[i].abilityLabel;
         }
 
