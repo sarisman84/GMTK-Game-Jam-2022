@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c285cab2f7581c4ab03788a1a2d0a35, type: 3}
   m_Name: s_HighJump
   m_EditorClassIdentifier: 
-  jumpForce: {x: 0, y: 20}
-  pushForceDamp: 0.1
+  abilityType: 0
+  abilityIcon: {fileID: 0}
+  abilityLabel: High Jump
+  jumpHeight: 8
+  jumpForceX: 0
+  XForceDamp: 0

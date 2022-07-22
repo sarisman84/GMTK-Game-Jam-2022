@@ -30,14 +30,7 @@ public class MovementController : MonoBehaviour
 
     public event ModifyVelocity onVelocityModifier;
     public Vector3 velocity { get; set; }
-    public float jumpForce
-    {
-        get
-        {
-            var result = Mathf.Sqrt(jumpHeight * -2f * -gravity);
-            return result;
-        }
-    }
+    public float jumpForce{get{ return HeightToForce(jumpHeight); }}
 
     public bool grounded
     {
@@ -64,9 +57,15 @@ public class MovementController : MonoBehaviour
     }
 
     private float horizontalInput { get; set; }
+    public float facingDir { get; private set; }
     private bool jumpInput { get; set; }
     private float currentKoyoteTime { get; set; }
     private bool hasAlreadyJumped { get; set; }
+
+
+    public float HeightToForce(float height) {
+        return Mathf.Sqrt(height * 2f * upGravity);//returns initial upwards force required to reach given height
+    }
 
 
     private void Awake()
@@ -138,6 +137,9 @@ public class MovementController : MonoBehaviour
         if (onVelocityModifier != null && onVelocityModifier.GetInvocationList().Length > 0)
             onVelocityModifier(ref vel);
         velocity = vel;
+
+        facingDir = vel.x*vel.x > 0.01 ? facingDir : Mathf.Sign(vel.x);//update facing direction
+
         ApplyGravity();
     }
 
