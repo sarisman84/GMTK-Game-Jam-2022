@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Select Test
   m_EditorClassIdentifier: 
   abilityType: 1
-  abilityIcon: {fileID: 0}
-  abilityLabel: 
+  abilityIcon: {fileID: 21300000, guid: 33969955edd01ce40a7dbe5553c35dd3, type: 3}
+  abilityLabel: Wall Jump (Test)

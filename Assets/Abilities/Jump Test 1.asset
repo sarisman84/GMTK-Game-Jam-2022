@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Jump Test 1
   m_EditorClassIdentifier: 
   abilityType: 0
-  abilityIcon: {fileID: 0}
-  abilityLabel: 
+  abilityIcon: {fileID: 21300000, guid: 79ed243ee77154a4a902b523ee10e421, type: 3}
+  abilityLabel: Mega Jump 2
