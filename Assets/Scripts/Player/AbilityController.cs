@@ -60,11 +60,11 @@ public class AbilityController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log($"Ability Controller: {transform.position}");
+        //Debug.Log($"Ability Controller: {transform.position}");
         if (station.movementController.grounded)
         {
             currentAbilityUseCount = maxAbilityUseCount;
-            Debug.Log("Resetting Ability Count");
+            //Debug.Log("Resetting Ability Count");
         }
 
         diceRollInput = station.inputManager.GetButton(InputManager.InputPreset.DiceRoll) && currentAbilityUseCount > 0 && !station.movementController.grounded;

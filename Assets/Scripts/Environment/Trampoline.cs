@@ -7,6 +7,6 @@ public class Trampoline : MonoBehaviour, IPlayerGround
 
     public void OnPlayerStand(MovementController player)
     {
-        player.ApplyForce(Vector3.up, jumpVel);
+        player.ApplyForce(Vector3.up * jumpVel);
     }
 }

@@ -30,6 +30,11 @@ public abstract class ScriptableAbility : ScriptableObject
         station.abilityController.IsAnAbilityActive = false;
     }
 
+
+    public static void DampValue(ref float value, float damp) {
+        value = Mathf.Lerp(0, value, damp);//usage of a more performant method
+        //value *= Mathf.Pow(value, Time.fixedDeltaTime);
+    }
 }
 
 
