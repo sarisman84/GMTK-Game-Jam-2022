@@ -17,4 +17,5 @@ MonoBehaviour:
   abilityLabel: Long Jump
   jumpHeight: 2
   jumpForceX: 6
-  XForceDamp: 0.1
+  XForceDamp: 0.98
+  minXVel: 1
