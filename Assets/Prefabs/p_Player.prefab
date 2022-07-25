@@ -647,9 +647,8 @@ MonoBehaviour:
   slowMotionModifier: 0.05
   maxAbilityUseCount: 3
   abilities:
-  - {fileID: 11400000, guid: 152cd1ee89c9fd14ebad6bd15706eb63, type: 2}
-  - {fileID: 11400000, guid: 3256e86bdf7fb7941a18bb0bffd5ab44, type: 2}
-  - {fileID: 11400000, guid: eea584022748459488cf7bf72d8fb05b, type: 2}
+  - {fileID: 11400000, guid: f2e80feebc01fdc40a5fcd41eafa971e, type: 2}
+  - {fileID: 11400000, guid: 3cb73e9643a563c40ba0f7d201745945, type: 2}
 --- !u!50 &2082042531145583892
 Rigidbody2D:
   serializedVersion: 4
@@ -686,13 +685,14 @@ MonoBehaviour:
   movementSpeed: 10
   acceleration: 10
   decceleration: 10
-  jumpHeight: 1
-  koyoteTime: 0.1
+  jumpHeight: 8
+  jumpBufferTime: 0.1
+  koyoteTime: 0.3
   fallGravity: 100
   lowJumpGravity: 200
   upGravity: 50
-  groundCheckOffset: 0.87
-  groundCheckSize: {x: 1.6, y: 0.05}
+  groundCheckOffset: -0.82
+  groundCheckSize: {x: 1.9, y: 0.02}
   groundCheckMask:
     serializedVersion: 2
     m_Bits: 55
@@ -1128,7 +1128,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3305786, y: 1}
+    m_SensorSize: {x: 3.0521472, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

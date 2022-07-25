@@ -19,7 +19,7 @@ public class TestJump : ScriptableAbility
     protected override void OnActivation(PollingStation station)
     {
         Debug.Log("TestJump Executed!");
-        station.movementController.ApplyForce(Vector3.up, 100);
+        station.movementController.ApplyForce(Vector3.up * 100);
         //jump
 
         //player.jumpPress = 0;//dequeue jump
@@ -32,5 +32,7 @@ public class TestJump : ScriptableAbility
     {
 
     }
+
+    public override void OnCustomDrawGizmos(MovementController player) { }
 }
 

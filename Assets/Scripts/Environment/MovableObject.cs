@@ -83,8 +83,8 @@ public class MovableObject : MonoBehaviour, IPlayerGround
     void IPlayerGround.OnPlayerStand(MovementController player)
     {
         Vector2 move = nextPos - rig.position;
-        var vel = player.velocity;
-        vel += new Vector3(move.x, move.y, 0);
+        //var vel = player.velocity;
+        //vel += new Vector2(move.x, move.y);
         player.velocity = move;
     }
 }

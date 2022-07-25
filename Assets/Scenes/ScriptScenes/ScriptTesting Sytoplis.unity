@@ -900,36 +900,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: abilities.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: abilities.Array.data[0]
       value: 
+      objectReference: {fileID: 11400000, guid: 3cb73e9643a563c40ba0f7d201745945, type: 2}
+    - target: {fileID: 2082042531145583890, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
+      propertyPath: abilities.Array.data[1]
+      value: 
       objectReference: {fileID: 11400000, guid: f2e80feebc01fdc40a5fcd41eafa971e, type: 2}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: jumpHeight
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: koyoteTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: groundCheckOffset
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: groundCheckSize.x
-      value: 1.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: groundCheckSize.y
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 2082042531145583891, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
-      propertyPath: groundCheckMask.m_Bits
-      value: 55
-      objectReference: {fileID: 0}
     - target: {fileID: 2082042532258748998, guid: 418acf6632b5ae641aede8fcd417b6b1, type: 3}
       propertyPath: m_Name
       value: p_Player

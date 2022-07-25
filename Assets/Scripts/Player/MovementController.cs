@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public delegate void ModifyVelocity(ref Vector3 velocity);
+public delegate void ModifyVelocity(ref Vector2 velocity, MovementController player);
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovementController : MonoBehaviour
@@ -11,7 +11,11 @@ public class MovementController : MonoBehaviour
     public float movementSpeed = 10;
     public float acceleration = 10, decceleration = 10;
     public float jumpHeight;
+    public float jumpBufferTime;
     public float koyoteTime;
+
+
+    [Space]
 
     public float fallGravity;
     public float lowJumpGravity;
@@ -29,8 +33,8 @@ public class MovementController : MonoBehaviour
 
 
     public event ModifyVelocity onVelocityModifier;
-    public Vector3 velocity { get; set; }
-    public float jumpForce{get{ return HeightToForce(jumpHeight); }}
+    public Vector2 velocity { get; set; }
+    public float jumpForce{get{ return HeightToForce(jumpHeight, upGravity); }}
 
     public bool grounded
     {
@@ -42,9 +46,9 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    private Vector3 groundCheckPos => transform.position + Vector3.up * -groundCheckOffset;
+    private Vector3 groundCheckPos => transform.position + transform.up * (groundCheckOffset - 0.5f * groundCheckSize.y);
 
-    private float gravity
+    public float gravity
     {
         get
         {
@@ -57,14 +61,13 @@ public class MovementController : MonoBehaviour
     }
 
     private float horizontalInput { get; set; }
-    public float facingDir { get; private set; }
-    private bool jumpInput { get; set; }
-    private float currentKoyoteTime { get; set; }
-    private bool hasAlreadyJumped { get; set; }
+    public float facingDir { get; set; } = 1;
+    public float jumpInput { get; private set; }
+    public float currentKoyoteTime { get; private set; }
 
 
-    public float HeightToForce(float height) {
-        return Mathf.Sqrt(height * 2f * upGravity);//returns initial upwards force required to reach given height
+    public static float HeightToForce(float height, float gravity) {
+        return Mathf.Sqrt(height * 2f * gravity);//returns initial upwards force required to reach given height based on a inputed average gravtity
     }
 
 
@@ -77,7 +80,7 @@ public class MovementController : MonoBehaviour
 
         station.movementController = this;
         rig = GetComponent<Rigidbody2D>();
-        velocity = Vector3.zero;
+        velocity = Vector2.zero;
     }
 
 
@@ -87,14 +90,7 @@ public class MovementController : MonoBehaviour
         Gizmos.DrawWireCube(groundCheckPos, groundCheckSize);
     }
 
-
-    public void ApplyForce(Vector3 aDirection, float aForce)
-    {
-        var vel = velocity;
-        vel += aDirection * aForce;
-        velocity = vel;
-    }
-
+    public void ApplyForce(Vector2 force){ velocity += force; }
 
     private void ApplyGravity()
     {
@@ -109,56 +105,56 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         horizontalInput = station.inputManager.GetSingleAxis(InputManager.InputPreset.Movement);
-        jumpInput = station.inputManager.GetButton(InputManager.InputPreset.Jump) && currentKoyoteTime > 0;
+        facingDir = Mathf.Abs(horizontalInput) > 0 ? Mathf.Sign(horizontalInput) : facingDir;//update facing direction
+
+        if (station.inputManager.GetButton(InputManager.InputPreset.Jump))
+            jumpInput = jumpBufferTime;
+        else
+            jumpInput -= Time.deltaTime;
     }
 
 
     private void FixedUpdate()
     {
-        UpdateVelocity();
-        TryJumping();
-
-        var value = new Vector2(velocity.x, velocity.y);
-        rig.velocity = value;
-
         if (grounded)
             currentKoyoteTime = koyoteTime;
         else
             currentKoyoteTime -= Time.fixedDeltaTime;
+
+        UpdateVelocity();
+        rig.velocity = velocity;
     }
 
     private void UpdateVelocity()
     {
-        var vel = velocity;
+        ApplyGravity();
+        if (jumpInput > 0 && currentKoyoteTime > 0)
+            Jump(jumpForce);
+
+        Vector2 vel = velocity;
         if (horizontalInput == 0)
             vel.x = Mathf.Lerp(vel.x, 0, decceleration * Time.fixedDeltaTime);
         else
             vel.x = Mathf.Lerp(vel.x, horizontalInput * movementSpeed, acceleration * Time.fixedDeltaTime);
         if (onVelocityModifier != null && onVelocityModifier.GetInvocationList().Length > 0)
-            onVelocityModifier(ref vel);
+            onVelocityModifier(ref vel, this);
         velocity = vel;
-
-        facingDir = vel.x*vel.x > 0.01 ? facingDir : Mathf.Sign(vel.x);//update facing direction
-
-        ApplyGravity();
     }
 
-    private void TryJumping()
+    public void Jump(float noAbilityJumpForce)
     {
-        if (jumpInput && grounded)
-        {
-            Debug.Log("Jumping!");
+        jumpInput = 0;
+        currentKoyoteTime = 0;
 
-            if (station.abilityController.HasQueuedAbilities())
-                station.abilityController.ExecuteQueuedAbility();
-            else
-                ApplyForce(Vector3.up, jumpForce);
-        }
+        if (station.abilityController.HasQueuedAbilities())
+            station.abilityController.ExecuteQueuedAbility();
+        else
+            ApplyForce(Vector2.up * noAbilityJumpForce);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (velocity.y > 0 && rig.velocity.y < 0.01f) velocity = new Vector3(velocity.x, 0, velocity.z);//stop moving up, when you hit a ceiling
+        if (velocity.y > 0 && rig.velocity.y < 0.01f) velocity = new Vector2(velocity.x, 0);//stop moving up, when you hit a ceiling
     }
 
     //void UpdateGravity()
@@ -240,16 +236,11 @@ public class MovementController : MonoBehaviour
     //    rig = GetComponent<Rigidbody2D>();
     //    jumpOverride = new Stack<System.Action<MovementController>>();
 
-
-
     //    playerSoundManager = GetComponent<PlayerSoundManager>();
     //}
 
     //void Update()
     //{
-
-
-
     //    move = station.inputManager.GetSingleAxis(InputManager.InputPreset.Movement);
     //    if (!takeInput) move = 0;
 
@@ -262,20 +253,12 @@ public class MovementController : MonoBehaviour
     //    {
     //        jumpPress = jumpSave;//start timer to count down from jumpSave
     //    }
-
-
-
     //}
 
     //public bool IsGroundedTimer() { return groundedTimer > 0; }
 
     //private void FixedUpdate()
     //{
-
-
-
-
-
     //    if (takeInput)
     //        vel.x = move * moveSpeed;
 
@@ -324,34 +307,5 @@ public class MovementController : MonoBehaviour
     //    IPlayerGround ground = groundOverlap.GetComponent<IPlayerGround>();
     //    if (ground != null)
     //        ground.OnPlayerStand(this);
-    //}
-
-
-    //public void Jump(float jumpForce)
-    //{
-
-    //    // Keep track of the jump count
-    //    jumpCount++;
-
-    //    //// Play sound
-    //    //playerSoundManager.Play(SoundType.Jump);
-
-    //    if (jumpOverride.Count > 0)
-    //        jumpOverride.Pop().Invoke(this);
-    //    else
-    //        vel.y = jumpForce;
-    //}
-
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-
-    //    if (vel.y > 0 && rig.velocity.y < 0.01f) vel.y = 0;//stop moving up, when you hit a ceiling
-    //}
-
-    //private void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireCube(transform.position + Vector3.up * (groundedYOffset - 0.5f * groundedSize.y), groundedSize);
-    //    Gizmos.DrawWireCube(transform.position + Vector3.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * facingDir, wallCheckSize);
     //}
 }

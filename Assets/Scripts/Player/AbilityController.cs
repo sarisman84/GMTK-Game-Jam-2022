@@ -60,11 +60,11 @@ public class AbilityController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log($"Ability Controller: {transform.position}");
+        //Debug.Log($"Ability Controller: {transform.position}");
         if (station.movementController.grounded)
         {
             currentAbilityUseCount = maxAbilityUseCount;
-            Debug.Log("Resetting Ability Count");
+            //Debug.Log("Resetting Ability Count");
         }
 
         diceRollInput = station.inputManager.GetButton(InputManager.InputPreset.DiceRoll) && currentAbilityUseCount > 0 && !station.movementController.grounded;
@@ -82,13 +82,11 @@ public class AbilityController : MonoBehaviour
                 ModifyTimeScale(slowMotionModifier);
                 int selectedAbility = 0;
                 station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f * Time.unscaledDeltaTime);
-                const float refreshRate = 1f / 60f;
                 while (diceRollInput)
                 {
 
                     ScrollThroughAbilities(ref selectedAbility);
-                    yield return new WaitForSecondsRealtime(refreshRate);
-
+                    yield return new WaitForEndOfFrame();//sync this loop to the frames to catch every input
                 }
                 //station.musicManager.EditCurrentMusicParams("Freeze Time", 0);
                 station.abilityDisplay.SetHotbarActive(false, 0.15f, true);
@@ -96,7 +94,7 @@ public class AbilityController : MonoBehaviour
                 if (abilities[selectedAbility].abilityType == ScriptableAbility.AbilityType.Jump)
                     queuedAbilitiesToUse.Enqueue(selectedAbility);
                 else
-                    abilities[selectedAbility].OnAbilityEffect(station);
+                    StartCoroutine(abilities[selectedAbility].OnAbilityEffect(station));
                 currentAbilityUseCount--;
 
             }
@@ -138,4 +136,17 @@ public class AbilityController : MonoBehaviour
         }
 
     }
+
+
+    #if UNITY_EDITOR
+    MovementController player_cache;
+    private void OnDrawGizmos() {
+        if (!player_cache)
+            player_cache = FindObjectOfType<MovementController>();
+
+        foreach(ScriptableAbility ability in abilities) {
+            ability.OnCustomDrawGizmos(player_cache);
+        }
+    }
+    #endif
 }
