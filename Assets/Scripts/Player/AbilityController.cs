@@ -136,4 +136,17 @@ public class AbilityController : MonoBehaviour
         }
 
     }
+
+
+    #if UNITY_EDITOR
+    MovementController player_cache;
+    private void OnDrawGizmos() {
+        if (!player_cache)
+            player_cache = FindObjectOfType<MovementController>();
+
+        foreach(ScriptableAbility ability in abilities) {
+            ability.OnCustomDrawGizmos(player_cache);
+        }
+    }
+    #endif
 }

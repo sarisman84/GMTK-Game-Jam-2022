@@ -43,4 +43,8 @@ public class ChargedJump : ScriptableAbility
         Debug.Log("deactivate");
         station.movementController.onVelocityModifier -= AddXJump;
     }
+
+
+
+    public override void OnCustomDrawGizmos(MovementController player) { }
 }

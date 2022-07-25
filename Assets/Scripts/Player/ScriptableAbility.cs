@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using System.Collections;
 
 public abstract class ScriptableAbility : ScriptableObject
@@ -29,6 +28,9 @@ public abstract class ScriptableAbility : ScriptableObject
         OnDeactivation(station);
         station.abilityController.IsAnAbilityActive = false;
     }
+
+
+    public abstract void OnCustomDrawGizmos(MovementController player);
 
 
     public static void DampValue(ref float value, float damp) {

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Test Ability", menuName = "Abilities/Test/Select", order = 0)]
 public class TestSelect : ScriptableAbility
@@ -18,4 +17,7 @@ public class TestSelect : ScriptableAbility
     {
 
     }
+
+
+    public override void OnCustomDrawGizmos(MovementController player) { }
 }

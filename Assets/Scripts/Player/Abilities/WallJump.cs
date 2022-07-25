@@ -18,7 +18,7 @@ public class WallJump : ScriptableAbility {
 
 
 
-    public Vector3 WallCheckPos(MovementController player) { return player.transform.position + player.transform.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * player.facingDir; }
+    public Vector2 WallCheckPos(MovementController player) { return player.transform.position + player.transform.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * player.facingDir; }
     public bool OnWall(MovementController player) {
         return Physics2D.OverlapBox(WallCheckPos(player), wallCheckSize, player.transform.eulerAngles.z, player.groundCheckMask);//use the facing direction to check the right direction for a wall jump 
     }
@@ -40,7 +40,9 @@ public class WallJump : ScriptableAbility {
         player.onVelocityModifier += AddXJump;
     }
 
-    protected override void OnActivation(PollingStation station) {}
+    protected override void OnActivation(PollingStation station) {
+        Debug.Log("WallJump");
+    }
 
     protected override void OnDeactivation(PollingStation station) {}
 
@@ -56,5 +58,12 @@ public class WallJump : ScriptableAbility {
             player.onVelocityModifier -= WallSlide;
         }
         return true;
+    }
+
+
+
+    public override void OnCustomDrawGizmos(MovementController player) {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(WallCheckPos(player), wallCheckSize);
     }
 }

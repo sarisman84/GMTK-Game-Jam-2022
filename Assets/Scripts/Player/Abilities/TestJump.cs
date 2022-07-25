@@ -32,5 +32,7 @@ public class TestJump : ScriptableAbility
     {
 
     }
+
+    public override void OnCustomDrawGizmos(MovementController player) { }
 }
 

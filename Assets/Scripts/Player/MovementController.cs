@@ -61,7 +61,7 @@ public class MovementController : MonoBehaviour
     }
 
     private float horizontalInput { get; set; }
-    public float facingDir { get; private set; }
+    public float facingDir { get; private set; } = 1;
     public float jumpInput { get; private set; }
     public float currentKoyoteTime { get; private set; }
 
