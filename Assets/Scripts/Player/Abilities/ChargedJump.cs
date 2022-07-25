@@ -6,7 +6,7 @@ public class ChargedJump : ScriptableAbility
     public float jumpHeight;
 
     public float jumpForceX;
-    public float XForceDamp = 0.1f;
+    public float XForceDamp = 0.98f;
     public float minXVel = 0.1f;
     private float addVelX;
 

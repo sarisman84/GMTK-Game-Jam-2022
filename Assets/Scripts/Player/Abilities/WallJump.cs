@@ -8,15 +8,16 @@ public class WallJump : ScriptableAbility {
 
     [Space]
 
-    public float wallSlideVel = 1;
+    public float wallSlideVel = 3;
 
     [Space]
 
     public float jumpForceX;
-    public float XForceDamp = 0.1f;
+    public float XForceDamp = 0.98f;
+    public float minXVel = 0.1f;
     private float addVelX;
 
-
+    private bool onWall = false;
 
     public Vector2 WallCheckPos(MovementController player) { return player.transform.position + player.transform.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * player.facingDir; }
     public bool OnWall(MovementController player) {
@@ -27,16 +28,27 @@ public class WallJump : ScriptableAbility {
     public void AddXJump(ref Vector2 vel, MovementController player) {
         vel.x += addVelX;
         DampValue(ref addVelX, XForceDamp);
+
+        if (Mathf.Abs(addVelX) < minXVel)//if AddXJump is done
+            player.onVelocityModifier -= AddXJump;//remove it
     }
     public void WallSlide(ref Vector2 vel, MovementController player) {
+        if (!onWall) {
+            player.onVelocityModifier -= WallSlide;
+            return;
+        }
+
+
         if (!player.grounded && vel.y < 0)
-            vel.y = wallSlideVel;//override gravity with slide velocity
+            vel.y = -wallSlideVel;//override gravity with slide velocity          
     }
     #endregion
 
     public void Jump(MovementController player) {
+        player.facingDir *= -1;
+
         player.Jump(player.jumpForce);
-        addVelX = jumpForceX * -player.facingDir;
+        addVelX = jumpForceX * player.facingDir;
         player.onVelocityModifier += AddXJump;
     }
 
@@ -44,18 +56,22 @@ public class WallJump : ScriptableAbility {
         Debug.Log("WallJump");
     }
 
-    protected override void OnDeactivation(PollingStation station) {}
+    protected override void OnDeactivation(PollingStation station) {
+        onWall = false;
+        station.movementController.onVelocityModifier -= WallSlide;
+    }
 
     protected override bool OnFixedUpdate(PollingStation station) {
         MovementController player = station.movementController;
 
-        if (OnWall(player)) {
+        onWall = OnWall(player);
+        if (onWall) {
             player.onVelocityModifier += WallSlide;
-            if (player.jumpInput > 0 && player.currentKoyoteTime == 0)//if player cant jump of the ground, but gives a jump input
+            if (station.inputManager.GetButton(InputManager.InputPreset.Jump) && player.currentKoyoteTime <= 0) {//if player cant jump of the ground, but gives a jump input
+                Debug.Log("Jump of the wall");
                 Jump(player);
-        }
-        else {
-            player.onVelocityModifier -= WallSlide;
+                return false;
+            }
         }
         return true;
     }

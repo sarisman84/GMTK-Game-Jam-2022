@@ -17,6 +17,7 @@ MonoBehaviour:
   abilityLabel: Wall Jump
   wallCheckXOffset: 1
   wallCheckSize: {x: 0.1, y: 1}
-  wallSlideVel: 1
-  jumpForceX: 0
-  XForceDamp: 0.1
+  wallSlideVel: 3
+  jumpForceX: 4
+  XForceDamp: 0.96
+  minXVel: 0.3

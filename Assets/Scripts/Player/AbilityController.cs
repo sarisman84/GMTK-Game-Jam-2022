@@ -81,20 +81,18 @@ public class AbilityController : MonoBehaviour
                 ModifyTimeScale(slowMotionModifier);
                 int selectedAbility = 0;
                 station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f * Time.unscaledDeltaTime);
-                const float refreshRate = 1f / 60f;
                 while (diceRollInput)
                 {
 
                     ScrollThroughAbilities(ref selectedAbility);
-                    yield return new WaitForSecondsRealtime(refreshRate);
-
+                    yield return new WaitForEndOfFrame();//sync this loop to the frames to catch every input
                 }
                 station.abilityDisplay.SetHotbarActive(false, 0.15f, true);
                 ModifyTimeScale(defaultScale);
                 if (abilities[selectedAbility].abilityType == ScriptableAbility.AbilityType.Jump)
                     queuedAbilitiesToUse.Enqueue(selectedAbility);
                 else
-                    abilities[selectedAbility].OnAbilityEffect(station);
+                    StartCoroutine(abilities[selectedAbility].OnAbilityEffect(station));
                 currentAbilityUseCount--;
 
             }

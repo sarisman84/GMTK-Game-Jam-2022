@@ -61,7 +61,7 @@ public class MovementController : MonoBehaviour
     }
 
     private float horizontalInput { get; set; }
-    public float facingDir { get; private set; } = 1;
+    public float facingDir { get; set; } = 1;
     public float jumpInput { get; private set; }
     public float currentKoyoteTime { get; private set; }
 
@@ -105,8 +105,7 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         horizontalInput = station.inputManager.GetSingleAxis(InputManager.InputPreset.Movement);
-        facingDir = Mathf.Abs(horizontalInput) > 0.1 ? facingDir : Mathf.Sign(horizontalInput);//update facing direction
-
+        facingDir = Mathf.Abs(horizontalInput) > 0 ? Mathf.Sign(horizontalInput) : facingDir;//update facing direction
 
         if (station.inputManager.GetButton(InputManager.InputPreset.Jump))
             jumpInput = jumpBufferTime;
@@ -146,7 +145,6 @@ public class MovementController : MonoBehaviour
     {
         jumpInput = 0;
         currentKoyoteTime = 0;
-        Debug.Log("Jumping!");
 
         if (station.abilityController.HasQueuedAbilities())
             station.abilityController.ExecuteQueuedAbility();
