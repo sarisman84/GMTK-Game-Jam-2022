@@ -5,7 +5,7 @@ public class PollingStation : MonoBehaviour
     //everyone references the pollingstation oj -> access to the manager
 
     [HideInInspector] public InputManager inputManager;
-    [HideInInspector] public MusicManager musicManager;
+    [HideInInspector] public AudioManager musicManager;
     [HideInInspector] public ParticleManager particleManager;
 
     [HideInInspector] public AbilityDisplay abilityDisplay;
@@ -45,7 +45,7 @@ public class PollingStation : MonoBehaviour
 
         //fetch the Managers in the children -> easy to access
         inputManager = GetComponentInChildren<InputManager>();
-        musicManager = GetComponentInChildren<MusicManager>();
+        musicManager = GetComponentInChildren<AudioManager>();
         particleManager = GetComponentInChildren<ParticleManager>();
 
 #if UNITY_EDITOR

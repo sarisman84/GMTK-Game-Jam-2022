@@ -77,6 +77,7 @@ public class AbilityController : MonoBehaviour
         {
             if (diceRollInput)
             {
+                //station.musicManager.EditCurrentMusicParams("Freeze Time", 1);
                 station.abilityDisplay.SetHotbarActive(true, 0.15f * Time.unscaledDeltaTime);
                 ModifyTimeScale(slowMotionModifier);
                 int selectedAbility = 0;
@@ -89,6 +90,7 @@ public class AbilityController : MonoBehaviour
                     yield return new WaitForSecondsRealtime(refreshRate);
 
                 }
+                //station.musicManager.EditCurrentMusicParams("Freeze Time", 0);
                 station.abilityDisplay.SetHotbarActive(false, 0.15f, true);
                 ModifyTimeScale(defaultScale);
                 if (abilities[selectedAbility].abilityType == ScriptableAbility.AbilityType.Jump)

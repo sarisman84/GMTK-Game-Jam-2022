@@ -3,13 +3,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Changed Jump", menuName = "Abilities/Changed Jump", order = 3)]
 public class ChangedJump : ScriptableAbility
 {
+    public enum JumpDirection
+    {
+        Vertical, Horizontal
+    }
+    public JumpDirection direction;
     public float jumpHeight;
 
     public float jumpForceX;
     public float XForceDamp = 0.1f;
     private float addVelX;
 
-    public void ModifyVelocity(ref Vector3 vel) {
+    public void ModifyVelocity(ref Vector3 vel)
+    {
         vel.x += addVelX;
         addVelX *= Mathf.Pow(XForceDamp, Time.fixedDeltaTime);//TODO: maybe use a more performant method here
     }
@@ -20,9 +26,12 @@ public class ChangedJump : ScriptableAbility
         MovementController player = station.movementController;
 
         float jumpForceY = player.HeightToForce(jumpHeight);
+        player.ApplyForce(direction == JumpDirection.Vertical ? Vector3.up : (Vector3.up + new Vector3(player.facingDir, 0, 0)).normalized, jumpForceY);
 
-        addVelX = jumpForceX * player.facingDir;
-        player.onVelocityModifier += ModifyVelocity;
+
+
+        //addVelX = jumpForceX * player.facingDir;
+        //player.onVelocityModifier += ModifyVelocity;
     }
 
     public void OnEndEffect(MovementController player)
@@ -32,7 +41,7 @@ public class ChangedJump : ScriptableAbility
 
     protected override bool OnFixedUpdate(PollingStation station)
     {
-        return addVelX*addVelX > 0.001f;//if modifying the velocity is still necessary
+        return addVelX * addVelX > 0.001f;//if modifying the velocity is still necessary
     }
 
     protected override void OnDeactivation(PollingStation station)
