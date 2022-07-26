@@ -19,10 +19,6 @@ public class WallJump : ScriptableAbility {
 
     private bool onWall = false;
 
-    [Space]
-
-    public float maxYVel = 30;
-
     public Vector2 WallCheckPos(MovementController player) { return player.transform.position + player.transform.right * (wallCheckXOffset + 0.5f * wallCheckSize.x) * player.facingDir; }
     public bool OnWall(MovementController player) {
         return Physics2D.OverlapBox(WallCheckPos(player), wallCheckSize, player.transform.eulerAngles.z, player.groundCheckMask);//use the facing direction to check the right direction for a wall jump 
@@ -52,9 +48,7 @@ public class WallJump : ScriptableAbility {
     public void Jump(MovementController player) {
         player.facingDir *= -1;
 
-        player.Jump(player.jumpForce);//TODO: check force
-
-        player.velocity = new Vector2(player.velocity.x, Mathf.Min(player.velocity.y, maxYVel));//TODO: make maxYVel adaptive to the current y-axis jump force of the player
+        player.Jump(player.jumpForce);
 
         addVelX = jumpForceX * player.facingDir;
         player.onVelocityModifier += AddXJump;
@@ -77,7 +71,7 @@ public class WallJump : ScriptableAbility {
         if (onWall) {
             player.enableJump = false;
             player.onVelocityModifier += WallSlide;
-            if (station.inputManager.GetButton(InputManager.InputPreset.Jump) && player.currentKoyoteTime <= 0) {//if player cant jump of the ground, but gives a jump input  
+            if (station.inputManager.GetButton(InputManager.InputPreset.Jump)) {//perform jump here, cause it is disabled on the MovementController
                 Debug.Log("Jump of the wall");
                 Jump(player);
                 return false;

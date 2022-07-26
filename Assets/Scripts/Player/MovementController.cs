@@ -67,6 +67,7 @@ public class MovementController : MonoBehaviour
     public float jumpInput { get; private set; }
     public bool jumpPress { get; private set; }
     public float currentKoyoteTime { get; private set; }
+    public float maxYVel { get; private set; }
 
     public bool enableJump { get; set; } = true;
 
@@ -87,6 +88,7 @@ public class MovementController : MonoBehaviour
         station.movementController = this;
         rig = GetComponent<Rigidbody2D>();
         velocity = Vector2.zero;
+        maxYVel = jumpForce;
     }
 
 
@@ -171,7 +173,7 @@ public class MovementController : MonoBehaviour
             }
     }
 
-    public void Jump(float noAbilityJumpForce)
+    public void Jump(float jumpForce)
     {
         //This event is used to add effects like audio and particles - Spyro
         if (onJumpEvent != null && onJumpEvent.GetInvocationList().Length > 0)
@@ -179,11 +181,12 @@ public class MovementController : MonoBehaviour
 
         jumpInput = 0;
         currentKoyoteTime = 0;
+        maxYVel = jumpForce;
 
         if (station.abilityController.HasQueuedAbilities())
             station.abilityController.ExecuteQueuedAbility();
         else
-            ApplyForce(Vector2.up * noAbilityJumpForce);
+            ApplyForce(Vector2.up * jumpForce);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
