@@ -10,7 +10,7 @@ using FMODUnity;
 
 public class AbilityController : MonoBehaviour
 {
-    const float defaultScale = 1f;
+    private const float defaultTimeScale = 1f;
 
     public float slowMotionModifier = 0.05f;
     public int maxAbilityUseCount = 3;
@@ -22,6 +22,8 @@ public class AbilityController : MonoBehaviour
     private Queue<int> queuedAbilitiesToUse;
     private bool diceRollInput;
 
+
+    public event Action<PollingStation> onDiceRollBegin, onDiceRollEnd;
     public int currentAbilityUseCount { get; private set; }
 
 
@@ -39,6 +41,18 @@ public class AbilityController : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        onDiceRollBegin += SlowdownTime;
+        onDiceRollEnd += ResetTime;
+    }
+
+    private void OnDisable()
+    {
+        onDiceRollBegin -= SlowdownTime;
+        onDiceRollEnd -= ResetTime;
+    }
+
     private void Start()
     {
         queuedAbilitiesToUse = new Queue<int>();
@@ -51,7 +65,20 @@ public class AbilityController : MonoBehaviour
         StartCoroutine(CustomUpdate());
     }
 
-    void ModifyTimeScale(float scale)
+    void SlowdownTime(PollingStation station)
+    {
+        var abilityController = station.abilityController;
+        abilityController.ModifyTime(abilityController.slowMotionModifier);
+    }
+
+
+    void ResetTime(PollingStation station)
+    {
+        var abilityController = station.abilityController;
+        abilityController.ModifyTime(defaultTimeScale);
+    }
+
+    void ModifyTime(float scale)
     {
         Time.timeScale = scale;
         Time.fixedDeltaTime = scale / 100f;
@@ -77,9 +104,12 @@ public class AbilityController : MonoBehaviour
         {
             if (diceRollInput)
             {
-                //station.musicManager.EditCurrentMusicParams("Freeze Time", 1);
+                if (onDiceRollBegin != null)
+                    onDiceRollBegin(station);
+
+
                 station.abilityDisplay.SetHotbarActive(true, 0.15f * Time.unscaledDeltaTime);
-                ModifyTimeScale(slowMotionModifier);
+
                 int selectedAbility = 0;
                 station.abilityDisplay.UpdateHotbarSelectionIndicator(selectedAbility, 0.15f * Time.unscaledDeltaTime);
                 while (diceRollInput)
@@ -88,14 +118,21 @@ public class AbilityController : MonoBehaviour
                     ScrollThroughAbilities(ref selectedAbility);
                     yield return new WaitForEndOfFrame();//sync this loop to the frames to catch every input
                 }
-                //station.musicManager.EditCurrentMusicParams("Freeze Time", 0);
+
+
+
+                if (onDiceRollEnd != null)
+                    onDiceRollEnd(station);
+
+
                 station.abilityDisplay.SetHotbarActive(false, 0.15f, true);
-                ModifyTimeScale(defaultScale);
+
                 if (abilities[selectedAbility].abilityType == ScriptableAbility.AbilityType.Jump)
                     queuedAbilitiesToUse.Enqueue(selectedAbility);
                 else
                     StartCoroutine(abilities[selectedAbility].OnAbilityEffect(station));
                 currentAbilityUseCount--;
+
 
             }
 
@@ -138,15 +175,17 @@ public class AbilityController : MonoBehaviour
     }
 
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     MovementController player_cache;
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos()
+    {
         if (!player_cache)
             player_cache = FindObjectOfType<MovementController>();
 
-        foreach(ScriptableAbility ability in abilities) {
+        foreach (ScriptableAbility ability in abilities)
+        {
             ability.OnCustomDrawGizmos(player_cache);
         }
     }
-    #endif
+#endif
 }

@@ -32,9 +32,10 @@ public class MovementController : MonoBehaviour
     private Rigidbody2D rig;
 
 
+    public event System.Action<PollingStation> onJumpEvent;
     public event ModifyVelocity onVelocityModifier;
     public Vector2 velocity { get; set; }
-    public float jumpForce{get{ return HeightToForce(jumpHeight, upGravity); }}
+    public float jumpForce { get { return HeightToForce(jumpHeight, upGravity); } }
 
     public bool grounded
     {
@@ -66,7 +67,8 @@ public class MovementController : MonoBehaviour
     public float currentKoyoteTime { get; private set; }
 
 
-    public static float HeightToForce(float height, float gravity) {
+    public static float HeightToForce(float height, float gravity)
+    {
         return Mathf.Sqrt(height * 2f * gravity);//returns initial upwards force required to reach given height based on a inputed average gravtity
     }
 
@@ -90,7 +92,7 @@ public class MovementController : MonoBehaviour
         Gizmos.DrawWireCube(groundCheckPos, groundCheckSize);
     }
 
-    public void ApplyForce(Vector2 force){ velocity += force; }
+    public void ApplyForce(Vector2 force) { velocity += force; }
 
     private void ApplyGravity()
     {
@@ -143,6 +145,10 @@ public class MovementController : MonoBehaviour
 
     public void Jump(float noAbilityJumpForce)
     {
+        //This event is used to add effects like audio and particles - Spyro
+        if (onJumpEvent != null && onJumpEvent.GetInvocationList().Length > 0)
+            onJumpEvent(station);
+
         jumpInput = 0;
         currentKoyoteTime = 0;
 
