@@ -8,33 +8,13 @@ using System;
 public class AudioManager : MonoBehaviour
 {
 
-    [System.Serializable]
-    public class ClipSettings
-    {
-        public string clipName;
-        public EventReference @event;
-        public bool playGlobally = false;
-
-    }
-
-    [System.Serializable]
-    public class BankSettings
-    {
-        [FMODUnity.BankRef]
-        public string bankPath;
-
-        public bool Compare(string input)
-        {
-            return bankPath.ToLower().Contains(input.ToLower());
-        }
-    }
 
 
 
-    public List<BankSettings> bankSettings;
-    public List<ClipSettings> audioClips;
     private PollingStation station;
-    private Dictionary<FMOD.GUID, EventInstance> activeClipInstances;
+    private Dictionary<string, EventDescription> currentEvents;
+    private Dictionary<string, Bus> currentBuses;
+
 
     private void Awake()
     {
@@ -43,80 +23,123 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        station.musicManager = this;
-        activeClipInstances = new Dictionary<FMOD.GUID, EventInstance>();
+        station.audioManager = this;
+
+
+
+        currentEvents = new Dictionary<string, EventDescription>();
+
+
+        currentBuses = new Dictionary<string, Bus>();
+
+
+        LoadFMODData();
     }
 
 
-    private ClipSettings SearchForClip(string clipName)
+    bool SearchForElement<T>(string name, Dictionary<string, T> dataContainer, out T value)
     {
-        ClipSettings settings = audioClips.Find(x => x.clipName.Contains(clipName));
-        if (settings == null) return null;
-        return settings;
+        value = default;
+
+        foreach (var pair in dataContainer)
+        {
+            if (pair.Key.ToLower().Contains(name.ToLower()))
+            {
+                value = pair.Value;
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    private BankSettings SearchForBank(string bankName)
+
+    public void SetVolume(string groupName, float aValue)
     {
-        BankSettings settings = bankSettings.Find(x => x.Compare(bankName));
-        if (settings == null) return null;
-        return settings;
+        Bus settings;
+        if (!SearchForElement<Bus>(groupName, currentBuses, out settings)) return;
+
+
+        settings.setVolume(aValue);
     }
 
 
-    public void SetVolume(string bankName, float aValue)
+    public float GetVolume(string groupName)
     {
-        var settings = SearchForBank(bankName);
-
-        if (settings == null) return;
-
-
+        Bus settings;
+        if (!SearchForElement(groupName, currentBuses, out settings)) return 0;
+        float volume;
+        if (FMOD.RESULT.OK != settings.getVolume(out volume)) return 0;
+        return volume;
     }
 
 
     public void Play(string clipName, GameObject aTargetObjectToPlayOff = null, bool keepInstanceAlive = false)
     {
-        ClipSettings foundSettings = SearchForClip(clipName);
-        if (foundSettings == null) return;
-        EventInstance instance = RuntimeManager.CreateInstance(foundSettings.@event);
-
-        if (!foundSettings.playGlobally && aTargetObjectToPlayOff)
-        {
-            instance.set3DAttributes(RuntimeUtils.To3DAttributes(aTargetObjectToPlayOff));
-        }
-        if (!activeClipInstances.ContainsKey(foundSettings.@event.Guid))
-            activeClipInstances.Add(foundSettings.@event.Guid, instance);
-        instance.start();
+        EventDescription desc;
+        FMOD.RESULT result;
+        if (!SearchForElement(clipName, currentEvents, out desc)) return;
+        EventInstance ins;
+        result = desc.createInstance(out ins);
+        if (FMOD.RESULT.OK != result) return;
+        if (aTargetObjectToPlayOff)
+            ins.set3DAttributes(RuntimeUtils.To3DAttributes(aTargetObjectToPlayOff));
+        result = ins.start();
 
         if (!keepInstanceAlive)
+            result = ins.release();
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    void LoadFMODData()
+    {
+        var banks = Settings.Instance.Banks;
+        banks.Add("Master");
+        foreach (var bank in banks)
         {
-            instance.release();
+            string path = $"bank:/{bank}";
+            Debug.Log($"<Log>[AudioManager]: Fetching bank ({bank}) using {path} as a path");
+            Bank b;
+            if (FMOD.RESULT.OK != RuntimeManager.StudioSystem.getBank(path, out b)) continue;
+            Debug.Log($"<Log>[AudioManager]: Managed to fetch ({bank}) using {path} as a path!");
+            Debug.Log($"<Log>[AudioManager]: Fetching events from ({bank})");
+            EventDescription[] events;
+            if (FMOD.RESULT.OK != b.getEventList(out events)) continue;
+            Debug.Log($"<Log>[AudioManager]: Managed to fetch events from ({bank})");
+            for (int i = 0; i < events.Length; i++)
+            {
+
+                if (FMOD.RESULT.OK != events[i].getPath(out path)) continue;
+                Debug.Log($"<Log>[AudioManager]: Adding <[Event]: {path}> to the data set.");
+                if (!currentEvents.ContainsKey(path))
+                    currentEvents.Add(path, events[i]);
+            }
+
+            Debug.Log($"<Log>[AudioManager]: Fetching buses from ({bank})");
+            Bus[] buses;
+            if (FMOD.RESULT.OK != b.getBusList(out buses)) continue;
+            Debug.Log($"<Log>[AudioManager]: Managed to fetch buses from ({bank})");
+            for (int i = 0; i < buses.Length; i++)
+            {
+                if (FMOD.RESULT.OK != buses[i].getPath(out path)) continue;
+                Debug.Log($"<Log>[AudioManager]: Adding <[Bus]: {path}> to the data set.");
+                if (!currentBuses.ContainsKey(path))
+                    currentBuses.Add(path, buses[i]);
+            }
+
         }
-    }
-
-
-
-
-    public void Stop(string clipName)
-    {
-        var settings = SearchForClip(clipName);
-        if (settings == null || !activeClipInstances.ContainsKey(settings.@event.Guid)) return;
-        var instance = activeClipInstances[settings.@event.Guid];
-        instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        instance.release();
-
-    }
-
-
-    public void ModifyAudio(string clipName, string propertyName, float propertyValue)
-    {
-        var settings = SearchForClip(clipName);
-        if (settings == null || !activeClipInstances.ContainsKey(settings.@event.Guid)) return;
-        EventDescription eventDesc;
-        if (FMOD.RESULT.OK != activeClipInstances[settings.@event.Guid].getDescription(out eventDesc)) return;
-        PARAMETER_DESCRIPTION paramDesc;
-        if (FMOD.RESULT.OK != eventDesc.getParameterDescriptionByName(propertyName, out paramDesc)) return;
-
-        activeClipInstances[settings.@event.Guid].setParameterByID(paramDesc.id, propertyValue);
     }
 
 }
