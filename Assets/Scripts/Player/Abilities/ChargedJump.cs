@@ -24,7 +24,7 @@ public class ChargedJump : ScriptableAbility
         float jumpForceY = MovementController.HeightToForce(jumpHeight, player.upGravity);
         player.ApplyForce(Vector2.up * jumpForceY);
 
-        addVelX = jumpForceX;// * player.facingDir;
+        addVelX = jumpForceX * player.facingDir;
         player.onVelocityModifier += AddXJump;
     }
 

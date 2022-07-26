@@ -36,6 +36,7 @@ public class MovementController : MonoBehaviour
     public event ModifyVelocity onVelocityModifier;
     public Vector2 velocity { get; set; }
     public float jumpForce { get { return HeightToForce(jumpHeight, upGravity); } }
+    private int airJumpCount = 0;
 
     public bool grounded
     {
@@ -64,7 +65,10 @@ public class MovementController : MonoBehaviour
     private float horizontalInput { get; set; }
     public float facingDir { get; set; } = 1;
     public float jumpInput { get; private set; }
+    public bool jumpPress { get; private set; }
     public float currentKoyoteTime { get; private set; }
+
+    public bool enableJump { get; set; } = true;
 
 
     public static float HeightToForce(float height, float gravity)
@@ -109,6 +113,10 @@ public class MovementController : MonoBehaviour
         horizontalInput = station.inputManager.GetSingleAxis(InputManager.InputPreset.Movement);
         facingDir = Mathf.Abs(horizontalInput) > 0 ? Mathf.Sign(horizontalInput) : facingDir;//update facing direction
 
+
+        if (station.inputManager.GetButtonDown(InputManager.InputPreset.Jump))
+            jumpPress = true;
+        
         if (station.inputManager.GetButton(InputManager.InputPreset.Jump))
             jumpInput = jumpBufferTime;
         else
@@ -125,13 +133,15 @@ public class MovementController : MonoBehaviour
 
         UpdateVelocity();
         rig.velocity = velocity;
+
+        if (jumpPress)
+            jumpPress = false;
     }
 
     private void UpdateVelocity()
     {
         ApplyGravity();
-        if (jumpInput > 0 && currentKoyoteTime > 0)
-            Jump(jumpForce);
+        TryJump();
 
         Vector2 vel = velocity;
         if (horizontalInput == 0)
@@ -141,6 +151,24 @@ public class MovementController : MonoBehaviour
         if (onVelocityModifier != null && onVelocityModifier.GetInvocationList().Length > 0)
             onVelocityModifier(ref vel, this);
         velocity = vel;
+    }
+
+    private void TryJump() {
+        if (!enableJump)
+            return;
+
+        if (currentKoyoteTime > 0) {//if on ground
+            airJumpCount = 0;
+            if (jumpInput > 0)
+                Jump(jumpForce);
+        }
+        else if(airJumpCount < 1) //not on ground but never jumped in the air
+            if (jumpPress) {//if jump pressed (again)
+                velocity = new Vector2(velocity.x, 0);//set velocity.y to 0
+                Jump(jumpForce);
+                Debug.Log("Double Jump");
+                airJumpCount++;
+            }
     }
 
     public void Jump(float noAbilityJumpForce)
