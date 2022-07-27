@@ -7,7 +7,7 @@ using System;
 
 public class AudioManager : MonoBehaviour
 {
-
+    public bool showLogs = false;
 
 
 
@@ -177,31 +177,46 @@ public class AudioManager : MonoBehaviour
         foreach (var bank in banks)
         {
             string path = $"bank:/{bank}";
-            Debug.Log($"<Log>[AudioManager]: Fetching bank ({bank}) using {path} as a path");
+            if (showLogs)
+                Debug.Log($"<Log>[AudioManager]: Fetching bank ({bank}) using {path} as a path");
             Bank b;
             if (FMOD.RESULT.OK != RuntimeManager.StudioSystem.getBank(path, out b)) continue;
-            Debug.Log($"<Log>[AudioManager]: Managed to fetch ({bank}) using {path} as a path!");
-            Debug.Log($"<Log>[AudioManager]: Fetching events from ({bank})");
+            if (showLogs)
+            {
+                Debug.Log($"<Log>[AudioManager]: Managed to fetch ({bank}) using {path} as a path!");
+                Debug.Log($"<Log>[AudioManager]: Fetching events from ({bank})");
+            }
+
             EventDescription[] events;
             if (FMOD.RESULT.OK != b.getEventList(out events)) continue;
-            Debug.Log($"<Log>[AudioManager]: Managed to fetch events from ({bank})");
+            if (showLogs)
+            {
+                Debug.Log($"<Log>[AudioManager]: Managed to fetch events from ({bank})");
+            }
+
             for (int i = 0; i < events.Length; i++)
             {
 
                 if (FMOD.RESULT.OK != events[i].getPath(out path)) continue;
-                Debug.Log($"<Log>[AudioManager]: Adding <[Event]: {path}> to the data set.");
+                if (showLogs)
+                {
+                    Debug.Log($"<Log>[AudioManager]: Adding <[Event]: {path}> to the data set.");
+                }
+
                 if (!currentEvents.ContainsKey(path))
                     currentEvents.Add(path, events[i]);
             }
-
-            Debug.Log($"<Log>[AudioManager]: Fetching buses from ({bank})");
+            if (showLogs)
+                Debug.Log($"<Log>[AudioManager]: Fetching buses from ({bank})");
             Bus[] buses;
             if (FMOD.RESULT.OK != b.getBusList(out buses)) continue;
-            Debug.Log($"<Log>[AudioManager]: Managed to fetch buses from ({bank})");
+            if (showLogs)
+                Debug.Log($"<Log>[AudioManager]: Managed to fetch buses from ({bank})");
             for (int i = 0; i < buses.Length; i++)
             {
                 if (FMOD.RESULT.OK != buses[i].getPath(out path)) continue;
-                Debug.Log($"<Log>[AudioManager]: Adding <[Bus]: {path}> to the data set.");
+                if (showLogs)
+                    Debug.Log($"<Log>[AudioManager]: Adding <[Bus]: {path}> to the data set.");
                 if (!currentBuses.ContainsKey(path))
                     currentBuses.Add(path, buses[i]);
             }

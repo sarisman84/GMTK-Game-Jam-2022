@@ -24,7 +24,7 @@ public static class AudioIntegration
         var audio = station.audioManager;
         audio.ModifyBackgroundMusic("Freeze Time", 0);
         audio.ModifyInstance("Roll Dice", "Dice Activate", 1);
-        audio.Stop("Roll Dice", FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //audio.Stop("Roll Dice", FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }
 

@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class ProcedualAnimator : MonoBehaviour
 {
-    public float spinSpeed = 1f;
-    public Vector3 targetSpinDirection, currentSpinDirection;
+    public float spinSpeed = 10f;
+    public Vector3 targetSpinDirection;
 
 
     PollingStation station;
+    private bool isSpinning;
 
     private void Awake()
     {
@@ -21,7 +22,9 @@ public class ProcedualAnimator : MonoBehaviour
 
     }
 
-    private void OnEnable()
+
+
+    private void Start()
     {
         station.abilityController.onDiceRollBegin += OnSpinDiceBegin;
         station.abilityController.onDiceRollEnd += OnSpinDiceEnd;
@@ -35,32 +38,32 @@ public class ProcedualAnimator : MonoBehaviour
 
     private void OnSpinDiceBegin(PollingStation obj)
     {
-        // StartCoroutine(SpinDice());
+        Debug.Log("Starting to spin!");
+        targetSpinDirection = UnityEngine.Random.insideUnitSphere;
+        targetSpinDirection = new Vector3(Mathf.CeilToInt(targetSpinDirection.x), Mathf.CeilToInt(targetSpinDirection.y), Mathf.CeilToInt(targetSpinDirection.z));
+        isSpinning = true;
     }
 
     private void OnSpinDiceEnd(PollingStation obj)
     {
-        //StopCoroutine(SpinDice());
+        isSpinning = false;
+
     }
 
-    IEnumerator SpinDice() //This is not working (The coroutine is not getting called) - Spyro
+    private void FixedUpdate()
     {
-        Debug.Log("Starting to spin!");
-        currentSpinDirection = UnityEngine.Random.insideUnitSphere;
-        yield return new WaitForFixedUpdate();
-        while (true)
+        if (!isSpinning)
         {
-            Debug.Log("Spinning");
-            currentSpinDirection = Vector3.Lerp(currentSpinDirection, targetSpinDirection, Time.fixedDeltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(currentSpinDirection, transform.up), Time.fixedDeltaTime * spinSpeed);
-            yield return new WaitForFixedUpdate();
-            if (currentSpinDirection == targetSpinDirection)
-            {
-                targetSpinDirection = UnityEngine.Random.insideUnitSphere;
-            }
+            transform.rotation = Quaternion.identity;
+            return;
         }
 
+        Debug.Log("Spinning");
+
+        transform.rotation *= Quaternion.AngleAxis(spinSpeed, targetSpinDirection);
     }
 
-
 }
+
+
+
