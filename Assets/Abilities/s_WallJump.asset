@@ -18,6 +18,6 @@ MonoBehaviour:
   wallCheckXOffset: 1
   wallCheckSize: {x: 0.1, y: 1}
   wallSlideVel: 3
-  jumpForceX: 1.5
+  jumpForceX: 3
   XForceDamp: 0.985
   minXVel: 0.7
