@@ -34,6 +34,7 @@ public class WallJump : ScriptableAbility {
     }
     public void WallSlide(ref Vector2 vel, MovementController player) {
         if (!onWall) {
+            player.enableJump = true;
             player.onVelocityModifier -= WallSlide;
             return;
         }
@@ -48,6 +49,7 @@ public class WallJump : ScriptableAbility {
         player.facingDir *= -1;
 
         player.Jump(player.jumpForce);
+
         addVelX = jumpForceX * player.facingDir;
         player.onVelocityModifier += AddXJump;
     }
@@ -58,6 +60,7 @@ public class WallJump : ScriptableAbility {
 
     protected override void OnDeactivation(PollingStation station) {
         onWall = false;
+        station.movementController.enableJump = true;
         station.movementController.onVelocityModifier -= WallSlide;
     }
 
@@ -66,8 +69,9 @@ public class WallJump : ScriptableAbility {
 
         onWall = OnWall(player);
         if (onWall) {
+            player.enableJump = false;
             player.onVelocityModifier += WallSlide;
-            if (station.inputManager.GetButton(InputManager.InputPreset.Jump) && player.currentKoyoteTime <= 0) {//if player cant jump of the ground, but gives a jump input
+            if (station.inputManager.GetButton(InputManager.InputPreset.Jump)) {//perform jump here, cause it is disabled on the MovementController
                 Debug.Log("Jump of the wall");
                 Jump(player);
                 return false;
